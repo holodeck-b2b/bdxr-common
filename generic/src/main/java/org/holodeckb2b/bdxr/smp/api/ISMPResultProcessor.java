@@ -14,10 +14,9 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.processing;
+package org.holodeckb2b.bdxr.smp.api;
 
 import org.holodeckb2b.bdxr.datamodel.ISMPQueryResult;
-import org.holodeckb2b.bdxr.smp.SMPQueryException;
 import org.w3c.dom.Document;
 
 /**

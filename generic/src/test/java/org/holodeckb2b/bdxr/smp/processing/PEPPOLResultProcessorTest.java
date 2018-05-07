@@ -23,8 +23,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import static org.junit.Assert.fail;
 
-import org.holodeckb2b.bdxr.smp.SMPQueryException;
-import org.holodeckb2b.bdxr.smp.processing.PEPPOLResultProcessor;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
+import org.holodeckb2b.bdxr.smp.impl.PEPPOLResultProcessor;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

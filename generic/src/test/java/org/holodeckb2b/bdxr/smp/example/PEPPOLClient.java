@@ -18,16 +18,17 @@ package org.holodeckb2b.bdxr.smp.example;
 
 import java.security.cert.X509Certificate;
 
+import org.holodeckb2b.bdxr.datamodel.Certificate.Usage;
 import org.holodeckb2b.bdxr.datamodel.EndpointInfo;
 import org.holodeckb2b.bdxr.datamodel.Identifier;
-import org.holodeckb2b.bdxr.datamodel.Certificate.Usage;
 import org.holodeckb2b.bdxr.sml.PEPPOLHostNameGenerator;
 import org.holodeckb2b.bdxr.sml.SMLLocator;
-import org.holodeckb2b.bdxr.smp.SMPClient;
-import org.holodeckb2b.bdxr.smp.SMPQueryException;
+import org.holodeckb2b.bdxr.smp.api.ISMPClient;
+import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
 
 /**
- * Is a simple example application that shows how the {@link SMPClient} can be used for querying PEPPOL SMP servers.
+ * Is a simple example application that shows how the {@link ISMPClient} can be used for querying PEPPOL SMP servers.
  * The application takes 
  * 
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -79,8 +80,9 @@ public class PEPPOLClient {
 		System.out.println("- Process identifier    : " + processId.toString());
 		System.out.println("- Transport protocol 	: " + args[3]);
 		
-		final SMPClient lookupClient = new SMPClient(new SMLLocator(
-															new PEPPOLHostNameGenerator(OPENPEPPOL_TEST_SML_DOMAIN)));
+		final ISMPClient lookupClient = new SMPClientBuilder().setSMPLocator(new SMLLocator(
+															new PEPPOLHostNameGenerator(OPENPEPPOL_TEST_SML_DOMAIN)))
+															  .build();
 		try {
 			System.out.println("Executing SMP query...");
 			EndpointInfo endpointInfo = lookupClient.getEndpoint(participantId, serviceId, processId, transportId);

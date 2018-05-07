@@ -14,14 +14,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp;
+package org.holodeckb2b.bdxr.smp.impl;
 
-import com.chasquismessaging.commons.utils.Utils;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URI;
-import java.net.URLConnection;
 import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.holodeckb2b.bdxr.datamodel.EndpointInfo;
@@ -30,53 +28,37 @@ import org.holodeckb2b.bdxr.datamodel.Identifier;
 import org.holodeckb2b.bdxr.datamodel.ProcessInfo;
 import org.holodeckb2b.bdxr.datamodel.Redirection;
 import org.holodeckb2b.bdxr.datamodel.ServiceInformation;
-import org.holodeckb2b.bdxr.sml.ISMPLocator;
 import org.holodeckb2b.bdxr.sml.SMPLocatorException;
-import org.holodeckb2b.bdxr.smp.processing.SMPResultReader;
+import org.holodeckb2b.bdxr.smp.api.ISMPClient;
+import org.holodeckb2b.bdxr.smp.api.ISMPResponseConnection;
+import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
+
+import com.chasquismessaging.commons.utils.Utils;
 
 /**
- * Is a SMP client to request the meta-data about a participant in the network from a SMP server. The SMP server to
- * query is determined using a {@link ISMPLocator} that must be provided when creating the client.
+ * Is the implementation of {@link ISMPClient} and controls the process of requesting the meta-data about a 
+ * participant in the network from a SMP server. 
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-public class SMPClient {
+public class SMPClient implements ISMPClient {
 	private static final Logger	log = LogManager.getLogger(SMPClient.class);
 
     /**
-     * The default timeout for SMP request is 10 seconds
+     * The configuration to be used by this client
      */
-    private static final int DEFAULT_TIMEOUT = 10000;
+    private SMPClientConfig 	configuration;
 
     /**
-     * The location service to use for getting the URL of the SMP
+     * Creates a new <code>LookupCLient</code> using the given configuration. It is recommended to use the {@link 
+     * SMPClientBuilder} for creating new instance of the SMP client to ensure a decoupling of the using classes with
+     * the actual implementation classes.
+     * 
+     * @param config	The configuration to use for the new client;
      */
-    private ISMPLocator     locator;
-    /**
-     * The timeout for SMP requests
-     */
-    private int             timeout;
-
-    /**
-     * Create a new <code>LookupCLient</code> that will use the given SMP locator to get the location of the SMP
-     * for a participant and uses the default timeout.
-     *
-     * @param smpLocator		The SMP locator to use
-     */
-    public SMPClient(final ISMPLocator smpLocator) {
-        this(smpLocator, DEFAULT_TIMEOUT);
-    }
-
-    /**
-     * Create a new <code>LookupCLient</code> that will use the given SMP locator to get the location of the SMP
-     * for a participant and use the given timeout for requests.
-     *
-     * @param smpLocator    The SMP locator to use
-     * @param timeout       The timeout to use for SMP requests
-     */
-    public SMPClient(final ISMPLocator smpLocator, final int timeout) {
-        this.locator = smpLocator;
-        this.timeout = timeout;
+    public SMPClient(final SMPClientConfig config) {
+        this.configuration = config;
     }
 
     /**
@@ -91,7 +73,8 @@ public class SMPClient {
      * 			supports the requested transport profile, <code>null</code> otherwise.
      * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
      */
-    public EndpointInfo getEndpoint(final Identifier participantId,
+    @Override
+	public EndpointInfo getEndpoint(final Identifier participantId,
     								final Identifier serviceId,
     								final Identifier processId,
     								final String     transportProfile) throws SMPQueryException {
@@ -100,7 +83,7 @@ public class SMPClient {
         URI smpURL = null;
         try {
             log.debug("Getting URI of SMP handling participant");
-            smpURL = locator.locateSMP(participantId);
+            smpURL = configuration.getSMPLocator().locateSMP(participantId);
         } catch (SMPLocatorException ex) {
             log.error("An error occurred in locating the SMP server for participant {}."
                      + "\n\tDetails: {}\n\tCaused by: {}", participantId, ex.getMessage(),
@@ -116,15 +99,12 @@ public class SMPClient {
         try {
             int redirectCount = 0;
             do {
-            	log.debug("Getting service meta-data from SMP (URL={})", queryURL.toString());
-            	URLConnection urlConnection = queryURL.toURL().openConnection();
-	            urlConnection.setConnectTimeout(timeout);
-	            urlConnection.setReadTimeout(timeout);
-	            ISMPQueryResult response = null;
-	            try (InputStream is = urlConnection.getInputStream()) {
-	                log.debug("Connected to SMP, handle response");
-	                response = SMPResultReader.handleResponse(is);
-	            }
+            	ISMPQueryResult response = null;            	
+            	log.debug("Executing SMP query using executor: {}", 
+            			  configuration.getRequestExecutor().getClass().getName());	            
+            	ISMPResponseConnection connection = configuration.getRequestExecutor().executeRequest(queryURL);
+                response = new SMPResultReader(configuration).handleResponse(connection.getInputStream());
+                connection.close();
 	            if (response instanceof Redirection) {
 	                log.error("Received redirection response");
 	                queryURL = ((Redirection) response).getNewSMPURL();

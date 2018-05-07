@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.processing;
+package org.holodeckb2b.bdxr.smp.impl;
 
 import com.chasquismessaging.commons.utils.CertificateHelper;
 
@@ -44,7 +44,8 @@ import org.holodeckb2b.bdxr.datamodel.ProcessInfo;
 import org.holodeckb2b.bdxr.datamodel.Redirection;
 import org.holodeckb2b.bdxr.datamodel.ServiceInformation;
 import org.holodeckb2b.bdxr.datamodel.ServiceMetadataResult;
-import org.holodeckb2b.bdxr.smp.SMPQueryException;
+import org.holodeckb2b.bdxr.smp.api.ISMPResultProcessor;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
 import org.w3c.dom.Document;
 
 /**
