@@ -93,9 +93,10 @@ public class SMPClientConfig {
 	}
 	
 	/**
-	 * Sets the {@link ICertificateFinder} implementation  that the new <code>SMPClient</code> should use to get the
-	 * certificate used by the SMP for signing the results. The certificate finder only needs to be set when a custom
-	 * finder is needed, i.e. if the certificate is not embedded within the <code>ds:Signature</code> element.
+	 * Sets the (custom) {@link ICertificateFinder} implementation that the new <code>SMPClient</code> should use to 
+	 * get the certificate used by the SMP for signing the results. The certificate finder only needs to be set when 
+	 * non standard implementation is used in which certificates are only referenced to instead of embedded within the
+	 * <code>ds:Signature</code> element as prescribed by specifications. 
 	 * 
 	 * @param finder	The certificate finder implementation
 	 */
