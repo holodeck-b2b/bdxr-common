@@ -16,17 +16,17 @@
  */
 package org.holodeckb2b.bdxr.smp.impl;
 
-import com.chasquismessaging.commons.utils.CertificateHelper;
-
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.busdox.servicemetadata.publishing._1.EndpointType;
@@ -47,6 +47,8 @@ import org.holodeckb2b.bdxr.datamodel.ServiceMetadataResult;
 import org.holodeckb2b.bdxr.smp.api.ISMPResultProcessor;
 import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
 import org.w3c.dom.Document;
+
+import com.chasquismessaging.commons.utils.CertificateHelper;
 
 /**
  * Is the {@link ISMPResultProcessor} implementation that handles the XML format as defined in the PEPPOL SMP
@@ -204,7 +206,10 @@ public class PEPPOLResultProcessor implements ISMPResultProcessor {
             log.error("Could not read the Certificate from the SMP response! Details: {}", certReadError.getMessage());
             throw new SMPQueryException("Could not read the Certificate from the SMP response");
         }
-        // As extensions are not used in the PEPPOL netword, they are ignored here
+        epInfo.setDescription(epInfoXML.getServiceDescription());
+        epInfo.setContactInfo(epInfoXML.getTechnicalContactUrl());
+        
+        // As extensions are not used in the PEPPOL network, they are ignored here
 
         return epInfo;
     }

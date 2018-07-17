@@ -16,12 +16,13 @@
  */
 package org.holodeckb2b.bdxr.datamodel;
 
-import com.chasquismessaging.commons.utils.Utils;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import com.chasquismessaging.commons.utils.Utils;
 
 /**
  * Represents the SMP meta-data of one <i>Endpoint</i>.
@@ -37,6 +38,8 @@ public class EndpointInfo {
     private ZonedDateTime           serviceActivationDate;
     private ZonedDateTime           serviceExpirationDate;
     private List<Certificate>	    certificates;
+    private String					description;
+    private String					contactInfo;
     private List<IExtension>        extensions;
 
     /**
@@ -51,7 +54,7 @@ public class EndpointInfo {
      * @param url                       The endpoint's URL
      */
     public EndpointInfo(final String profile, final String url) {
-        this(profile, url, null, null, null, null, null, null);
+        this(profile, url, null, null, null, null, null, null, null, null);
     }
 
     /**
@@ -62,7 +65,7 @@ public class EndpointInfo {
      * @param cert                      The certificate used by the endpoint
      */
     public EndpointInfo(final String profile, final String url, final Certificate cert) {
-        this(profile, url, null, null, null, null, Collections.singletonList(cert), null);
+        this(profile, url, null, null, null, null, Collections.singletonList(cert), null, null, null);
     }
 
     /**
@@ -75,11 +78,14 @@ public class EndpointInfo {
      * @param activationDate            The timestamp from which the endpoint is active
      * @param expirationDate            The timestamp until which the endpoint is active
      * @param certs                     The certificates used by the endpoint
+     * @param description				Human readable text describing the endpoint
+     * @param contact					Contact information for this endpoint  
      * @param ext                       Any extra information related to the endpoint
      */
     public EndpointInfo(final String profile, final String url, final Boolean blsRequired,
                         final String minAuthenticationLvl, final ZonedDateTime activationDate,
                         final ZonedDateTime expirationDate, final List<Certificate> certs,
+                        final String description, final String contact,
                         final List<IExtension> ext) {
         this.transportProfile = profile;
         this.endpointURL = url;
@@ -88,6 +94,8 @@ public class EndpointInfo {
         this.serviceActivationDate = activationDate;
         this.serviceExpirationDate = expirationDate;
         this.certificates = certs;
+        this.description = description;
+        this.contactInfo = contact;
         this.extensions = ext;
     }
 
@@ -238,6 +246,42 @@ public class EndpointInfo {
         this.certificates = certs;
     }
 
+    /**
+     * Gets the (human readable) description of this endpoint.
+     *  
+     * @return	The endpoint's descriptive text
+     */
+    public String getDescription() {
+    	return description;
+    }
+
+    /**
+     * Sets the (human readable) description of this endpoint.
+     *  
+     * @param description 	Text to use as endpoint's description 
+     */
+    public void setDescription(final String description) {
+    	this.description = description;
+    }
+    
+    /**
+     * Gets the [technical] contact information for this endpoint.
+     *  
+     * @return	The contact details for this endpoint
+     */
+    public String getContactInfo() {
+    	return contactInfo;
+    }
+
+    /**
+     * Sets the [technical] contact information for this endpoint.
+     *  
+     * @param contact	The contact details for this endpoint
+     */
+    public void setContactInfo(final String contact) {
+    	this.contactInfo = contact;
+    }
+    
     /**
      * Gets the additional, non standard, information related to this endpoint
      *
