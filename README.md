@@ -7,7 +7,7 @@ Code hosted at https://github.com/holodeck-b2b/bdxr-common
 Issue tracker https://github.com/holodeck-b2b/bdxr-common/issues 
 
 ##  Using 
-A basic SMP client, suitable for use in the PEPPOL network, can be found in /generic/src/test/java/org/holodeckb2b/bdxr/smp/example/
+A basic SMP client, suitable for use in the PEPPOL network, can be found in `/generic/src/test/java/org/holodeckb2b/bdxr/smp/example/`  
 The client has a CLI. Before use, it must be configured for your specific setup. 
 
 ## Contributing
