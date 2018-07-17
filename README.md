@@ -29,7 +29,7 @@ Please document the steps to reproduce your problem in as much detail as you can
 Version numbering follows the [Semantic versioning](http://semver.org/) approach.
 
 ## Licence
-This software is licensed under the General Public License V3 (GPLv3) which is included in the [LICENSE](LICENSE) file in the root of the project.
+This software is licensed under the Lesser General Public License V3 (LGPLv3) which is included in the [LICENSE](LICENSE) file in the root of the project.
 
 ## Support
 Commercial support is provided by Chasquis Consulting. Visit [Chasquis-Consulting.com](http://chasquis-consulting.com/holodeck-b2b-support/) for more information.
