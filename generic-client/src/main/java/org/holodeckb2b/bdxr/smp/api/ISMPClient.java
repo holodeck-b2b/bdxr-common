@@ -16,6 +16,8 @@
  */
 package org.holodeckb2b.bdxr.smp.api;
 
+import java.util.Collection;
+
 import org.holodeckb2b.bdxr.datamodel.EndpointInfo;
 import org.holodeckb2b.bdxr.datamodel.Identifier;
 
@@ -44,4 +46,18 @@ public interface ISMPClient {
     								final Identifier serviceId,
     								final Identifier processId,
     								final String     transportProfile) throws SMPQueryException;
+    
+    /**
+     * Gets the meta-data of all endpoints for the given participant, service and process.
+     *
+     * @param participantId		Participant's Id
+     * @param serviceId			Service Id
+     * @param processId			Process Id
+     * @return	The endpoint meta-data if there exists an endpoint for this participant, service and process and which
+     * 			supports the requested transport profile, <code>null</code> otherwise.
+     * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
+     */
+    public Collection<EndpointInfo> getEndpoints(final Identifier participantId,
+									    		 final Identifier serviceId,
+									    		 final Identifier processId) throws SMPQueryException;
 }
