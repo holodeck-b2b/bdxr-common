@@ -25,6 +25,8 @@ import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.holodeckb2b.bdxr.datamodel.Identifier;
 
+import com.chasquismessaging.commons.utils.Utils;
+
 /**
  * Is a {@link IHostNameGenerator} that generates the host name according to the <a href=
  * "http://wiki.ds.unipi.gr/display/ESENS/PR+-+BDXL+1.4.0#PR-BDXL1.4.0-ImplementationGuidelines">e-SENS
@@ -69,6 +71,8 @@ public class eSENSHostNameGenerator implements IHostNameGenerator {
      * @param smlDomain     The SML domain
      */
     public eSENSHostNameGenerator(final String smlDomain) {
+    	if (Utils.isNullOrEmpty(smlDomain))
+    		throw new IllegalArgumentException("SML domain shall not be empty or null");
         this.smlDomain = smlDomain;
     }
     

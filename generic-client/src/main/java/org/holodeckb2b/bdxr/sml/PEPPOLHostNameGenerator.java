@@ -16,11 +16,12 @@
  */
 package org.holodeckb2b.bdxr.sml;
 
-import com.chasquismessaging.commons.utils.Utils;
+import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
+
 import org.apache.commons.codec.digest.DigestUtils;
 import org.holodeckb2b.bdxr.datamodel.Identifier;
 
-import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
+import com.chasquismessaging.commons.utils.Utils;
 
 /**
  * Is a {@link IHostNameGenerator} that generates the host name according to the rules specified by the PEPPOL eDelivery
@@ -47,7 +48,7 @@ public class PEPPOLHostNameGenerator implements IHostNameGenerator {
      */
     public PEPPOLHostNameGenerator(final String smlDomain) {
         if (Utils.isNullOrEmpty(smlDomain))
-            throw new IllegalArgumentException("SML domain shall not be empty!");
+            throw new IllegalArgumentException("SML domain shall not be empty or null");
         this.smlDomain = smlDomain; 
     }
 
