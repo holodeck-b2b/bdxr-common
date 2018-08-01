@@ -20,16 +20,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>com.chasquismessaging.bdxr</groupId>
-		<artifactId>common</artifactId>
+		<groupId>org.holodeckb2b.bdxr</groupId>
+		<artifactId>parent</artifactId>
 		<version>1.0.0-SNAPSHOT-1</version>
 	</parent>
-	<artifactId>generic-sml_smp</artifactId>
+	<artifactId>generic-client</artifactId>
 	<packaging>jar</packaging>
-	<name>Chasquis: Common BDXR: Generic SML and SMP</name>
-	<description>
-
-    </description>
+	<name>Chasquis: Common BDXR: Generic SML and SMP code</name>
+	<description>This project contains generic implementations to create SMP clients that use the SML/BDXL to locate the correct SMP server.</description>
 	<organization>
 		<name>Chasquis Services</name>
 	</organization>

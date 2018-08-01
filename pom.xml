@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.chasquismessaging.bdxr</groupId>
-    <artifactId>common</artifactId>
+    <groupId>org.holodeckb2b.bdxr</groupId>
+    <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT-1</version>
     <packaging>pom</packaging>
     <properties>
@@ -11,8 +11,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
     <name>Common BDXR Utilities</name>
-    <description>This project contains a set of classes that assist the development of solutions that use the specification 
-    developed by the OASIS BDXR Technical Committee and its predecessors developed within PEPPOL like BDXL and SMP.</description>
+    <description>This project contains a set of classes that assist the development of solutions that use the BDXL and SMP specifications 
+    developed by the OASIS BDXR Technical Committee and its predecessors developed within PEPPOL.</description>
     <scm>
     	<url>https://github.com/holodeck-b2b/bdxr-common</url>
     	<connection>scm:git:https://github.com/holodeck-b2b/bdxr-common.git</connection>
@@ -115,6 +115,6 @@
     <modules>
         <module>oasis-smp</module>
         <module>peppol-smp</module>
-        <module>generic</module>
+        <module>generic-client</module>
     </modules>
 </project>
