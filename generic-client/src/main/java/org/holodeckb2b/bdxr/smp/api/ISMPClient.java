@@ -16,7 +16,7 @@
  */
 package org.holodeckb2b.bdxr.smp.api;
 
-import java.util.Collection;
+import java.util.List;
 
 import org.holodeckb2b.bdxr.datamodel.EndpointInfo;
 import org.holodeckb2b.bdxr.datamodel.Identifier;
@@ -57,7 +57,7 @@ public interface ISMPClient {
      * 			supports the requested transport profile, <code>null</code> otherwise.
      * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
      */
-    public Collection<EndpointInfo> getEndpoints(final Identifier participantId,
-									    		 final Identifier serviceId,
-									    		 final Identifier processId) throws SMPQueryException;
+    public List<EndpointInfo> getEndpoints(final Identifier participantId,
+							    		   final Identifier serviceId,
+							    		   final Identifier processId) throws SMPQueryException;
 }

@@ -19,7 +19,7 @@ package org.holodeckb2b.bdxr.smp.impl;
 import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -84,7 +84,7 @@ public class SMPClient implements ISMPClient {
                 participantId, serviceId, processId, transportProfile);
         // First get all endpoints for the participant, serviceId and processId, then filter the result
         
-    	final Collection<EndpointInfo> allEndpoints = getEndpoints(participantId, serviceId, processId);
+    	final List<EndpointInfo> allEndpoints = getEndpoints(participantId, serviceId, processId);
 
     	Optional<EndpointInfo> findEndPoint = allEndpoints.parallelStream()
 									                .filter(ep -> transportProfile.equals(ep.getTransportProfile()))
@@ -111,7 +111,7 @@ public class SMPClient implements ISMPClient {
      * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
      */
     @Override
-	public Collection<EndpointInfo> getEndpoints(final Identifier participantId,
+	public List<EndpointInfo> getEndpoints(final Identifier participantId,
 									    		 final Identifier serviceId,
 									    		 final Identifier processId) throws SMPQueryException {
         log.debug("Lookup requested; (participant, service, process) = ({},{},{})",
@@ -163,7 +163,7 @@ public class SMPClient implements ISMPClient {
         }
         log.debug("Retrieved service information from SMP server, search for requested process and transport");
         // We return the first endpoint that matches to the request
-        Collection<EndpointInfo> result = new ArrayList<>();
+        List<EndpointInfo> result = new ArrayList<>();
         for(ProcessInfo pi : serviceInfo.getProcessInformation()) {
             if (pi.supportsProcess(processId))
             	result.addAll(pi.getEndpoints());            
