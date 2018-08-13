@@ -16,12 +16,14 @@
  */
 package org.holodeckb2b.bdxr.smp.processing;
 
+import static org.junit.Assert.fail;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import static org.junit.Assert.fail;
 
 import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
 import org.holodeckb2b.bdxr.smp.impl.PEPPOLResultProcessor;

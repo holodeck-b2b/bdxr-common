@@ -22,7 +22,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import com.chasquismessaging.commons.utils.Utils;
+import org.holodeckb2b.bdxr.utils.Utils;
+
 
 /**
  * Represents the SMP meta-data of one <i>Endpoint</i>.

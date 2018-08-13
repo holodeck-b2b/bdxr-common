@@ -24,8 +24,7 @@ import java.util.Set;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.holodeckb2b.bdxr.datamodel.Identifier;
-
-import com.chasquismessaging.commons.utils.Utils;
+import org.holodeckb2b.bdxr.utils.Utils;
 
 /**
  * Is a {@link IHostNameGenerator} that generates the host name according to the <a href=

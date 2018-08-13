@@ -35,8 +35,7 @@ import org.holodeckb2b.bdxr.smp.api.ISMPClient;
 import org.holodeckb2b.bdxr.smp.api.ISMPResponseConnection;
 import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
 import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
-
-import com.chasquismessaging.commons.utils.Utils;
+import org.holodeckb2b.bdxr.utils.Utils;
 
 /**
  * Is the implementation of {@link ISMPClient} and controls the process of requesting the meta-data about a 

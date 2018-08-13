@@ -16,9 +16,10 @@
  */
 package org.holodeckb2b.bdxr.datamodel;
 
-import com.chasquismessaging.commons.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.holodeckb2b.bdxr.utils.Utils;
 
 /**
  * Represents the SMP meta-data of processes in which a specific <i>service</i>/<i>document</i> is offered/used and

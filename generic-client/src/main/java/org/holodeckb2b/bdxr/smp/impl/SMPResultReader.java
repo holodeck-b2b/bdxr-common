@@ -44,12 +44,11 @@ import org.holodeckb2b.bdxr.smp.api.ICertificateFinder;
 import org.holodeckb2b.bdxr.smp.api.ISMPResultProcessor;
 import org.holodeckb2b.bdxr.smp.api.ITrustValidator;
 import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
+import org.holodeckb2b.bdxr.utils.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
-
-import com.chasquismessaging.commons.utils.Utils;
 
 /**
  * Is the component responsible for parsing the SMP response into a XML document, verifying the signature if it is

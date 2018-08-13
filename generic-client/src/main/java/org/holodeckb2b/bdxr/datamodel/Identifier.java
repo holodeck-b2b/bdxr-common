@@ -16,10 +16,11 @@
  */
 package org.holodeckb2b.bdxr.datamodel;
 
-import com.chasquismessaging.commons.utils.Utils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Objects;
+
+import org.holodeckb2b.bdxr.utils.Utils;
 
 /**
  * Represent the generic definition of the identifiers used in the SMP data, i.e. the <i>Participant</i>,

@@ -44,8 +44,12 @@
 			<artifactId>peppol-smp</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.chasquismessaging</groupId>
-			<artifactId>commons</artifactId>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>oasis-smp</artifactId>
+		</dependency>
+ 		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>utils</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>

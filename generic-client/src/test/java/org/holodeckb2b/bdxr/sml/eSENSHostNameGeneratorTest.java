@@ -20,8 +20,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import org.holodeckb2b.bdxr.datamodel.Identifier;
-import org.holodeckb2b.bdxr.sml.IHostNameGenerator;
-import org.holodeckb2b.bdxr.sml.eSENSHostNameGenerator;
 import org.junit.Test;
 
 /**

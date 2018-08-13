@@ -55,6 +55,16 @@
                 <version>${project.version}</version>
             </dependency>
             <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>oasis-smp</artifactId>
+                <version>${project.version}</version>
+            </dependency>            
+            <dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>utils</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.chasquismessaging</groupId>
                 <artifactId>commons</artifactId>
                 <version>1.0.0-SNAPSHOT-5</version>
@@ -116,5 +126,6 @@
         <module>oasis-smp</module>
         <module>peppol-smp</module>
         <module>generic-client</module>
-    </modules>
+    <module>utils</module>
+  </modules>
 </project>
