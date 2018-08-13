@@ -26,7 +26,7 @@
 	</parent>
 	<artifactId>generic-client</artifactId>
 	<packaging>jar</packaging>
-	<name>Chasquis: Common BDXR: Generic SML and SMP code</name>
+	<name>BDXR Common: Generic SML and SMP code</name>
 	<description>This project contains generic implementations to create SMP clients that use the SML/BDXL to locate the correct SMP server.</description>
 	<organization>
 		<name>Chasquis Services</name>

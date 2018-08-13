@@ -8,7 +8,7 @@
     </parent>
     <artifactId>oasis-smp</artifactId>
     <packaging>jar</packaging>
-    <name>Chasquis: Common BDXR: OASIS SMP</name>
+    <name>BDXR Common: OASIS v1 SMP</name>
     <description>
         This project is used to create Java classes for processing the XML documents defined by the OASIS SMP
         specification's XSD.
