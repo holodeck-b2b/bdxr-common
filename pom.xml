@@ -10,8 +10,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
-    <name>Common BDXR Utilities</name>
-    <description>This project contains a set of classes that assist the development of solutions that use the BDXL and SMP specifications 
+    <name>Common BDXR Lib</name>
+    <description>This project contains a set of classes that assist the development of 4-corner model solutions that use the BDXL and SMP specifications 
     developed by the OASIS BDXR Technical Committee and its predecessors developed within PEPPOL.</description>
     <scm>
     	<url>https://github.com/holodeck-b2b/bdxr-common</url>
