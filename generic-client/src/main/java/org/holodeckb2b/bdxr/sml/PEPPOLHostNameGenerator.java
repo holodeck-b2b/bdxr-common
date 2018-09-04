@@ -16,8 +16,6 @@
  */
 package org.holodeckb2b.bdxr.sml;
 
-import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
-
 import org.apache.commons.codec.digest.DigestUtils;
 import org.holodeckb2b.bdxr.datamodel.Identifier;
 import org.holodeckb2b.bdxr.utils.Utils;
@@ -35,10 +33,6 @@ public class PEPPOLHostNameGenerator implements IHostNameGenerator {
      * The SML domain to append to the generated host names
      */
     private final String  smlDomain;
-    /**
-     * MD5 digester
-     */
-    private static final DigestUtils digester = new DigestUtils(MD5);
 
     /**
      * Create a new host name generator that will append the provided domain name to generated host names.
@@ -57,7 +51,7 @@ public class PEPPOLHostNameGenerator implements IHostNameGenerator {
         if (Utils.isNullOrEmpty(scheme))
             throw new IllegalArgumentException("The participant identifier scheme must be set");
 
-        return "B-" + digester.digestAsHex(participantId.getValue()) + "." + scheme + "." + smlDomain;
+        return "B-" + DigestUtils.md5Hex(participantId.getValue()) + "." + scheme + "." + smlDomain;
     }
 
 }

@@ -16,8 +16,6 @@
  */
 package org.holodeckb2b.bdxr.sml;
 
-import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_256;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,10 +57,6 @@ public class eSENSHostNameGenerator implements IHostNameGenerator {
      * The SML domain to append to the generated host names
      */
     private String  smlDomain;
-    /**
-     * SHA-256 digester
-     */
-    private static final DigestUtils digester = new DigestUtils(SHA_256);
 
     /**
      * Create a new host name generator that will append the provided domain name to generated host names.
@@ -88,7 +82,7 @@ public class eSENSHostNameGenerator implements IHostNameGenerator {
             throw new IllegalArgumentException(scheme + " is not a valid naming scheme according to e-SENS specs");
 
         final String canonicalId = "urn:oasis:tc:ebcore:partyid-type:" + scheme + ":" + participantId.getValue();
-   	    byte[] encodedId = new Base32().encode(digester.digest(canonicalId));
+   	    byte[] encodedId = new Base32().encode(DigestUtils.sha256(canonicalId));
 
         // Strip all '=' (ASCII value = 61) at the end of the Base32 encoded value
         int  i = encodedId.length;
