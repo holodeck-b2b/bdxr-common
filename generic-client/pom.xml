@@ -28,15 +28,6 @@
 	<packaging>jar</packaging>
 	<name>BDXR Common: Generic SML and SMP code</name>
 	<description>This project contains generic implementations to create SMP clients that use the SML/BDXL to locate the correct SMP server.</description>
-	<organization>
-		<name>Chasquis Services</name>
-	</organization>
-	<developers>
-		<developer>
-			<name>Sander Fieten</name>
-			<email>sander at chasquis-service.com</email>
-		</developer>
-	</developers>
 
 	<dependencies>
 		<dependency>

@@ -7,9 +7,7 @@
     <artifactId>parent</artifactId>
     <version>1.0.0-SNAPSHOT-2</version>
   </parent>
-  <groupId>org.holodeckb2b.bdxr</groupId>
   <artifactId>utils</artifactId>
-  <version>1.0.0-SNAPSHOT-2</version>
   <name>BDXR Common: Utils</name>
   <description>Contains some utility classes. This module is to be superseded by a more generic project for utility code.</description>
   <properties>

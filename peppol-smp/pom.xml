@@ -13,15 +13,6 @@
         This project is used to create Java classes for processing the XML documents defined by the PEPPOL SMP
         specification's XSD.
     </description>
-    <organization>
-        <name>Chasquis Services</name>
-    </organization>
-    <developers>
-        <developer>
-            <name>Sander Fieten</name>
-            <email>sander at chasquis-service.com</email>
-        </developer>
-    </developers>
     <build>
         <plugins>
             <plugin>
