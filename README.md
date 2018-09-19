@@ -1,5 +1,5 @@
 # BDXR Common
-This library contains a set of classes for developing 4-corner model solutions based on specifications from the OASIS BDXR Technical Committee, like BDXL and SMP. This library focusses on the development of client software that uses existing _Service Metadata Locators_ and _Publishers_ in the network to retrieve meta-data on participants in the network. It uses a generic data model for the participant meta-data maintained by the <i>Service Metadata Publishers</i> that abstracts from the actual specification. It includes implementations for both the OASIS specifications and the ones in use in the PEPPOL eDelivery Network. A configurable component to query a SMP is included.
+This library contains a set of classes for developing 4-corner model solutions based on specifications from the OASIS BDXR Technical Committee, like BDXL and SMP. This library focuses on the development of client software that uses existing _Service Metadata Locators_ and _Publishers_ in the network to retrieve meta-data on participants in the network. It uses a generic data model for the participant meta-data maintained by the <i>Service Metadata Publishers</i> that abstracts from the actual specification. It includes implementations for both the OASIS specifications and the ones in use in the PEPPOL eDelivery Network. A configurable component to query a SMP is included.
 
 __________________
 Lead developer: Sander Fieten  
@@ -8,7 +8,8 @@ Issue tracker https://github.com/holodeck-b2b/bdxr-common/issues
 
 ##  Using
 A basic SMP client, suitable for use in the PEPPOL network, can be found in `/generic/src/test/java/org/holodeckb2b/bdxr/smp/example/`  
-The client has a CLI. Before use, it must be configured for your specific setup. 
+The example is a simple application that can query for meta-data in the PEPPOL acceptance environment. As shown in the example you need
+to configure the client so it fits to your specific setup.  
 
 ## Contributing
 We are using the simplified Github workflow to accept modifications which means you should:
