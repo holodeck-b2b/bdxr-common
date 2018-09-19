@@ -55,7 +55,7 @@ public class DefaultRequestExecutor implements IRequestExecutor {
 		}
 		final String smpServer = requestURL.getHost() + ":" + requestURL.getPort(); 		
 		try {
-			log.trace("Opening connecting to SMP server.\n\tSMP server  : {}\n\tTime out (s):", smpServer,
+			log.trace("Opening connecting to SMP server.\n\tSMP server  : {}\n\tTime out (s):{}", smpServer,
 					  timeout / 1000);
 	    	URLConnection urlConnection = requestURL.toURL().openConnection();
 	        urlConnection.setConnectTimeout(timeout);
