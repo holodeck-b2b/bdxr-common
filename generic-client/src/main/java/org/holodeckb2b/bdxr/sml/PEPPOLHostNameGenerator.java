@@ -23,7 +23,7 @@ import org.holodeckb2b.bdxr.utils.Utils;
 /**
  * Is a {@link IHostNameGenerator} that generates the host name according to the rules specified by the PEPPOL eDelivery
  * Network. These specify that the host name must be constructed as follows:<br>
- * <code><i>"B-"</i> + «MD5 hash of the participant identifier» + "." + «identifier scheme» + "." + «SML Domain»</code>
+ * <code><i>"B-"</i> + «MD5 hash of the <b>lower case</b> participant identifier» + "." + «identifier scheme» + "." + «SML Domain»</code>
  * <br>The SML domain to append should be provided to the generator upon creation.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -51,7 +51,7 @@ public class PEPPOLHostNameGenerator implements IHostNameGenerator {
         if (Utils.isNullOrEmpty(scheme))
             throw new IllegalArgumentException("The participant identifier scheme must be set");
 
-        return "B-" + DigestUtils.md5Hex(participantId.getValue()) + "." + scheme + "." + smlDomain;
+        return "B-" + DigestUtils.md5Hex(participantId.getValue().toLowerCase()) + "." + scheme + "." + smlDomain;
     }
 
 }
