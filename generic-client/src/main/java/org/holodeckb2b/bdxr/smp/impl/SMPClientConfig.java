@@ -48,6 +48,7 @@ public class SMPClientConfig {
 		requestExecutor = new DefaultRequestExecutor();
         processorMap = new HashMap<>(2);
         processorMap.put(PEPPOLResultProcessor.NAMESPACE_URI, new PEPPOLResultProcessor());
+        processorMap.put(OASISv1ResultProcessor.NAMESPACE_URI, new OASISv1ResultProcessor());
         certFinder = new DefaultCertFinder();
     }
 

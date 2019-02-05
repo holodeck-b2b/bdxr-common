@@ -80,7 +80,7 @@ public class OASISv1ResultProcessor implements ISMPResultProcessor {
     /**
      * The namespace URI of SMP XML result documents as specified in the PEPPOL SMP specification
      */
-    public static final String NAMESPACE_URI = "http://busdox.org/serviceMetadata/publishing/1.0/";
+    public static final String NAMESPACE_URI = "http://docs.oasis-open.org/bdxr/ns/SMP/2016/05";
 
     @Override
     public ISMPQueryResult processResult(Document xmlDocument) throws SMPQueryException {
