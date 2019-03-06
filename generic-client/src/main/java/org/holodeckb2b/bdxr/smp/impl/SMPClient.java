@@ -167,7 +167,7 @@ public class SMPClient implements ISMPClient {
             if (pi.supportsProcess(processId))
             	result.addAll(pi.getEndpoints());            
         }
-        log.debug("Found {} endpoint(s) for request; (participant, service, process) = ({},{},{},{})",
+        log.debug("Found {} endpoint(s) for request; (participant, service, process) = ({},{},{})",
                   result.size(), participantId, serviceId, processId);
 
         return result;
