@@ -141,7 +141,7 @@ public class SMPClient implements ISMPClient {
                 response = new SMPResultReader(configuration).handleResponse(connection.getInputStream());
                 connection.close();
 	            if (response instanceof Redirection) {
-	                log.error("Received redirection response");
+	                log.warn("Received redirection response");
 	                queryURL = ((Redirection) response).getNewSMPURL();
 	                redirectCount++;
 	            } else if (response instanceof ServiceInformation) 
