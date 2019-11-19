@@ -25,14 +25,19 @@ import org.holodeckb2b.bdxr.utils.Utils;
  * Represents the SMP meta-data of processes in which a specific <i>service</i>/<i>document</i> is offered/used and
  * which use the same <i>messaging endpoints</i>. The association with the service is implemented by containment of this
  * class in {@link ServiceInformation} mirroring the structure of the SMP XML structure.
+ * <p>As the redirection feature has been moved the level of process in the OASIS SMP V2 Specification this class either
+ * contains meta-data on the available endpoints or a redirection to another SMP. 
  * <p>NOTE: In the OASIS v1 and PEPPOL SMP specifications the number of processes is limited to one, if several
  * processes use the same endpoint multiple <code>ProcessInfo</code> instances will occur.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
+ * @since NEXT_VERSION To support OASIS SMP V2 the redirect and role meta-data have been added 
  */
 public class ProcessInfo {
 
     private List<Identifier>    processIds;
+    private List<Identifier>	roles;
+    private Redirection			redirect;
     private List<EndpointInfo>  endpoints;
     private List<IExtension>    extensions;
 
@@ -49,13 +54,60 @@ public class ProcessInfo {
      * @param extendedInfo  Extended information available about this process
      */
     public ProcessInfo(final List<Identifier> procIds, final List<EndpointInfo> endpoints,
-                       final List<IExtension> extendedInfo)
+    		final List<IExtension> extendedInfo)
+    {
+    	this(procIds, null, endpoints, extendedInfo);
+    }
+    
+    /**
+     * Creates a new instance with the given meta-data
+     *
+     * @param procIds       The list identifiers process identifiers
+     * @param roles			The list of roles the participant acts in
+     * @param endpoints     The list of available endpoints for this process
+     * @param extendedInfo  Extended information available about this process
+     * @since NEXT_VERSION
+     */
+    public ProcessInfo(final List<Identifier> procIds, final List<Identifier> roles, 
+    				   final List<EndpointInfo> endpoints, final List<IExtension> extendedInfo)
     {
         this.processIds = procIds;
+        this.setRoles(roles);
         this.endpoints  = endpoints;
         this.extensions = extendedInfo;
     }
 
+    /**
+     * Creates a new instance with the given meta-data
+     * 
+     * @param procIds		The list identifiers process identifiers
+     * @param redirect		Meta-data on the redirection to another SMP server
+     * @param extendedInfo	Extended information available about this process
+     * @since NEXT_VERSION
+     */
+    public ProcessInfo(final List<Identifier> procIds, final Redirection redirect, final List<IExtension> extendedInfo)
+    {
+    	
+    }
+    
+    /**
+     * Creates a new instance with the given meta-data
+     * 
+     * @param procIds		The list identifiers process identifiers
+     * @param roles			The list of roles the participant acts in
+     * @param redirect		Meta-data on the redirection to another SMP server
+     * @param extendedInfo	Extended information available about this process
+     * @since NEXT_VERSION
+     */
+    public ProcessInfo(final List<Identifier> procIds,  final List<Identifier> roles,
+    				   final Redirection redirect, final List<IExtension> extendedInfo)
+    {
+    	this.processIds = procIds;
+    	this.setRoles(roles);
+    	this.redirect   = redirect;
+    	this.extensions = extendedInfo;
+    }
+        
     /**
      * Gets the list process identifiers
      *
@@ -163,4 +215,44 @@ public class ProcessInfo {
             this.extensions = new ArrayList<>();
         this.extensions.add(ext);
     }
+
+    /**
+     * Get the redirect information.
+     * 
+     * @return Meta-data about the redirection
+     * @since  NEXT_VERSION
+     */
+	public Redirection getRedirection() {
+		return redirect;
+	}
+
+    /**
+     * Sets the redirect information.
+     * 
+     * @param redirect The meta-data about the redirection
+     * @since NEXT_VERSION
+     */
+	public void setRedirection(Redirection redirect) {
+		this.redirect = redirect;
+	}
+
+	/**
+	 * Gets the roles the participant acts in for this process(es)
+	 * 
+	 * @return	List of Role identifiers
+	 * @since NEXT_VERSION
+	 */
+	public List<Identifier> getRoles() {
+		return roles;
+	}
+
+	/**
+	 * Sets the roles the participant acts in for this process(es)
+	 * 
+	 * @param roles	List of Role identifiers
+	 * @since NEXT_VERSION
+	 */
+	public void setRoles(List<Identifier> roles) {
+		this.roles = roles;
+	}
 }

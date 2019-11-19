@@ -22,15 +22,21 @@ import java.util.List;
 
 /**
  * Represents the meta-data about a <i>redirection</i> response that indicates the queried server does not longer 
- * maintain the service meta-data about the participant. 
+ * maintain the service meta-data about the participant or process (this is new in the OASIS SMP V2 Spec).
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
+ * @since NEXT_VERSION Added the certificate of the SMP to which the request should be redirected as information element
+ *			as the OASIS SMP V2 Specification adds the option to include this. 
  */
 public class Redirection extends ServiceMetadataResult {
 	/**
 	 * The new URL to use for the SMP query  
 	 */
 	private URI		newTargetURL; 
+	/**
+	 * The certificate of the SMP server to which the request should be redirected
+	 */
+	private X509Certificate	cert;
 	
     /**
      * Default constructor creates "empty" instance
@@ -46,7 +52,21 @@ public class Redirection extends ServiceMetadataResult {
         super();
         this.newTargetURL = redirectedURL;
     }
+    
+    /**
+     * Creates a new object representing a SMP redirection setting the new target URL and certificate of the SMP server. 
+     *
+     * @param redirectedURL   URL to use for a new query
+     * @param smpCertificate  Certificate of the new SMP server
+     * @since NEXT_VERSION
+     */
+    public Redirection(final URI redirectedURL, final X509Certificate smpCert) {
+    	super();
+    	this.newTargetURL = redirectedURL;
+    	this.setSMPCertitificate(smpCert);
+    }
 
+    
     /**
      * Creates a new object representing the SMP redirection. 
      *
@@ -76,4 +96,26 @@ public class Redirection extends ServiceMetadataResult {
     public void setNewSMPURL(final URI redirectedURL) {
     	this.newTargetURL = redirectedURL;
     }
+
+    /**
+     * Gets the X509 certificate that the SMP server this redirection is to should use.
+     * 
+     * @return	The certificate of the "redirected" SMP server
+     * @since   NEXT_VERSION 
+     */
+	public X509Certificate getSMPCertificate() {
+		return cert;
+	}
+
+    /**
+     * Sets the X509 certificate that the SMP server this redirection is to should use.
+     * 
+     * @param cert	The certificate of the "redirected" SMP server
+     * @since   NEXT_VERSION 
+     */
+	public void setSMPCertitificate(X509Certificate cert) {
+		this.cert = cert;
+	}
+    
+    
 }
