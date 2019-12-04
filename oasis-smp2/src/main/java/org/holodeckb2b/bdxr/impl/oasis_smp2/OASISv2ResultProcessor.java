@@ -18,36 +18,31 @@ package org.holodeckb2b.bdxr.impl.oasis_smp2;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.cert.CertificateException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.datatype.XMLGregorianCalendar;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.busdox.servicemetadata.publishing._1.ServiceInformationType;
-import org.busdox.servicemetadata.publishing._1.SignedServiceMetadataType;
-import org.holodeckb2b.bdxr.api.ISMPResultProcessor;
-import org.holodeckb2b.bdxr.api.SMPQueryException;
-import org.holodeckb2b.bdxr.datamodel.Certificate;
-import org.holodeckb2b.bdxr.datamodel.EndpointInfo;
-import org.holodeckb2b.bdxr.datamodel.IExtension;
-import org.holodeckb2b.bdxr.datamodel.ISMPQueryResult;
-import org.holodeckb2b.bdxr.datamodel.Identifier;
-import org.holodeckb2b.bdxr.datamodel.ProcessInfo;
-import org.holodeckb2b.bdxr.datamodel.Redirection;
-import org.holodeckb2b.bdxr.datamodel.ServiceInformation;
-import org.holodeckb2b.bdxr.datamodel.ServiceMetadataResult;
-import org.holodeckb2b.bdxr.utils.CertificateHelper;
+import org.holodeckb2b.bdxr.smp.api.ISMPResultProcessor;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
+import org.holodeckb2b.bdxr.smp.datamodel.IExtension;
+import org.holodeckb2b.bdxr.smp.datamodel.ISMPQueryResult;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
+import org.holodeckb2b.bdxr.smp.datamodel.Redirection;
+import org.holodeckb2b.bdxr.smp.datamodel.ServiceInformation;
+import org.holodeckb2b.bdxr.utils.Utils;
 import org.oasis_open.docs.bdxr.ns.smp._2.aggregatecomponents.EndpointType;
 import org.oasis_open.docs.bdxr.ns.smp._2.aggregatecomponents.ProcessMetadataType;
 import org.oasis_open.docs.bdxr.ns.smp._2.aggregatecomponents.ProcessType;
 import org.oasis_open.docs.bdxr.ns.smp._2.aggregatecomponents.RedirectType;
+import org.oasis_open.docs.bdxr.ns.smp._2.basiccomponents.PublisherURIType;
+import org.oasis_open.docs.bdxr.ns.smp._2.extensioncomponents.SMPExtensionType;
+import org.oasis_open.docs.bdxr.ns.smp._2.extensioncomponents.SMPExtensionsType;
 import org.oasis_open.docs.bdxr.ns.smp._2.servicegroup.ServiceGroupType;
 import org.oasis_open.docs.bdxr.ns.smp._2.servicemetadata.ServiceMetadataType;
 import org.w3c.dom.Document;
@@ -120,20 +115,46 @@ public class OASISv2ResultProcessor implements ISMPResultProcessor {
             // Convert the list of ProcessMetadata element
             for(ProcessMetadataType p : svcMetadata.getProcessMetadata())
                 svcInfo.addProcessInformation(processProcessMetadata(p));
-
-            svcInfo.setExtensions(handleServiceMetadataExtensions(svcMetadata.getSMPExtensions()));
+//
+//            svcInfo.setExtensions(handleServiceMetadataExtensions(svcMetadata.getSMPExtensions()));
             
-            if (svcMetadata. != null) {
-                log.debug("Service Metadata contain a Redirect");
-                result = processRedirection(svcMetadata.getRedirect());
-            } else {
-                log.debug("Service Metadata contain ServiceInformation");
-                result = processServiceInformation(svcMetadata.getServiceInformation());
-            }
             log.debug("Completely processed the response document");
-            return result;
+//            return result;
+            return null;
         }
     }
+    
+	/**
+	 * Converts the information contained in the <code>ProcessMetadata</code> element into a <code>ProcesInfo</code> 
+	 * instance.
+	 *
+	 * @param procMetadataXML The JAXB representation of the <code>ProcessMetadata</code> element
+	 * @return The <code>ProcesInfo</code> representation of the meta-data
+	 * @throws SMPQueryException When there is a problem in converting the Process XML into the object model, for 
+	 * 							 example when it includes both <code>Endpoint</code> and <code>Redirect</code> elements
+	 */
+	private ProcessInfo processProcessMetadata(ProcessMetadataType procMetadataXML) throws SMPQueryException {
+		final ProcessInfo procInfo = new ProcessInfo();
+
+		for (ProcessType pi : procMetadataXML.getProcess()) {
+			procInfo.addProcessId(new Identifier(pi.getID().getValue(), pi.getID().getSchemeID()));
+		}
+		final List<EndpointType> endpoints = procMetadataXML.getEndpoint();
+		final RedirectType redirection = procMetadataXML.getRedirect();
+		if (!Utils.isNullOrEmpty(endpoints) && redirection != null) 
+			// There cannot be endpoints and a redirection at the same time!
+			throw new SMPQueryException("Invalid meta-data received (both endpoint and redirect specified)");
+		
+		// Convert the Endpoint elements into object model
+//		for (EndpointType ep : endpoints)
+//			procInfo.addEndpoint(processEndpoint(ep));
+
+		procInfo.setRedirection(processRedirection(redirection));
+		
+//		procInfo.setExtensions(handleProcessInfoExtensions(procMetadataXML.getSMPExtensions()));
+
+		return procInfo;
+	}
     
     /**
      * Processes the <i>service meta-data</i> included in the <code>ServiceInformation</code> element of the response.
@@ -144,17 +165,26 @@ public class OASISv2ResultProcessor implements ISMPResultProcessor {
      */
     private Redirection processRedirection(RedirectType redirectXML) throws SMPQueryException {
     	try {
-    		final Redirection redirectionInfo = new Redirection(new URI(redirectXML.getHref()));
-            redirectionInfo.setExtensions(handleRedirectionExtensions(redirectXML.getExtension()));
+    		final PublisherURIType redirectURL = redirectXML.getPublisherURI();
+    		if (redirectURL == null)
+    			throw new SMPQueryException("Invalid redirection response received!");
+    		
+    		final Redirection redirectionInfo = new Redirection(new URI(redirectURL.getValue()));
+    		if (!Utils.isNullOrEmpty(redirectXML.getCertificate())) {
+//    			Certificate cert = new Certificate();
+    			
+//    			redirectXML.getCertificate().get(0).
+    		}
+            redirectionInfo.setExtensions(handleRedirectionExtensions(redirectXML.getSMPExtensions()));
     		return redirectionInfo;
     	} catch (NullPointerException | URISyntaxException invalidURL) {
-    		log.error("The Redirection response includes an invalid new target URL: {}", redirectXML.getHref());
+    		log.error("The Redirection response includes an invalid new target URL");
     		throw new SMPQueryException("Invalid redirection response received!");
     	}
     }    
 
     /**
-     * Converts the <code>Extension</code> child elements of the <code>Redirection</code> element into the object 
+     * Converts the <code>SMPExtensions</code> child element of the <code>Redirection</code> element into the object 
      * representation.
      * <p><b>NOTE: </b> This default implementation <b>ignores</b> all included extensions. If a network uses 
      * extension you should create a descendant class and override this method to correctly handle the network 
@@ -163,12 +193,12 @@ public class OASISv2ResultProcessor implements ISMPResultProcessor {
 	 * @param extensions	The extension included with the <code>Redirection</code> element
 	 * @return				The object representation of the extensions
 	 */
-	protected List<IExtension> handleRedirectionExtensions(List<ExtensionType> extensions) {
+	protected List<IExtension> handleRedirectionExtensions(SMPExtensionsType extensions) {
 		return null;
 	}
 
     /**
-     * Converts the <code>Extension</code> child elements of the <code>ServiceInformation</code> element into the 
+     * Converts the <code>SMPExtensions</code> child element of the <code>ServiceInformation</code> element into the 
      * object representation.
      * <p><b>NOTE: </b> This default implementation <b>ignores</b> all included extensions. If a network uses 
      * extension you should create a descendant class and override this method to correctly handle the network 
@@ -177,35 +207,14 @@ public class OASISv2ResultProcessor implements ISMPResultProcessor {
 	 * @param extensions	The extension included with the <code>ServiceInformation</code> element
 	 * @return				The object representation of the extensions
 	 */
-	protected List<IExtension> handleServiceInfoExtensions(List<ExtensionType> extensions) {
+	protected List<IExtension> handleServiceInfoExtensions(SMPExtensionsType extensions) {
 		return null;
 	}
 	
-    /**
-     * Converts the information contained in the <code>ProcessMetadata</code> element into a <code>ProcesInfo</code> 
-     * instance.
-     *
-     * @param procMetadataXML   The JAXB representation of the <code>ProcessMetadata</code> element
-     * @return              The <code>ProcesInfo</code> representation of the meta-data
-     * @throws SMPQueryException When there is a problem in converting the Process XML into the object model
-     */
-    private ProcessInfo processProcessMetadata(ProcessMetadataType procMetadataXML) throws SMPQueryException {
-        final ProcessInfo procInfo = new ProcessInfo();
 
-        for(ProcessType pi : procMetadataXML.getProcess()) {
-        	procInfo.addProcessId(new Identifier(pi.getID().getValue(), pi.getID().getSchemeID()));
-        }
-        // Convert the Endpoint elements into object model
-        for(EndpointType ep : procMetadataXML.getServiceEndpointList().getEndpoint())
-            procInfo.addEndpoint(processEndpoint(ep));
-
-        procInfo.setExtensions(handleProcessInfoExtensions(procMetadataXML.getExtension()));
-        
-        return procInfo;
-    }
 
     /**
-     * Converts the <code>Extension</code> child elements of the <code>Process</code> element into the object 
+     * Converts the <code>SMPExtensions</code> child element of the <code>Process</code> element into the object 
      * representation.
      * <p><b>NOTE: </b> This default implementation <b>ignores</b> all included extensions. If a network uses 
      * extension you should create a descendant class and override this method to correctly handle the network 
@@ -214,47 +223,47 @@ public class OASISv2ResultProcessor implements ISMPResultProcessor {
 	 * @param extensions	The extension included with the <code>Process</code> element
 	 * @return				The object representation of the extensions
 	 */
-	protected List<IExtension> handleProcessInfoExtensions(List<ExtensionType> extensions) {
+	protected List<IExtension> handleProcessInfoExtensions(List<SMPExtensionType> extensions) {
 		return null;
 	}
 	
+//    /**
+//     * Converts the information contained in an <code>Endpoint</code> element into an <code>EndpointInfo</code> instance.
+//     *
+//     * @param epInfoXML   The JAXB representation of the <code>Endpoint</code> element
+//     * @return            The <code>EndpointInfo</code> representation of the meta-data
+//     * @throws SMPQueryException When the XML certificate string could not be converted into object representation
+//     */
+//    private EndpointInfo processEndpoint(EndpointType epInfoXML) throws SMPQueryException {
+//        final EndpointInfo epInfo = new EndpointInfo();
+//
+//        epInfo.setTransportProfile(epInfoXML.getTransportProfile());
+//        epInfo.setEndpointURI(epInfoXML.getEndpointURI());
+//        epInfo.setBusinessLevelSignatureRequired(epInfoXML.isRequireBusinessLevelSignature());
+//        epInfo.setMinimumAuthenticationLevel(epInfoXML.getMinimumAuthenticationLevel());
+//        final XMLGregorianCalendar svcActivationDate = epInfoXML.getServiceActivationDate();
+//        if (svcActivationDate != null)
+//            epInfo.setServiceActivationDate(svcActivationDate.toGregorianCalendar().toZonedDateTime());
+//        final XMLGregorianCalendar svcExpirationDate = epInfoXML.getServiceExpirationDate();
+//        if (svcExpirationDate != null)
+//            epInfo.setServiceExpirationDate(svcExpirationDate.toGregorianCalendar().toZonedDateTime());
+//        try {
+//            epInfo.setCertificates(Collections.singletonList(
+//                                      new Certificate(CertificateHelper.getCertificate(epInfoXML.getCertificate()))));
+//        } catch (CertificateException certReadError) {
+//            log.error("Could not read the Certificate from the SMP response! Details: {}", certReadError.getMessage());
+//            throw new SMPQueryException("Could not read the Certificate from the SMP response");
+//        }
+//        epInfo.setDescription(epInfoXML.getServiceDescription());
+//        epInfo.setContactInfo(epInfoXML.getTechnicalContactUrl());
+//        
+//        epInfo.setExtensions(handleEndpointInfoExtensions(epInfoXML.getExtension()));
+//
+//        return epInfo;
+//    }
+
     /**
-     * Converts the information contained in an <code>Endpoint</code> element into an <code>EndpointInfo</code> instance.
-     *
-     * @param epInfoXML   The JAXB representation of the <code>Endpoint</code> element
-     * @return            The <code>EndpointInfo</code> representation of the meta-data
-     * @throws SMPQueryException When the XML certificate string could not be converted into object representation
-     */
-    private EndpointInfo processEndpoint(EndpointType epInfoXML) throws SMPQueryException {
-        final EndpointInfo epInfo = new EndpointInfo();
-
-        epInfo.setTransportProfile(epInfoXML.getTransportProfile());
-        epInfo.setEndpointURI(epInfoXML.getEndpointURI());
-        epInfo.setBusinessLevelSignatureRequired(epInfoXML.isRequireBusinessLevelSignature());
-        epInfo.setMinimumAuthenticationLevel(epInfoXML.getMinimumAuthenticationLevel());
-        final XMLGregorianCalendar svcActivationDate = epInfoXML.getServiceActivationDate();
-        if (svcActivationDate != null)
-            epInfo.setServiceActivationDate(svcActivationDate.toGregorianCalendar().toZonedDateTime());
-        final XMLGregorianCalendar svcExpirationDate = epInfoXML.getServiceExpirationDate();
-        if (svcExpirationDate != null)
-            epInfo.setServiceExpirationDate(svcExpirationDate.toGregorianCalendar().toZonedDateTime());
-        try {
-            epInfo.setCertificates(Collections.singletonList(
-                                      new Certificate(CertificateHelper.getCertificate(epInfoXML.getCertificate()))));
-        } catch (CertificateException certReadError) {
-            log.error("Could not read the Certificate from the SMP response! Details: {}", certReadError.getMessage());
-            throw new SMPQueryException("Could not read the Certificate from the SMP response");
-        }
-        epInfo.setDescription(epInfoXML.getServiceDescription());
-        epInfo.setContactInfo(epInfoXML.getTechnicalContactUrl());
-        
-        epInfo.setExtensions(handleEndpointInfoExtensions(epInfoXML.getExtension()));
-
-        return epInfo;
-    }
-
-    /**
-     * Converts the <code>Extension</code> child elements of the <code>Endpoint</code> element into the object 
+     * Converts the <code>SMPExtensions</code> child element of the <code>Endpoint</code> element into the object 
      * representation.
      * <p><b>NOTE: </b> This default implementation <b>ignores</b> all included extensions. If a network uses 
      * extension you should create a descendant class and override this method to correctly handle the network 
@@ -263,7 +272,7 @@ public class OASISv2ResultProcessor implements ISMPResultProcessor {
 	 * @param extensions	The extension included with the <code>Endpoint</code> element
 	 * @return				The object representation of the extensions
 	 */
-	protected List<IExtension> handleEndpointInfoExtensions(List<ExtensionType> extensions) {
+	protected List<IExtension> handleEndpointInfoExtensions(List<SMPExtensionType> extensions) {
 		return null;
 	}    
 }
