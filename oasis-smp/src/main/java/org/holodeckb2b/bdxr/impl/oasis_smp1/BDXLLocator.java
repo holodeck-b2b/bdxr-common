@@ -22,10 +22,10 @@ import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.holodeckb2b.bdxr.api.IHostNameGenerator;
-import org.holodeckb2b.bdxr.api.ISMPLocator;
-import org.holodeckb2b.bdxr.api.SMPLocatorException;
-import org.holodeckb2b.bdxr.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.api.IHostNameGenerator;
+import org.holodeckb2b.bdxr.smp.api.ISMPLocator;
+import org.holodeckb2b.bdxr.smp.api.SMPLocatorException;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.xbill.DNS.Lookup;
 import org.xbill.DNS.NAPTRRecord;
 import org.xbill.DNS.Record;

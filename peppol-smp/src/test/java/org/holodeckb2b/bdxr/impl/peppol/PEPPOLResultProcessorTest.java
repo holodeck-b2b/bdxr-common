@@ -25,8 +25,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.holodeckb2b.bdxr.api.SMPQueryException;
 import org.holodeckb2b.bdxr.impl.peppol.PEPPOLResultProcessor;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

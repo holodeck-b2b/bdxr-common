@@ -18,15 +18,14 @@ package org.holodeckb2b.bdxr.examples;
 
 import java.security.cert.X509Certificate;
 
-import org.holodeckb2b.bdxr.api.ISMPClient;
-import org.holodeckb2b.bdxr.api.SMPClientBuilder;
-import org.holodeckb2b.bdxr.api.SMPQueryException;
-import org.holodeckb2b.bdxr.datamodel.Certificate.Usage;
-import org.holodeckb2b.bdxr.datamodel.EndpointInfo;
-import org.holodeckb2b.bdxr.datamodel.Identifier;
 import org.holodeckb2b.bdxr.impl.peppol.PEPPOLHostNameGenerator;
 import org.holodeckb2b.bdxr.impl.peppol.PEPPOLResultProcessor;
 import org.holodeckb2b.bdxr.impl.peppol.SMLLocator;
+import org.holodeckb2b.bdxr.smp.api.ISMPClient;
+import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
+import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 
 /**
  * Is a simple example application that shows how the {@link ISMPClient} can be used for querying PEPPOL SMP servers.
@@ -94,7 +93,7 @@ public class PEPPOLSMPClient {
 			System.out.println("the AP available at " + endpointInfo.getEndpointURL());
 			if (OPENPEPPOL_AS4_TRANSPORT_ID.equals(endpointInfo.getTransportProfile())) {
 				System.out.println("AS4 Messages send to the AP should be encrypted using Certificate:");
-				X509Certificate cert = endpointInfo.getCertificateFor(Usage.Encryption).getX509Cert();
+				X509Certificate cert = endpointInfo.getCertificates().get(0).getX509Cert();
 				System.out.println("\tSubject         : " + cert.getSubjectDN().getName());
 				System.out.println("\tIssuer/serialNo : " + cert.getIssuerX500Principal().getName() + "/" +
 															cert.getSerialNumber().toString());

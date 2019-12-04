@@ -17,8 +17,8 @@
 package org.holodeckb2b.bdxr.impl.peppol;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.holodeckb2b.bdxr.api.IHostNameGenerator;
-import org.holodeckb2b.bdxr.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.api.IHostNameGenerator;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.utils.Utils;
 
 /**

@@ -19,9 +19,9 @@ package org.holodeckb2b.bdxr.impl.peppol;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
-import org.holodeckb2b.bdxr.api.IHostNameGenerator;
-import org.holodeckb2b.bdxr.datamodel.Identifier;
 import org.holodeckb2b.bdxr.impl.peppol.PEPPOLHostNameGenerator;
+import org.holodeckb2b.bdxr.smp.api.IHostNameGenerator;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.junit.Test;
 
 /**
