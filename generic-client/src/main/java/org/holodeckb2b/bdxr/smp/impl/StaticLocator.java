@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.impl;
+package org.holodeckb2b.bdxr.smp.impl;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import org.holodeckb2b.bdxr.api.ISMPLocator;
-import org.holodeckb2b.bdxr.api.SMPLocatorException;
-import org.holodeckb2b.bdxr.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.api.ISMPLocator;
+import org.holodeckb2b.bdxr.smp.api.SMPLocatorException;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 
 /**
  * Is an implementation of the {@link ISMPLocator} interface that returns a single SMP server for all participants.

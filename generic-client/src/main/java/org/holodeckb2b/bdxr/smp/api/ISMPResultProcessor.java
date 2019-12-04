@@ -14,16 +14,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.api;
+package org.holodeckb2b.bdxr.smp.api;
 
-import org.holodeckb2b.bdxr.datamodel.ISMPQueryResult;
+import org.holodeckb2b.bdxr.smp.datamodel.ISMPQueryResult;
 import org.w3c.dom.Document;
 
 /**
  * Defines the interface of the component responsible for processing an XML document that was received as a result of a 
- * SMP request and transforming it into the object model defined in {@link com.chasquisservices.bdxr.datamodel}.
- * <p>Since version NEXT_VERSION these components are implemented as <i>Java services</i> so they are decoupled from the 
- * generic code and the appropriate implementation can be loaded on run-time. 
+ * SMP request and transforming it into the object model defined in {@link oeg.holodeckb2b.bdxr.smp.datamodel}.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */

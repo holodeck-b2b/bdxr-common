@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.datamodel;
+package org.holodeckb2b.bdxr.smp.datamodel;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;

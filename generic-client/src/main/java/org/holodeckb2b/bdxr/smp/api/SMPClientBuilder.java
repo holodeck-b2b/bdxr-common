@@ -1,16 +1,18 @@
-package org.holodeckb2b.bdxr.api;
+package org.holodeckb2b.bdxr.smp.api;
 
 import java.util.Map;
 
-import org.holodeckb2b.bdxr.impl.SMPClient;
-import org.holodeckb2b.bdxr.impl.SMPClientConfig;
+import org.holodeckb2b.bdxr.smp.impl.DefaultRequestExecutor;
+import org.holodeckb2b.bdxr.smp.impl.SMPClient;
+import org.holodeckb2b.bdxr.smp.impl.SMPClientConfig;
 import org.holodeckb2b.bdxr.utils.Utils;
 
 /**
- * Is a <i>builder</i> of {@link ISMPClient}s and should be used to configure and create new SMP clients. 
- * <p>At a minimum the <b>SMP locator</b> implementation to find the correct SMP server must be configured before
- * calling the <code>build</code> to create a new SMP client. See the method documentation for all configuration
- * options available.   
+ * Is a <i>builder</i> of {@link ISMPClient}s and should be used to configure and create new SMP Clients for a specific
+ * network configuration, such as the PEPPOL network. 
+ * <p>At a minimum the {@link ISMPLocator} implementation to find the correct SMP server and one {@link 
+ * ISMPResultProcessor} must be configured before calling the {@link #build()} method to create a new SMP Client. See 
+ * the method documentation for all configuration options available.   
  * 
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
@@ -21,8 +23,8 @@ public class SMPClientBuilder {
 	private SMPClientConfig	newClientConfig = new SMPClientConfig();
 	
 	/**
-	 * Sets the {@link ISMPLocator} implementation that the new <code>SMPClient</code> should use to find the location
-	 * of the SMP serving a specific participant.
+	 * Sets the {@link ISMPLocator} implementation that the new SMP Client should use to find the location of the SMP 
+	 * serving a specific participant.
 	 * 
 	 * @param locator	The SMP locator implementation
 	 * @return	this builder
@@ -33,8 +35,8 @@ public class SMPClientBuilder {
 	}
 	
 	/**
-	 * Sets the {@link IRequestExecutor} implementation that the new <code>SMPClient</code> should use to execute
-	 * the SMP queries.
+	 * Sets the specific {@link IRequestExecutor} implementation the new SMP Client should use to execute the SMP 
+	 * queries. If no specific implementation is set, the {@link DefaultRequestExecutor} will be used.
 	 * 
 	 * @param executor	The request executor implementation
 	 * @return this builder
@@ -45,10 +47,10 @@ public class SMPClientBuilder {
 	}
 	
 	/**
-	 * Sets the (custom) {@link ICertificateFinder} implementation that the new <code>SMPClient</code> should use to 
-	 * get the certificate used by the SMP for signing the results. The certificate finder only needs to be set when 
-	 * non standard implementation is used in which certificates are only referenced to instead of embedded within the
-	 * <code>ds:Signature</code> element as prescribed by specifications. 
+	 * Sets the specific {@link ICertificateFinder} implementation the new SMP Client should use to get the certificate 
+	 * used by the SMP for signing the results. The certificate finder only needs to be set when the network uses a  
+	 * non standard way to reference the certificate used for signing instead of embedded it within the <code>
+	 * ds:Signature</code> element as prescribed by specifications. 
 	 * 
 	 * @param finder	The certificate finder implementation
 	 * @return this builder
@@ -59,12 +61,13 @@ public class SMPClientBuilder {
 	}
 	
 	/**
-	 * Sets the {@link ITrustValidator} implementation  that the new <code>SMPClient</code> should use to validate 
-	 * that certificate used by the SMP is trusted and the results can be used. Using trust validating is <b>optional
+	 * Sets the {@link ITrustValidator} implementation the new SMP Client should use to validate that certificate used 
+	 * by the SMP to sign the response is trusted and the results can be used. Using trust validating is <b>optional
 	 * </b>. If no validator is specified the SMP Client will only verify the correctness of the hashes and not 
-	 * check the validity of the certificate. 
+	 * check the validity of the certificate. It however it <b>recommended</b> to implement a trust validation 
+	 * mechanism.
 	 * 
-	 * @param validator	The trust validator implementation
+	 * @param validator		The trust validator implementation
 	 * @return this builder
 	 */
 	public SMPClientBuilder setTrustValidator(ITrustValidator validator) {
@@ -74,7 +77,8 @@ public class SMPClientBuilder {
 	
 	/**
 	 * Sets the mapping of SMP result name space URIs to the {@link ISMPResultProcessor} that will handle the result
-	 * and transform the XML documents into the object model representation.
+	 * and transform the XML documents into the object model representation. This will replace any already configured
+	 * mapping.
 	 * 
 	 * @param processorMap	The mapping of result name space URIs to {@link ISMPResultProcessor}s. Must not be empty.
 	 */	
@@ -96,9 +100,10 @@ public class SMPClientBuilder {
 	}
 	
 	/**
-	 * Gets a new {@link ISMPClient} implementation configured according to the settings provided to the builder.
+	 * Builds a new {@link ISMPClient} instance configured according to the settings provided to the builder.
 	 * 
 	 * @return 	The new SMP client 
+	 * @throws  IllegalStateException	when no SMP Locator or result processor(s) have been configured.
 	 */
 	public ISMPClient build() {
 		if (newClientConfig.getSMPLocator() == null)

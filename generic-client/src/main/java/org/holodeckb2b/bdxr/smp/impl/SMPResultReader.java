@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.impl;
+package org.holodeckb2b.bdxr.smp.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,12 +38,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.holodeckb2b.bdxr.api.ICertificateFinder;
-import org.holodeckb2b.bdxr.api.ISMPResultProcessor;
-import org.holodeckb2b.bdxr.api.ITrustValidator;
-import org.holodeckb2b.bdxr.api.SMPQueryException;
-import org.holodeckb2b.bdxr.datamodel.ISMPQueryResult;
-import org.holodeckb2b.bdxr.datamodel.ServiceMetadataResult;
+import org.holodeckb2b.bdxr.smp.api.ICertificateFinder;
+import org.holodeckb2b.bdxr.smp.api.ISMPResultProcessor;
+import org.holodeckb2b.bdxr.smp.api.ITrustValidator;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
+import org.holodeckb2b.bdxr.smp.datamodel.ISMPQueryResult;
+import org.holodeckb2b.bdxr.smp.datamodel.ServiceMetadataResult;
 import org.holodeckb2b.bdxr.utils.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

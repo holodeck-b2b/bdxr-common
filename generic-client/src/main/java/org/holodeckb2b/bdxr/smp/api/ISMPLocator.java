@@ -14,11 +14,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.api;
+package org.holodeckb2b.bdxr.smp.api;
 
 import java.net.URI;
 
-import org.holodeckb2b.bdxr.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 
 /**
  * Defines the interface for the component responsible for locating the <i>service metadata provider</i> where a
@@ -29,7 +29,9 @@ import org.holodeckb2b.bdxr.datamodel.Identifier;
 public interface ISMPLocator {
 
     /**
-     * Gets the base URL of the SMP that serves the given participant.
+     * Gets the base URL of the SMP that serves the meta-data for the given participant and which the SMP Client will 
+     * extend to execute the query.
+     * <p>Note that 
      *
      * @param participant   The identifier of the participant
      * @return              Base URL of the SMP serving the participant

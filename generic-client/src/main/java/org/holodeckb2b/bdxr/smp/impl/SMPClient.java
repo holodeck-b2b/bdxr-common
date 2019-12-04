@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.impl;
+package org.holodeckb2b.bdxr.smp.impl;
 
 import java.io.IOException;
 import java.net.URI;
@@ -24,17 +24,17 @@ import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.holodeckb2b.bdxr.api.ISMPClient;
-import org.holodeckb2b.bdxr.api.ISMPResponseConnection;
-import org.holodeckb2b.bdxr.api.SMPClientBuilder;
-import org.holodeckb2b.bdxr.api.SMPLocatorException;
-import org.holodeckb2b.bdxr.api.SMPQueryException;
-import org.holodeckb2b.bdxr.datamodel.EndpointInfo;
-import org.holodeckb2b.bdxr.datamodel.ISMPQueryResult;
-import org.holodeckb2b.bdxr.datamodel.Identifier;
-import org.holodeckb2b.bdxr.datamodel.ProcessInfo;
-import org.holodeckb2b.bdxr.datamodel.Redirection;
-import org.holodeckb2b.bdxr.datamodel.ServiceInformation;
+import org.holodeckb2b.bdxr.smp.api.ISMPClient;
+import org.holodeckb2b.bdxr.smp.api.ISMPResponseConnection;
+import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
+import org.holodeckb2b.bdxr.smp.api.SMPLocatorException;
+import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
+import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
+import org.holodeckb2b.bdxr.smp.datamodel.ISMPQueryResult;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
+import org.holodeckb2b.bdxr.smp.datamodel.Redirection;
+import org.holodeckb2b.bdxr.smp.datamodel.ServiceInformation;
 import org.holodeckb2b.bdxr.utils.Utils;
 
 /**

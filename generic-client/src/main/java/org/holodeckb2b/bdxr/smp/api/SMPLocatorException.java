@@ -14,23 +14,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.api;
-
-import org.holodeckb2b.bdxr.datamodel.Identifier;
+package org.holodeckb2b.bdxr.smp.api;
 
 /**
- * Defines the interface for <i>host name generators</i> which based on the participant identifier generate a host name
- * that can be used by the {@link ISMPLocator} to locate the service meta-data provider.
+ * Is an exception to indicate that an error occurred when locating the SMP server for a participant.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-public interface IHostNameGenerator {
+public class SMPLocatorException extends Exception {
 
-    /**
-     * Generate the host name for the given participant identifier.
-     *
-     * @param participantId  The participant's identifier
-     * @return               Host name to use for SML query.
-     */
-    String getHostNameForParticipant(final Identifier participantId);
+    public SMPLocatorException(final String errorMessage) {
+        super(errorMessage);
+    }
+
+    public SMPLocatorException(final String errorMessage, final Throwable cause) {
+        super(errorMessage, cause);
+    }
 }

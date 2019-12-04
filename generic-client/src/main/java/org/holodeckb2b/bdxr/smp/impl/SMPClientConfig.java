@@ -1,14 +1,14 @@
-package org.holodeckb2b.bdxr.impl;
+package org.holodeckb2b.bdxr.smp.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.holodeckb2b.bdxr.api.ICertificateFinder;
-import org.holodeckb2b.bdxr.api.IRequestExecutor;
-import org.holodeckb2b.bdxr.api.ISMPClient;
-import org.holodeckb2b.bdxr.api.ISMPLocator;
-import org.holodeckb2b.bdxr.api.ISMPResultProcessor;
-import org.holodeckb2b.bdxr.api.ITrustValidator;
+import org.holodeckb2b.bdxr.smp.api.ICertificateFinder;
+import org.holodeckb2b.bdxr.smp.api.IRequestExecutor;
+import org.holodeckb2b.bdxr.smp.api.ISMPClient;
+import org.holodeckb2b.bdxr.smp.api.ISMPLocator;
+import org.holodeckb2b.bdxr.smp.api.ISMPResultProcessor;
+import org.holodeckb2b.bdxr.smp.api.ITrustValidator;
 import org.holodeckb2b.bdxr.utils.Utils;
 
 /**

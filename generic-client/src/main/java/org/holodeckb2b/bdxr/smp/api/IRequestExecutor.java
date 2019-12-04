@@ -1,10 +1,10 @@
-package org.holodeckb2b.bdxr.api;
+package org.holodeckb2b.bdxr.smp.api;
 
 import java.net.URI;
 
 /**
- * Defines the interface for the component responsible for executing the HTTP request to the SMP server. 
- * <p>Implementations can optimize the handling of connections, for example by using connection pooling, or implement
+ * Defines the interface for the component responsible for executing the HTTP(S) request to the SMP server. 
+ * <p>Implementations can optimise the handling of connections, for example by using connection pooling, or implement
  * a specific authentication and/or trust mechanism. Implementations should ensure that they are thread safe, i.e.
  * the {@link #executeRequest(URI)} can be called multiple time, in parallel. Any initialisation that is needed should 
  * be done before the executor is provided to the {@link SMPClientBuilder}. 
@@ -25,6 +25,6 @@ public interface IRequestExecutor {
 	 * 										 protocol, e.g. if only http is supported but the requestURL is requesting
 	 * 										 https
 	 */
-	public ISMPResponseConnection executeRequest(final URI requestURL) 
-															throws SMPQueryException,  UnsupportedOperationException;
+	ISMPResponseConnection executeRequest(final URI requestURL) 
+			 												 throws SMPQueryException,  UnsupportedOperationException;
 }

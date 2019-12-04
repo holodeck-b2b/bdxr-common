@@ -1,20 +1,18 @@
-package org.holodeckb2b.bdxr.api;
+package org.holodeckb2b.bdxr.smp.api;
 
 import java.security.cert.X509Certificate;
 
 import javax.xml.crypto.AlgorithmMethod;
-import javax.xml.crypto.KeySelector;
 import javax.xml.crypto.XMLCryptoContext;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 
 /**
  * Defines the interface of the component that finds the certificate that was used by the SMP server to sign the 
  * results. Although all versions of the SMP specification state that the certificate used for signing must be 
- * included within the ds:Signature element this interface allows to use reference to the certificate as well by
- * providing a special implementation that uses the reference to get the correct certificate. 
+ * included within the <code>ds:Signature</code> element this interface allows to use other <b>non standard</n> ways of 
+ * referencing the certificate. 
  *  
  * @author Sander Fieten (sander at holodeck-b2b.org)
- * @see KeySelector
  */
 public interface ICertificateFinder {
 	
@@ -29,6 +27,6 @@ public interface ICertificateFinder {
 	 * @return	The X509 Certificate used for the signature,<br>
 	 * 			or <code>null</code> if the certificate cannot be found
 	 */
-	public X509Certificate findCertificate(final KeyInfo keyInfo, final AlgorithmMethod method, 
-										   final XMLCryptoContext context);
+	X509Certificate findCertificate(final KeyInfo keyInfo, final AlgorithmMethod method, 
+									final XMLCryptoContext context);
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.datamodel;
+package org.holodeckb2b.bdxr.smp.datamodel;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -109,9 +109,10 @@ public class Identifier {
 
     /**
      * Gets the "URL formatted" version of the identifier as described in the OASIS SMP specification.
-     * <p>The URL format is defined as <i>{identifier scheme}::{id}</i>. Note however that the specification does not
-     * state how to handle identifiers without a scheme. Here we only return the identifier value without "::", but
-     * this could result in interoperability issues!
+     * <p>NOTE: The URL format is defined as <i>[{identifier scheme}::]{id}</i> in version 2.0 of the specification
+     * whereas in the 1.0 and PEPPOL version there is no statement on how to handle an identifier without scheme and one 
+     * could reason that an identifier without scheme should be represented as <i>::{id}</i>. For uniformity we however
+     * handle it the same as in version 2.0 and exclude the "::". 
      *
      * @return  The identifier formatted for inclusion in a URL
      */
@@ -128,6 +129,7 @@ public class Identifier {
      * separated by a "::". 
      * 
      * @return String representation of the identifier
+     * @see #getURLEncoded()
      */
     @Override
     public String toString() {

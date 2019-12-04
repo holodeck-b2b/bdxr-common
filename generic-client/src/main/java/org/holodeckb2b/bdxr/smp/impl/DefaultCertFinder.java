@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.impl;
+package org.holodeckb2b.bdxr.smp.impl;
 
 import java.security.cert.X509Certificate;
 import java.util.Iterator;
@@ -25,7 +25,7 @@ import javax.xml.crypto.XMLStructure;
 import javax.xml.crypto.dsig.keyinfo.KeyInfo;
 import javax.xml.crypto.dsig.keyinfo.X509Data;
 
-import org.holodeckb2b.bdxr.api.ICertificateFinder;
+import org.holodeckb2b.bdxr.smp.api.ICertificateFinder;
 
 /**
  * Is the default implementation of the {@link ICertificateFinder} interface that retrieves the X509 Certificate that

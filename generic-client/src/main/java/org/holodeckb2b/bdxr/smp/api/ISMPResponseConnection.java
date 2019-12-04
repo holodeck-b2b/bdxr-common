@@ -1,4 +1,4 @@
-package org.holodeckb2b.bdxr.api;
+package org.holodeckb2b.bdxr.smp.api;
 
 import java.io.InputStream;
 

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.datamodel;
+package org.holodeckb2b.bdxr.smp.datamodel;
 
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -222,20 +222,28 @@ public class EndpointInfo {
     }
 
     /**
-     * Returns the first endpoint certificate that is registered for the requested usage.
+     * Returns the first endpoint certificate that is registered for the requested usage. If no certificate is included
+     * for the requested usage, the first certificate that has no explicit usage defined is returned. 
      *
      * @param usage	The intended use of the certificate
-     * @return		The first endpoint certificate for the requested usage, or<br>
-     * 			    <code>null</code> if no such certificate exists
+     * @return		The first endpoint certificate for the requested usage,<br>
+     * 				or if that does not exist the first certificate without explicit usage indicator, or <br>
+     * 			    <code>null</code> if no such certificate exists either
      */
-    public Certificate getCertificateFor(final Certificate.Usage usage) {
-    		if (Utils.isNullOrEmpty(certificates))
-    			return null;
-    		else {
-    			Optional<Certificate> cert = certificates.parallelStream().filter(c -> c.getUsage().contains(usage))
-    																	 .findFirst();
-    			return cert.isPresent() ? cert.get() : null;
-    		}
+    public Certificate getCertificateFor(final String usage) {
+		if (Utils.isNullOrEmpty(certificates))
+			return null;
+		else {
+			Optional<Certificate> cert = certificates.parallelStream().filter(c -> c.getUsage().contains(usage))
+																	 .findFirst();
+			if (cert.isPresent())
+				return cert.get();
+			else {
+				// Search for certificate without usage indication
+				cert = certificates.parallelStream().filter(c -> c.getUsage().isEmpty()).findFirst();
+				return cert.isPresent() ? cert.get() : null;
+			}					
+		}
     }
 
     /**

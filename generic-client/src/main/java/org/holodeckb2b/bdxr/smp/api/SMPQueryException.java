@@ -14,14 +14,21 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.datamodel;
+package org.holodeckb2b.bdxr.smp.api;
 
 /**
- * Represents the result of an SMP query. This can either be a <i>ServiceGroup</i>, <i>ServiceInformation</i> or 
- * <i>Redirect</i>. Since these results do not share any data this interface is empty.
- *
+ * Indicates that an error occurred when retrieving meta-data. Such errors can be problems in the communication with
+ * the SMP server, but also problems to locate one in the first place.
+ * 
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-public interface ISMPQueryResult {
+public class SMPQueryException extends Exception {
+    
+	public SMPQueryException(final String errorMessage) {
+        super(errorMessage);
+    }
 
+    public SMPQueryException(final String errorMessage, final Throwable cause) {
+        super(errorMessage, cause);
+    }
 }
