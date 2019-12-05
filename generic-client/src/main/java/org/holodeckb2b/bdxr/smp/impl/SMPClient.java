@@ -79,22 +79,51 @@ public class SMPClient implements ISMPClient {
     								final Identifier serviceId,
     								final Identifier processId,
     								final String     transportProfile) throws SMPQueryException {
-        log.debug("Lookup requested; (participant, service, process, transport) = ({},{},{}, {})",
-                participantId, serviceId, processId, transportProfile);
-        // First get all endpoints for the participant, serviceId and processId, then filter the result
+    	return getEndpoint(participantId, null, serviceId, processId, transportProfile);
+    }
+    
+	/**
+     * Gets the endpoint's meta-data for the given participant acting in the specified role for the given service and 
+     * process and that supports the requested transport profile.
+     * <p>NOTE: The role a participant plays in a process was added in the OASIS SMP v2 specification and therefore it 
+     * can also only be evaluated if the SMP server supports this version. This implies that when the response is an 
+     * older version this criterion cannot be applied and therefore there will be no result to the query.
+     *
+     * @param participantId		Participant's Id
+     * @param role				Role of the participant
+     * @param serviceId			Service Id
+     * @param processId			Process Id, may be <code>null</code>
+     * @param transportProfile	Requested transport profile name
+     * @return	The endpoint meta-data if there exists an endpoint for this participant, service and process and which
+     * 			supports the requested transport profile, <code>null</code> otherwise.
+     * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
+     * @since 2.0.0
+     */
+    @Override
+	public EndpointInfo getEndpoint(final Identifier participantId,
+									final Identifier role,
+		    						final Identifier serviceId,
+		    						final Identifier processId,
+		    						final String     transportProfile) throws SMPQueryException  {
+        if (Utils.isNullOrEmpty(transportProfile))
+        	throw new IllegalArgumentException("No transport profile identifier provided");
         
-    	final List<EndpointInfo> allEndpoints = getEndpoints(participantId, serviceId, processId);
+    	log.debug("Lookup requested; (participant, role, service, process, transport) = ({},{},{},{}, {})",
+                	participantId, role, serviceId, processId, transportProfile);
+
+        // First get all endpoints for the participant, role, serviceId and processId, then filter the result        
+    	final List<EndpointInfo> allEndpoints = getEndpoints(participantId, role, serviceId, processId);
 
     	Optional<EndpointInfo> findEndPoint = allEndpoints.parallelStream()
 									                .filter(ep -> transportProfile.equals(ep.getTransportProfile()))
 									                .findFirst();
     	if (findEndPoint.isPresent()) {
-    		log.debug("Found endpoint for request; (participant, service, process, transport) = ({},{},{},{})", 
-    				  participantId, serviceId, processId, transportProfile);
+    		log.debug("Found endpoint for request; (participant, service, process, transport) = ({},{},{},{},{})", 
+    				  participantId, role, serviceId, processId, transportProfile);
     		return findEndPoint.get();
     	} else {
-    		log.debug("No endpoint found for request; (participant, service, process, transport) = ({},{},{},{})", 
-  				  	  participantId, serviceId, processId, transportProfile);
+    		log.debug("No endpoint found for request; (participant, service, process, transport) = ({},{},{},{},{})", 
+  				  	  participantId, role, serviceId, processId, transportProfile);
     		return null;
     	}
     }
@@ -111,10 +140,37 @@ public class SMPClient implements ISMPClient {
      */
     @Override
 	public List<EndpointInfo> getEndpoints(final Identifier participantId,
-									    		 final Identifier serviceId,
-									    		 final Identifier processId) throws SMPQueryException {
-        log.debug("Lookup requested; (participant, service, process) = ({},{},{})",
-                    participantId, serviceId, processId);
+									       final Identifier serviceId,
+									       final Identifier processId) throws SMPQueryException {
+    	return getEndpoints(participantId, null, serviceId, processId);
+    }
+    
+	/**
+	 * Gets the meta-data of all endpoints for the given participant acting in the specified role for the given service 
+	 * and process and that supports the requested transport profile.
+     * <p>NOTE: The role a participant plays in a process was added in the OASIS SMP v2 specification and therefore it 
+     * can also only be evaluated if the SMP server supports this version. This implies that when the response is an 
+     * older version this criterion cannot be applied and therefore there will be no result to the query.
+	 *
+	 * @param participantId		Participant's Id
+	 * @param role				Role of the participant
+	 * @param serviceId			Service Id
+	 * @param processId			Process Id, may be <code>null</code>
+	 * @return	The endpoint meta-data if there exist endpoints for this participant, role, service and process,
+	 * 			<code>null</code> otherwise.
+	 * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
+	 * @since 2.0.0
+	 */
+    @Override
+	public List<EndpointInfo> getEndpoints(final Identifier participantId,
+										   final Identifier role,
+										   final Identifier serviceId,
+										   final Identifier processId) throws SMPQueryException  {
+        if (participantId == null || serviceId == null)
+        	throw new IllegalArgumentException("Missing either participant or service ID argument");
+        
+    	log.debug("Lookup requested; (participant, service, process) = ({},{},{},{})",
+                    participantId, role, serviceId, processId);
         URI smpURL = null;
         try {
             log.debug("Getting URI of SMP handling participant");
@@ -146,16 +202,25 @@ public class SMPClient implements ISMPClient {
 	            	log.debug("Retrieved service information from SMP server, search for requested process and transport");
 	            	List<ProcessInfo> procInfo = ((ServiceInformation) response).getProcessInformation()
 																	  .parallelStream()
-																	  .filter(pi -> pi.supportsProcess(processId))
+																	  .filter(pi -> pi.supportsProcess(processId, role))
 																	  .collect(Collectors.toList());
-	            	// The service info could include a generic process meta-data element and one specific to this
-	            	// process, so if multiple are found filter out the specific one
-	            	if (procInfo.size() > 1)	            		
-	            		procInfo = procInfo.parallelStream().filter(pi -> pi.getProcessIds().contains(processId))
-	            										    .collect(Collectors.toList());	            		
+	            	/* The service info could include multiple process meta-data elements because some of them could map 
+	            	 * to all processes and/or roles. Now we try to filter out the specific one that matches to the 
+	            	 * given process and role identifiers.  
+	            	 */
+	            	if (procInfo.size() > 1) {	            		
+	            		if (role != null)
+	            			procInfo = procInfo.parallelStream()
+	            							   .filter(pi -> !Utils.isNullOrEmpty(pi.getRoles()))	            							   
+	            							   .collect(Collectors.toList());
+	            		if (procInfo.size() > 1)
+	            			procInfo = procInfo.parallelStream()
+	            							   .filter(pi -> !Utils.isNullOrEmpty(pi.getProcessIds()))
+	            							   .collect(Collectors.toList());							
+	            	}
 	            	if (procInfo.size() != 1) {
-	            		log.error("SMP result contains inconsistent meta-data for process");
-	            		throw new SMPQueryException("Inconsistent meta-data");
+	            		log.error("Unable to determine unique process meta-data from SMP result!");
+	            		throw new SMPQueryException("Ambigious result based on query arguments or SMP data");
 	            	}
 	            	final ProcessInfo pi = procInfo.get(0);
             		if (pi.getRedirection() != null)

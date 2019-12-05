@@ -31,20 +31,16 @@ import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 public interface ISMPClient {
 
 	/**
-     * Gets the endpoint meta-data for the given participant, service and process and that supports the request
+     * Gets the endpoint's meta-data for the given participant, service and process and that supports the requested
      * transport profile.
-     * <p>NOTE: In the OASIS SMP v2 specification it is possible to register a service without binding to a specific
-     * process identifier to indicate a generic endpoint for the service applying to all processes or for use cases 
-     * where process does not apply. Both the PEPPOL and OASIS v2 SMP specifications defines default values for the
-     * process identifier (<i>busdox:noprocess</i> resp. <i>bdx:noprocess</i>) to support these use cases.<br/> 
-     * Therefore the <code>processId</code> parameter of this method is optional and can be set to <code>null</code>. 
-     * When the SMP server returns a OASIS SMP v2 document only the endpoints not bound to a specific process identifier
-     * will be taken into account when searching for the endpoint. In case the response is a PEPPOL or SMP v1 document
-     * only the processes with the default value will be used.  
+     * <p>NOTE: All versions of the SMP specification a specific process identifier is defined to indicate that a 
+     * service is not bound to any specific process (<i>busdox:noprocess</i> in PEPPOL version and <i>bdx:noprocess</i>)
+     * in the OASIS versions). To search for the meta-data of such a service the <code>processId</code> parameter of 
+     * this method should be set to <code>null</code>.  
      *
      * @param participantId		Participant's Id
      * @param serviceId			Service Id
-     * @param processId			Process Id
+     * @param processId			Process Id, may be <code>null</code>
      * @param transportProfile	Requested transport profile name
      * @return	The endpoint meta-data if there exists an endpoint for this participant, service and process and which
      * 			supports the requested transport profile, <code>null</code> otherwise.
@@ -57,23 +53,63 @@ public interface ISMPClient {
     
     /**
      * Gets the meta-data of all endpoints for the given participant, service and process.
-     * <p>NOTE: In the OASIS SMP v2 specification it is possible to register a service without binding to a specific
-     * process identifier to indicate a generic endpoint for the service applying to all processes or for use cases 
-     * where process does not apply. Both the PEPPOL and OASIS v2 SMP specifications defines default values for the
-     * process identifier (<i>busdox:noprocess</i> resp. <i>bdx:noprocess</i>) to support these use cases.<br/> 
-     * Therefore the <code>processId</code> parameter of this method is optional and can be set to <code>null</code>. 
-     * When the SMP server returns a OASIS SMP v2 document only the endpoints not bound to a specific process identifier
-     * will be taken into account when searching for the endpoint. In case the response is a PEPPOL or SMP v1 document
-     * only the processes with the default value will be used.  
+     * <p>NOTE: All versions of the SMP specification a specific process identifier is defined to indicate that a 
+     * service is not bound to any specific process (<i>busdox:noprocess</i> in PEPPOL version and <i>bdx:noprocess</i>)
+     * in the OASIS versions). To search for the meta-data of such a service the <code>processId</code> parameter of 
+     * this method should be set to <code>null</code>.  
      *
      * @param participantId		Participant's Id
      * @param serviceId			Service Id
-     * @param processId			Process Id
-     * @return	The endpoint meta-data if there exists an endpoint for this participant, service and process and which
-     * 			supports the requested transport profile, <code>null</code> otherwise.
+     * @param processId			Process Id, may be <code>null</code>
+     * @return	The endpoint meta-data if there exist endpoints for this participant, service and process,
+     * 			<code>null</code> otherwise.
      * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
      */
     List<EndpointInfo> getEndpoints(final Identifier participantId,
 							        final Identifier serviceId,
 							        final Identifier processId) throws SMPQueryException;
+    
+	/**
+     * Gets the endpoint's meta-data for the given participant acting in the specified role for the given service and 
+     * process and that supports the requested transport profile.
+     * <p>NOTE: The role a participant plays in a process was added in the OASIS SMP v2 specification and therefore it 
+     * can also only be evaluated if the SMP server supports this version. This implies that when the response is an 
+     * older version this criterion cannot be applied and therefore there will be no result to the query.
+     *
+     * @param participantId		Participant's Id
+     * @param role				Role of the participant
+     * @param serviceId			Service Id
+     * @param processId			Process Id, may be <code>null</code>
+     * @param transportProfile	Requested transport profile name
+     * @return	The endpoint meta-data if there exists an endpoint for this participant, service and process and which
+     * 			supports the requested transport profile, <code>null</code> otherwise.
+     * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
+     * @since 2.0.0
+     */
+	EndpointInfo getEndpoint(final Identifier participantId,
+							 final Identifier role,
+    						 final Identifier serviceId,
+    						 final Identifier processId,
+    						 final String     transportProfile) throws SMPQueryException;    
+
+	/**
+	 * Gets the meta-data of all endpoints for the given participant acting in the specified role for the given service 
+	 * and process and that supports the requested transport profile.
+     * <p>NOTE: The role a participant plays in a process was added in the OASIS SMP v2 specification and therefore it 
+     * can also only be evaluated if the SMP server supports this version. This implies that when the response is an 
+     * older version this criterion cannot be applied and therefore there will be no result to the query.
+	 *
+	 * @param participantId		Participant's Id
+	 * @param role				Role of the participant
+	 * @param serviceId			Service Id
+	 * @param processId			Process Id, may be <code>null</code>
+	 * @return	The endpoint meta-data if there exist endpoints for this participant, role, service and process,
+	 * 			<code>null</code> otherwise.
+	 * @throws SMPQueryException 	When an error occurs in the lookup of the SMP location or querying the SMP server
+	 * @since 2.0.0
+	 */
+	List<EndpointInfo> getEndpoints(final Identifier participantId,
+								    final Identifier role,
+								    final Identifier serviceId,
+								    final Identifier processId) throws SMPQueryException;    
 }
