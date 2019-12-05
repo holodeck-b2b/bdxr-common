@@ -16,20 +16,10 @@
  */
 package org.holodeckb2b.bdxr.impl.peppol;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import java.io.File;
-import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.holodeckb2b.bdxr.impl.peppol.PEPPOLResultProcessor;
-import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import org.holodeckb2b.bdxr.utils.TestUtils;
+import org.junit.jupiter.api.Test;
 
 /**
  *
@@ -39,20 +29,9 @@ public class PEPPOLResultProcessorTest {
 
     @Test
     public void testSignedServiceMetadata() {
-        File input = new File(this.getClass().getClassLoader().getResource("peppol_signedsvcmd.xml").getPath());
-        Document xmlResult = null;
         try {
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            dbf.setNamespaceAware(true);
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            xmlResult = db.parse(input);
-        } catch (ParserConfigurationException | SAXException | IOException parsingError) {
-            fail("Could not parse the XML file");
-        }
-
-        try {
-            new PEPPOLResultProcessor().processResult(xmlResult);
-        } catch (SMPQueryException ex) {
+            new PEPPOLResultProcessor().processResult(TestUtils.getXMLFromFile("peppol_signedsvcmd.xml"));
+        } catch (Exception ex) {
             fail();
         }
     }

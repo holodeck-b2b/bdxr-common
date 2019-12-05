@@ -16,13 +16,13 @@
  */
 package org.holodeckb2b.bdxr.impl.peppol;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
-import org.holodeckb2b.bdxr.impl.peppol.PEPPOLHostNameGenerator;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
 import org.holodeckb2b.bdxr.smp.api.IHostNameGenerator;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the generation of host name for SML queries based on the PEPPOL rules.

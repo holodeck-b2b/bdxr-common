@@ -81,8 +81,7 @@ public class PEPPOLSMPClient {
 		
 		final ISMPClient lookupClient = new SMPClientBuilder().setSMPLocator(new SMLLocator(
 															new PEPPOLHostNameGenerator(OPENPEPPOL_TEST_SML_DOMAIN)))
-															  .setProcessor(PEPPOLResultProcessor.NAMESPACE_URI, 
-																	  		new PEPPOLResultProcessor())
+															  .addProcessor(new PEPPOLResultProcessor())
 															  .build();
 		try {
 			System.out.println("Executing SMP query...");
