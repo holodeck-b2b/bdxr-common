@@ -16,13 +16,12 @@
  */
 package org.holodeckb2b.bdxr.impl.esens;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import org.holodeckb2b.bdxr.impl.esens.eSENSHostNameGenerator;
 import org.holodeckb2b.bdxr.smp.api.IHostNameGenerator;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests the generation of host name for SML queries based on the e-SENS rules.
