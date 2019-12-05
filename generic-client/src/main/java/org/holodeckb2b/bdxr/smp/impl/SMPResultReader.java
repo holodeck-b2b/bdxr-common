@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.Key;
 import java.security.cert.X509Certificate;
+import java.util.Optional;
 
 import javax.xml.crypto.AlgorithmMethod;
 import javax.xml.crypto.KeySelector;
@@ -47,6 +48,7 @@ import org.holodeckb2b.bdxr.smp.datamodel.ServiceMetadataResult;
 import org.holodeckb2b.bdxr.utils.Utils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
@@ -87,7 +89,7 @@ public class SMPResultReader {
      *
      * @param is    The input stream that contains the SMP response
      * @return      A {@link ISMPQueryResult} instance that represent the response received from the SMP server
-     * @throws SMPQueryException    When the SMP server returned an invalid response.
+     * @throws SMPQueryException    When the response of SMP server could not be processed.
      * @throws IOException          When the input stream could not be completely processed.
      */
     public ISMPQueryResult handleResponse(final InputStream is) throws SMPQueryException, IOException {
@@ -105,18 +107,15 @@ public class SMPResultReader {
         }
 
         final Element rootElement = xmlResult.getDocumentElement();
-        final NodeList signatures = rootElement.getElementsByTagNameNS(XMLDSIG_NS, XMLDSIG_SIGNATURE);
+        final Element signature = getFirstSignature(rootElement);
         X509Certificate signingCert = null;
-        if (signatures.getLength() > 0) {
-            if (signatures.getLength() > 1)
-                log.warn("Response is signed more than once, using first signature");
-            signingCert = verifySignature(xmlResult, (Element) signatures.item(0));
-        }
+        if (signature != null) 
+            signingCert = verifySignature(xmlResult, signature);
 
         // Get the name space of the root element to determine the correct result processor
         final String resultNamespace = rootElement.getNamespaceURI();
         log.debug("Finding processor for namespace URI of SMP response: {}", resultNamespace);
-        ISMPResultProcessor processor = clientConfig.getProcessors().get(resultNamespace);
+        ISMPResultProcessor processor = findResultProcessor(resultNamespace);
         if (processor == null) {
             log.error("Could not find a result processor for SMP response with namespace {}", resultNamespace);
             throw new SMPQueryException("Unknown XML document received from SMP server!");
@@ -134,6 +133,38 @@ public class SMPResultReader {
         return objResult;
     }
 
+    /**
+     * Finds the {@link ISMPResultProcessor} that should transform the received XML into object representation.
+     *  
+     * @param namespace		URI of the namespace of the response
+     * @return	the result processor that will handle the response if one is registered, <code>null</code> otherwise
+     */
+    private ISMPResultProcessor findResultProcessor(String namespace) {
+    	Optional<ISMPResultProcessor> processorSrch = clientConfig.getProcessors().parallelStream()
+    																.filter(p -> p.canProcess(namespace)).findFirst();
+		return processorSrch.isPresent() ? processorSrch.get() : null;
+	}
+
+	/**
+     * Gets the first <code>ds:Signature</code> child element of the given element.
+     * 
+     * @param el	element that should contain the signature
+     * @return		the first <code>ds:Signature</code> element if it exists, <code>null</code> otherwise
+     */
+    private Element getFirstSignature(final Element el) {
+    	final NodeList children = el.getChildNodes();
+    	Element sig = null;
+    	
+    	for(int i = 0; i < children.getLength() && sig == null; i++) {
+    		final Node child = children.item(i);
+    		if (child instanceof Element 
+    				&& XMLDSIG_NS.equals(child.getNamespaceURI()) && XMLDSIG_SIGNATURE.equals(child.getLocalName()))
+    			sig = (Element) child;
+    	}
+
+    	return sig;
+    }
+    
     /**
      * Validates the signature that was placed on the SMP result.
      * 
