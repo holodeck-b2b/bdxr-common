@@ -73,8 +73,7 @@ public class CEFConnTestClient {
 		
 		final ISMPClient lookupClient = new SMPClientBuilder().setSMPLocator(new BDXLLocator(
 																					new CEFHostNameGenerator()))
-															  .setProcessor(OASISv1ResultProcessor.NAMESPACE_URI, 
-																	  		new OASISv1ResultProcessor())
+															  .addProcessor(new OASISv1ResultProcessor())
 															  .build();
 		try {
 			System.out.println("Executing SMP query...");
