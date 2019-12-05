@@ -35,11 +35,11 @@ import org.holodeckb2b.bdxr.utils.Utils;
  */
 public class ProcessInfo {
 
-    private List<Identifier>    processIds;
-    private List<Identifier>	roles;
-    private Redirection			redirect;
-    private List<EndpointInfo>  endpoints;
-    private List<IExtension>    extensions;
+    private List<ProcessIdentifier>	processIds;
+    private List<Identifier>	 	roles;
+    private Redirection			 	redirect;
+    private List<EndpointInfo>   	endpoints;
+    private List<IExtension>    	extensions;
 
     /**
      * Default constructor creates "empty" instance
@@ -47,13 +47,13 @@ public class ProcessInfo {
     public ProcessInfo() {}
 
     /**
-     * Creates a new instance with the given meta-data
+     * Creates a new instance with the given meta-data 
      *
      * @param procIds       The list identifiers process identifiers
      * @param endpoints     The list of available endpoints for this process
      * @param extendedInfo  Extended information available about this process
      */
-    public ProcessInfo(final List<Identifier> procIds, final List<EndpointInfo> endpoints,
+    public ProcessInfo(final List<ProcessIdentifier> procIds, final List<EndpointInfo> endpoints,
     		final List<IExtension> extendedInfo)
     {
     	this(procIds, null, endpoints, extendedInfo);
@@ -68,7 +68,7 @@ public class ProcessInfo {
      * @param extendedInfo  Extended information available about this process
      * @since NEXT_VERSION
      */
-    public ProcessInfo(final List<Identifier> procIds, final List<Identifier> roles, 
+    public ProcessInfo(final List<ProcessIdentifier> procIds, final List<Identifier> roles, 
     				   final List<EndpointInfo> endpoints, final List<IExtension> extendedInfo)
     {
         this.processIds = procIds;
@@ -81,25 +81,12 @@ public class ProcessInfo {
      * Creates a new instance with the given meta-data
      * 
      * @param procIds		The list identifiers process identifiers
-     * @param redirect		Meta-data on the redirection to another SMP server
-     * @param extendedInfo	Extended information available about this process
-     * @since NEXT_VERSION
-     */
-    public ProcessInfo(final List<Identifier> procIds, final Redirection redirect, final List<IExtension> extendedInfo)
-    {
-    	
-    }
-    
-    /**
-     * Creates a new instance with the given meta-data
-     * 
-     * @param procIds		The list identifiers process identifiers
      * @param roles			The list of roles the participant acts in
      * @param redirect		Meta-data on the redirection to another SMP server
      * @param extendedInfo	Extended information available about this process
      * @since NEXT_VERSION
      */
-    public ProcessInfo(final List<Identifier> procIds,  final List<Identifier> roles,
+    public ProcessInfo(final List<ProcessIdentifier> procIds,  final List<Identifier> roles,
     				   final Redirection redirect, final List<IExtension> extendedInfo)
     {
     	this.processIds = procIds;
@@ -113,22 +100,28 @@ public class ProcessInfo {
      *
      * @return The process ids
      */
-    public List<Identifier> getProcessIds() {
+    public List<ProcessIdentifier> getProcessIds() {
         return processIds;
     }
 
     /**
-     * Checks if this given process is included in the set of processes that is represented by this meta-data.
-     * <p>NOTE: When no processes are listed in the meta-data it is assumed that the meta-data apply to all processes.
+     * Checks if this given process is included in the set of processes that is represented by this meta-data and if
+     * a role is specified if the participant plays that role in the process.
+     * <p>NOTE: When no processes or roles are listed in the meta-data it is assumed that the meta-data applies to all 
+     * processes or roles.
      *
-     * @param processId     The identifier of the process to check
+     * @param processId     identifier of the process to check
+     * @param role     		role the participant should play in the process, may be <code>null</code>
      * @return              <code>true</code> if the process is included in the list of supported process <b>or</b>
-     *                      when the process list is empty,<br>
+     *                      when the process list is empty, <b>and</b> the participant acts in the given role
      *                      <code>false</code> otherwise
-     *
+     * @since 2.0.0 Support for checking on role
      */
-    public boolean supportsProcess(final Identifier processId) {
-        return Utils.isNullOrEmpty(processIds) ? true : processIds.contains(processId);
+    public boolean supportsProcess(final Identifier processId, final Identifier role) {
+        return Utils.isNullOrEmpty(processIds) ? true 
+        									   : processId != null ?  processIds.contains(processId) 
+        											   	: processIds.parallelStream().anyMatch(pi -> pi.isNoProcess())
+               && (role == null || Utils.isNullOrEmpty(roles) || roles.contains(role));
     }
 
     /**
@@ -136,7 +129,7 @@ public class ProcessInfo {
      *
      * @param processIds The process Ids to set
      */
-    public void setProcessId(List<Identifier> processIds) {
+    public void setProcessId(List<ProcessIdentifier> processIds) {
         this.processIds = processIds;
     }
 
@@ -145,7 +138,7 @@ public class ProcessInfo {
      *
      * @param processId The process id
      */
-    public void addProcessId(final Identifier processId) {
+    public void addProcessId(final ProcessIdentifier processId) {
         if (processId == null)
             throw new IllegalArgumentException("A process identifier object must be provided");
         if (this.processIds == null)
@@ -254,5 +247,18 @@ public class ProcessInfo {
 	 */
 	public void setRoles(List<Identifier> roles) {
 		this.roles = roles;
+	}
+	
+	/**
+	 * Adds a role the participant can play in this process.
+	 * 
+	 * @param role	Identifier of the role to be added
+	 */
+	public void addRole(Identifier role) {
+        if (role == null)
+            throw new IllegalArgumentException("A role identifier object must be provided");
+        if (this.roles == null)
+            this.roles = new ArrayList<>();
+        this.roles.add(role);		
 	}
 }

@@ -31,9 +31,14 @@ import org.holodeckb2b.bdxr.utils.Utils;
  */
 public class Identifier {
 
-    private String scheme = null;
-    private String value = null;
+    protected String scheme = null;
+    protected String value = null;
 
+    /**
+     * Default constructor that can be used by sub classes if they want to allow <code>null</code> values.
+     */
+    protected Identifier() {}
+    
     /**
      * Creates a new identifier without indicating a scheme
      *
