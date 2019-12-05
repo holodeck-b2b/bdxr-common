@@ -1,6 +1,6 @@
 package org.holodeckb2b.bdxr.smp.api;
 
-import java.util.Map;
+import java.util.List;
 
 import org.holodeckb2b.bdxr.smp.impl.DefaultRequestExecutor;
 import org.holodeckb2b.bdxr.smp.impl.SMPClient;
@@ -76,26 +76,24 @@ public class SMPClientBuilder {
 	}
 	
 	/**
-	 * Sets the mapping of SMP result name space URIs to the {@link ISMPResultProcessor} that will handle the result
-	 * and transform the XML documents into the object model representation. This will replace any already configured
-	 * mapping.
+	 * Sets the list of {@link ISMPResultProcessor}s that can handle the result and transform the XML documents into the 
+	 * object model representation. This will replace any already configured list.
 	 * 
-	 * @param processorMap	The mapping of result name space URIs to {@link ISMPResultProcessor}s. Must not be empty.
+	 * @param processorMap	The list of {@link ISMPResultProcessor}s. Must not be empty.
 	 */	
-	public SMPClientBuilder setProcessors(Map<String, ISMPResultProcessor> processorMap) {
-		newClientConfig.setProcessors(processorMap);
+	public SMPClientBuilder setProcessors(List<ISMPResultProcessor> processorList) {
+		newClientConfig.setProcessors(processorList);
 		return this;
 	}
 	
 	/**
-	 * Sets the {@link ISMPResultProcessor} implementation that should be used for the given result namespace URI. 
-	 * When there already exists a mapping for the given name space URI it will be replaced.
+	 * Adds the {@link ISMPResultProcessor} implementation to the list of processors. 
+	 * <p>NOTE: Only the first registered processor that can handle a result will be used. 
 	 * 
-	 * @param namespaceURI	String containing the name space URI 
-	 * @param processor		The {@link ISMPResultProcessor} to use for result with the given namespace
+	 * @param processor		The {@link ISMPResultProcessor} to use
 	 */
-	public SMPClientBuilder setProcessor(final String namespaceURI, ISMPResultProcessor processor) {
-		newClientConfig.setProcessor(namespaceURI, processor);
+	public SMPClientBuilder addProcessor(ISMPResultProcessor processor) {
+		newClientConfig.addProcessor(processor);
 		return this;
 	}
 	

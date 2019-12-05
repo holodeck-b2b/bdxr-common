@@ -1,7 +1,7 @@
 package org.holodeckb2b.bdxr.smp.impl;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.holodeckb2b.bdxr.smp.api.ICertificateFinder;
 import org.holodeckb2b.bdxr.smp.api.IRequestExecutor;
@@ -37,10 +37,9 @@ public class SMPClientConfig {
 	 */
 	private ITrustValidator trustValidator;
     /**
-     * Map of namespace URI to the {@link ISMPResultProcessor} implementation that can convert XML documents with that
-     * namespace to object representation
+     * List of {@link ISMPResultProcessor} implementations that can convert XML documents to object representation
      */
-	private Map<String, ISMPResultProcessor> processorMap;
+	private List<ISMPResultProcessor> processors;
 
 	/**
 	 * Create a new SMP Client configuration with the default request executor, processor map and certificate finder
@@ -136,15 +135,15 @@ public class SMPClientConfig {
 	}
 	
 	/**
-	 * Sets the mapping of SMP result name space URIs to the {@link ISMPResultProcessor} that will handle the result
-	 * and transform the XML documents into the object model representation.
+	 * Sets the list of {@link ISMPResultProcessor} that can handle the result and transform the XML documents into 
+	 * the object model representation.
 	 * 
-	 * @param processorMap	The mapping of result name space URIs to {@link ISMPResultProcessor}s. Must not be empty.
+	 * @param processorList	list of {@link ISMPResultProcessor}s. Must not be empty.
 	 */
-	public void setProcessors(Map<String, ISMPResultProcessor> processorMap) {
-		if (Utils.isNullOrEmpty(processorMap))
-			throw new IllegalArgumentException("The processor map must contain at least one mapping");
-		this.processorMap = processorMap;
+	public void setProcessors(List<ISMPResultProcessor> processorList) {
+		if (Utils.isNullOrEmpty(processorList))
+			throw new IllegalArgumentException("The processor list must not be empty");
+		this.processors = processorList;
 	}
 	
 	/**
@@ -154,24 +153,21 @@ public class SMPClientConfig {
 	 * @param namespaceURI	String containing the name space URI 
 	 * @param processor		The {@link ISMPResultProcessor} to use for result with the given namespace
 	 */
-	public void setProcessor(final String namespaceURI, ISMPResultProcessor processor) {
-		if (this.processorMap == null) 
-			this.processorMap = new HashMap<>();
-		if (Utils.isNullOrEmpty(namespaceURI))
-			throw new IllegalArgumentException("Name space URI is null or empty");
+	public void addProcessor(ISMPResultProcessor processor) {
 		if (processor == null)
-			this.processorMap.remove(namespaceURI);
-		else
-			this.processorMap.put(namespaceURI, processor);
+			throw new IllegalArgumentException();
+		if (this.processors == null) 
+			this.processors = new ArrayList<>();
+		this.processors.add(processor);
 	}
 	
 	/**
-	 * Gets the mapping of SMP result name space URIs to the {@link ISMPResultProcessor} that will handle the result
-	 * and transform the XML documents into the object model representation.
+	 * Gets the list of registered {@link ISMPResultProcessor} that will handle the result and transform the XML 
+	 * documents into the object model representation.
 	 * 
-	 * @return The mapping of result name space URIs to {@link ISMPResultProcessor}s.
+	 * @return The list of registered {@link ISMPResultProcessor}s.
 	 */
-	public Map<String, ISMPResultProcessor> getProcessors() {
-		return this.processorMap;		
+	public List<ISMPResultProcessor> getProcessors() {
+		return this.processors;		
 	}	
 }
