@@ -37,6 +37,7 @@ import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.IExtension;
 import org.holodeckb2b.bdxr.smp.datamodel.ISMPQueryResult;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.datamodel.ProcessIdentifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.Redirection;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceInformation;
@@ -76,7 +77,12 @@ public class OASISv1ResultProcessor implements ISMPResultProcessor {
             throw new RuntimeException(jaxbFailure.getMessage(), jaxbFailure);
         }
     }
-
+    
+    /**
+     * The special process identifier used to indicate that the document id is not assigned to a specific process. 
+     */
+    private static final String NO_PROCESS_ID = "bdx:noprocess";
+    
     /**
      * The namespace URI of SMP XML result documents as specified in the PEPPOL SMP specification
      */
@@ -205,9 +211,12 @@ public class OASISv1ResultProcessor implements ISMPResultProcessor {
     private ProcessInfo processProcessInfo(ProcessType procInfoXML) throws SMPQueryException {
         final ProcessInfo procInfo = new ProcessInfo();
 
-        // The PEPPOL specification allows just one (mandatory) process identifier
-        procInfo.addProcessId(new Identifier(procInfoXML.getProcessIdentifier().getValue(),
-                                             procInfoXML.getProcessIdentifier().getScheme()));
+        // The OASIS v1 specification allows just one (mandatory) process identifier
+        final String procID = procInfoXML.getProcessIdentifier().getValue();
+        if (NO_PROCESS_ID.equals(procID)) 
+        	procInfo.addProcessId(new ProcessIdentifier());
+        else 
+        	procInfo.addProcessId(new ProcessIdentifier(procID, procInfoXML.getProcessIdentifier().getScheme()));
         // Convert the Endpoint elements into object model
         for(EndpointType ep : procInfoXML.getServiceEndpointList().getEndpoint())
             procInfo.addEndpoint(processEndpoint(ep));
