@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
@@ -24,7 +26,7 @@ import org.junit.jupiter.api.Test;
 class SMPClientTest {
 
 	@Test
-	void testGetEndpointsForProcess() {
+	void testGetEndpointsForProcess() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -35,9 +37,9 @@ class SMPClientTest {
 		ProcessIdentifier selectedProcId = new ProcessIdentifier("PROCID_1");
 		ProcessInfo procInfo = new ProcessInfo();		
 		procInfo.addProcessId(selectedProcId);			
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -67,7 +69,7 @@ class SMPClientTest {
 	}
 
 	@Test
-	void testGetEndpointsForProcessAndRole() {
+	void testGetEndpointsForProcessAndRole() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -81,9 +83,9 @@ class SMPClientTest {
 		procInfo.addProcessId(procId);
 		procInfo.addRole(roleId);
 		procInfo.addRole(new Identifier("ROLE_11"));
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -158,7 +160,7 @@ class SMPClientTest {
 	}	
 	
 	@Test
-	void testGetEndpoint() {
+	void testGetEndpoint() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -169,9 +171,9 @@ class SMPClientTest {
 		ProcessIdentifier selectedProcId = new ProcessIdentifier("PROCID_1");
 		ProcessInfo procInfo = new ProcessInfo();		
 		procInfo.addProcessId(selectedProcId);			
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -198,7 +200,7 @@ class SMPClientTest {
 	}	
 	
 	@Test
-	void testGetEndpointNotFound() {
+	void testGetEndpointNotFound() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -209,9 +211,9 @@ class SMPClientTest {
 		ProcessIdentifier selectedProcId = new ProcessIdentifier("PROCID_1");
 		ProcessInfo procInfo = new ProcessInfo();		
 		procInfo.addProcessId(selectedProcId);			
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -236,7 +238,7 @@ class SMPClientTest {
 	}	
 	
 	@Test
-	void testGetEndpointsForNoProcess() {
+	void testGetEndpointsForNoProcess() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -248,9 +250,9 @@ class SMPClientTest {
 		selectedProcId.setIsNoProcess(true);
 		ProcessInfo procInfo = new ProcessInfo();		
 		procInfo.addProcessId(selectedProcId);			
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -280,7 +282,7 @@ class SMPClientTest {
 	}	
 
 	@Test
-	void testGetEndpointsIgnoreEmptyProcess() {
+	void testGetEndpointsIgnoreEmptyProcess() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -291,9 +293,9 @@ class SMPClientTest {
 		ProcessIdentifier selectedProcId = new ProcessIdentifier("PROCID_1");
 		ProcessInfo procInfo = new ProcessInfo();		
 		procInfo.addProcessId(selectedProcId);			
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -321,7 +323,7 @@ class SMPClientTest {
 	}
 	
 	@Test
-	void testGetEndpointsIgnoreEmptyRoles() {
+	void testGetEndpointsIgnoreEmptyRoles() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -335,9 +337,9 @@ class SMPClientTest {
 		procInfo.addProcessId(procId);
 		procInfo.addRole(roleId);
 		procInfo.addRole(new Identifier("ROLE_11"));
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -366,7 +368,7 @@ class SMPClientTest {
 	}	
 	
 	@Test
-	void testGetEndpointsMatchToEmptyProcId() {
+	void testGetEndpointsMatchToEmptyProcId() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -375,9 +377,9 @@ class SMPClientTest {
 		svcInfo.setParticipantId(participantId);
 		
 		ProcessInfo procInfo = new ProcessInfo();		
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -406,7 +408,7 @@ class SMPClientTest {
 	}
 	
 	@Test
-	void testGetEndpointsMatchEmptyRoles() {
+	void testGetEndpointsMatchEmptyRoles() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -417,9 +419,9 @@ class SMPClientTest {
 		ProcessIdentifier procId = new ProcessIdentifier("PROCID_1");
 		ProcessInfo procInfo = new ProcessInfo();		
 		procInfo.addProcessId(procId);
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);
@@ -449,7 +451,7 @@ class SMPClientTest {
 	}
 	
 	@Test
-	void testGetEndpointsIgnoreCatchAllProcInfo() {
+	void testGetEndpointsIgnoreCatchAllProcInfo() throws MalformedURLException {
 		
 		Identifier participantId = new Identifier("PARTID_1", "test:scheme"); 
 		Identifier serviceId = new Identifier("SVCID_1"); 
@@ -462,9 +464,9 @@ class SMPClientTest {
 		ProcessInfo procInfo = new ProcessInfo();			
 		procInfo.addProcessId(procId);
 		procInfo.addRole(roleId);
-		EndpointInfo epInf = new EndpointInfo("test-1", "http://this.is.a.result");
+		EndpointInfo epInf = new EndpointInfo("test-1", new URL("http://this.is.a.result"));
 		procInfo.addEndpoint(epInf);
-		EndpointInfo ep2Inf = new EndpointInfo("test-2", "http://this.is.another.result");
+		EndpointInfo ep2Inf = new EndpointInfo("test-2", new URL("http://this.is.another.result"));
 		procInfo.addEndpoint(ep2Inf);
 		
 		svcInfo.addProcessInformation(procInfo);

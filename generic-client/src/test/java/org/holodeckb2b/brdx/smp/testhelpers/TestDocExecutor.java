@@ -2,7 +2,7 @@ package org.holodeckb2b.brdx.smp.testhelpers;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 
 import org.holodeckb2b.bdxr.smp.api.IRequestExecutor;
 import org.holodeckb2b.bdxr.smp.api.ISMPResponseConnection;
@@ -35,7 +35,7 @@ public class TestDocExecutor implements IRequestExecutor {
 	
 	
 	@Override
-	public ISMPResponseConnection executeRequest(URI requestURL)
+	public ISMPResponseConnection executeRequest(URL requestURL)
 			throws SMPQueryException, UnsupportedOperationException {
 		
 		return new ISMPResponseConnection() {

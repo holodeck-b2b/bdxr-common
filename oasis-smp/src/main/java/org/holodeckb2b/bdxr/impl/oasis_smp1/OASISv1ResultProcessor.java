@@ -16,8 +16,8 @@
  */
 package org.holodeckb2b.bdxr.impl.oasis_smp1;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 import java.util.List;
@@ -141,10 +141,10 @@ public class OASISv1ResultProcessor implements ISMPResultProcessor {
      */
     private Redirection processRedirection(RedirectType redirectXML) throws SMPQueryException {
     	try {
-    		final Redirection redirectionInfo = new Redirection(new URI(redirectXML.getHref()));
+    		final Redirection redirectionInfo = new Redirection(new URL(redirectXML.getHref()));
             redirectionInfo.setExtensions(handleRedirectionExtensions(redirectXML.getExtension()));
     		return redirectionInfo;
-    	} catch (NullPointerException | URISyntaxException invalidURL) {
+    	} catch (NullPointerException | MalformedURLException invalidURL) {
     		log.error("The Redirection response includes an invalid new target URL: {}", redirectXML.getHref());
     		throw new SMPQueryException("Invalid redirection response received!");
     	}
@@ -251,7 +251,12 @@ public class OASISv1ResultProcessor implements ISMPResultProcessor {
         final EndpointInfo epInfo = new EndpointInfo();
 
         epInfo.setTransportProfile(epInfoXML.getTransportProfile());
-        epInfo.setEndpointURI(epInfoXML.getEndpointURI());
+        try {
+			epInfo.setEndpointURL(new URL(epInfoXML.getEndpointURI()));
+		} catch (MalformedURLException e) {
+			log.error("Invalid URL specified for endpoint! Value={}", epInfoXML.getEndpointURI());
+			throw new SMPQueryException("Invalid endpoint meta-data");
+		}
         epInfo.setBusinessLevelSignatureRequired(epInfoXML.isRequireBusinessLevelSignature());
         epInfo.setMinimumAuthenticationLevel(epInfoXML.getMinimumAuthenticationLevel());
         final XMLGregorianCalendar svcActivationDate = epInfoXML.getServiceActivationDate();

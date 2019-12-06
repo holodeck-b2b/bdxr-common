@@ -16,8 +16,8 @@
  */
 package org.holodeckb2b.bdxr.smp.impl;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.holodeckb2b.bdxr.smp.api.ISMPLocator;
 import org.holodeckb2b.bdxr.smp.api.SMPLocatorException;
@@ -34,24 +34,24 @@ public class StaticLocator implements ISMPLocator {
 	/**
 	 * The base URL of the SMP that should be used for all lookups
 	 */
-	private URI	smpHostname;
+	private URL	smp;
 	
 	/**
 	 * Creates a new instance of the static SMP locator that will direct all SMP queries to the specified URL.  
 	 * 
-	 * @param smpHostname	The base URL of the single SMP to use for lookups
+	 * @param smpURL	The base URL of the single SMP to use for lookups
 	 */
-	public StaticLocator(final String smpHostname) {
+	public StaticLocator(final String smpURL) {
 		try {
-			this.smpHostname = new URI(smpHostname);
-		} catch (NullPointerException | URISyntaxException invalidURI) {
+			this.smp = new URL(smpURL);
+		} catch (NullPointerException | MalformedURLException invalidURI) {
 			throw new IllegalArgumentException("Invalid URL specified");
 		}
 	}
 	
 	@Override
-	public URI locateSMP(Identifier participant) throws SMPLocatorException {
-		return smpHostname;
+	public URL locateSMP(Identifier participant) throws SMPLocatorException {
+		return smp;
 	}
 
 }

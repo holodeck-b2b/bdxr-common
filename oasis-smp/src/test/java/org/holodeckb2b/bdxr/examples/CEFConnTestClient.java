@@ -20,7 +20,6 @@ import java.security.cert.X509Certificate;
 
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.holodeckb2b.bdxr.impl.oasis_smp1.BDXLLocator;
 import org.holodeckb2b.bdxr.impl.oasis_smp1.OASISv1ResultProcessor;
 import org.holodeckb2b.bdxr.smp.api.IHostNameGenerator;
 import org.holodeckb2b.bdxr.smp.api.ISMPClient;
@@ -28,6 +27,7 @@ import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
 import org.holodeckb2b.bdxr.smp.api.SMPQueryException;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.impl.BDXLLocator;
 
 /**
  * Is a simple example application that shows how the {@link ISMPClient} can be used for querying the CEF Connectivity
@@ -72,7 +72,8 @@ public class CEFConnTestClient {
 		System.out.println("- Transport profile 	: " + transportId);
 		
 		final ISMPClient lookupClient = new SMPClientBuilder().setSMPLocator(new BDXLLocator(
-																					new CEFHostNameGenerator()))
+																					new CEFHostNameGenerator(),
+																					"Meta:SMP"))
 															  .addProcessor(new OASISv1ResultProcessor())
 															  .build();
 		try {

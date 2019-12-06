@@ -16,6 +16,7 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
+import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +34,7 @@ import org.holodeckb2b.bdxr.utils.Utils;
 public class EndpointInfo {
 
     private String                  transportProfile;
-    private String                  endpointURL;
+    private URL                  	endpointURL;
     private Boolean                 businessLevelSignatureRequired;
     private String                  minimumAuthenticationLevel;
     private ZonedDateTime           serviceActivationDate;
@@ -54,7 +55,7 @@ public class EndpointInfo {
      * @param profile                   The transport profile
      * @param url                       The endpoint's URL
      */
-    public EndpointInfo(final String profile, final String url) {
+    public EndpointInfo(final String profile, final URL url) {
         this(profile, url, null, null, null, null, null, null, null, null);
     }
 
@@ -65,7 +66,7 @@ public class EndpointInfo {
      * @param url                       The endpoint's URL
      * @param cert                      The certificate used by the endpoint
      */
-    public EndpointInfo(final String profile, final String url, final Certificate cert) {
+    public EndpointInfo(final String profile, final URL url, final Certificate cert) {
         this(profile, url, null, null, null, null, Collections.singletonList(cert), null, null, null);
     }
 
@@ -83,7 +84,7 @@ public class EndpointInfo {
      * @param contact					Contact information for this endpoint  
      * @param ext                       Any extra information related to the endpoint
      */
-    public EndpointInfo(final String profile, final String url, final Boolean blsRequired,
+    public EndpointInfo(final String profile, final URL url, final Boolean blsRequired,
                         final String minAuthenticationLvl, final ZonedDateTime activationDate,
                         final ZonedDateTime expirationDate, final List<Certificate> certs,
                         final String description, final String contact,
@@ -121,9 +122,9 @@ public class EndpointInfo {
     /**
      * Gets the URL where the endpoint receives messages.
      *
-     * @return The Endpoint's URI
+     * @return The Endpoint's URL
      */
-    public String getEndpointURL() {
+    public URL getEndpointURL() {
         return endpointURL;
     }
 
@@ -132,7 +133,7 @@ public class EndpointInfo {
      *
      * @param endpointURL The URL to use for the Endpoint
      */
-    public void setEndpointURI(String endpointURL) {
+    public void setEndpointURL(URL endpointURL) {
         this.endpointURL = endpointURL;
     }
 
@@ -247,14 +248,27 @@ public class EndpointInfo {
     }
 
     /**
-     * Sets the certificates used by the endpoint
+     * Sets the meta-data on the certificates used by the endpoint
      *
-     * @param certificates The certificates to set
+     * @param certificates The meta-data on the certificates 
      */
     public void setCertificates(List<Certificate> certs) {
         this.certificates = certs;
     }
 
+    /**
+     * Add meta-data on a certificate to the endpoint meta-data
+     *
+     * @param cert    The certificate meta-data
+     */
+    public void addCertificate(final Certificate cert) {
+        if (cert == null)
+            throw new IllegalArgumentException("Certificate data must be specified");
+        if (this.certificates == null)
+            this.certificates = new ArrayList<>();
+        this.certificates.add(cert);
+    }
+    
     /**
      * Gets the (human readable) description of this endpoint.
      *  

@@ -16,7 +16,7 @@
  */
 package org.holodeckb2b.bdxr.smp.api;
 
-import java.net.URI;
+import java.net.URL;
 
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 
@@ -31,7 +31,6 @@ public interface ISMPLocator {
     /**
      * Gets the base URL of the SMP that serves the meta-data for the given participant and which the SMP Client will 
      * extend to execute the query.
-     * <p>Note that 
      *
      * @param participant   The identifier of the participant
      * @return              Base URL of the SMP serving the participant
@@ -39,5 +38,5 @@ public interface ISMPLocator {
      *                              caused by in error in the lookup, an invalid participant identifier or that there
      *                              is no SMP registered for the participant.
      */
-    URI locateSMP(final Identifier participant) throws SMPLocatorException;
+    URL locateSMP(final Identifier participant) throws SMPLocatorException;
 }

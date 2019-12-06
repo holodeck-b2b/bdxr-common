@@ -16,8 +16,8 @@
  */
 package org.holodeckb2b.bdxr.impl.peppol;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 
@@ -140,8 +140,8 @@ public class PEPPOLResultProcessor implements ISMPResultProcessor {
     	try {
             // Although extensions are part of the PEPPOL specifications, they are not used in the PEPPOL network.
             // ==> ignored
-    		return new Redirection(new URI(redirectXML.getHref()));
-    	} catch (NullPointerException | URISyntaxException invalidURL) {
+    		return new Redirection(new URL(redirectXML.getHref()));
+    	} catch (NullPointerException | MalformedURLException invalidURL) {
     		log.error("The Redirection response includes an invalid new target URL: {}", redirectXML.getHref());
     		throw new SMPQueryException("Invalid redirection response received!");
     	}
@@ -203,7 +203,12 @@ public class PEPPOLResultProcessor implements ISMPResultProcessor {
         final EndpointInfo epInfo = new EndpointInfo();
 
         epInfo.setTransportProfile(epInfoXML.getTransportProfile());
-        epInfo.setEndpointURI(epInfoXML.getEndpointReference().getAddress().getValue());
+        try {        	
+			epInfo.setEndpointURL(new URL(epInfoXML.getEndpointReference().getAddress().getValue()));
+		} catch (NullPointerException | MalformedURLException e) {
+			log.error("Invalid URL specified for endpoint!");
+			throw new SMPQueryException("Invalid endpoint meta-data");
+		}
         epInfo.setBusinessLevelSignatureRequired(epInfoXML.isRequireBusinessLevelSignature());
         epInfo.setMinimumAuthenticationLevel(epInfoXML.getMinimumAuthenticationLevel());
         final XMLGregorianCalendar svcActivationDate = epInfoXML.getServiceActivationDate();

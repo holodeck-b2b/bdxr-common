@@ -16,7 +16,7 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
-import java.net.URI;
+import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class Redirection extends ServiceMetadataResult {
 	/**
 	 * The new URL to use for the SMP query  
 	 */
-	private URI		newTargetURL; 
+	private URL		newTargetURL; 
 	/**
 	 * The certificate of the SMP server to which the request should be redirected
 	 */
@@ -48,7 +48,7 @@ public class Redirection extends ServiceMetadataResult {
      *
      * @param redirectedURL The URL to use for a new query
      */
-    public Redirection(final URI redirectedURL) {
+    public Redirection(final URL redirectedURL) {
         super();
         this.newTargetURL = redirectedURL;
     }
@@ -60,7 +60,7 @@ public class Redirection extends ServiceMetadataResult {
      * @param smpCertificate  Certificate of the new SMP server
      * @since NEXT_VERSION
      */
-    public Redirection(final URI redirectedURL, final X509Certificate smpCert) {
+    public Redirection(final URL redirectedURL, final X509Certificate smpCert) {
     	super();
     	this.newTargetURL = redirectedURL;
     	this.setSMPCertitificate(smpCert);
@@ -74,7 +74,7 @@ public class Redirection extends ServiceMetadataResult {
      * @param signingCert   The X509 certificate that was used to sign the meta-data
      * @param ext           Any extended meta-data information included in the SMP record
      */
-    public Redirection(final URI redirectedURL, final X509Certificate signingCert, final List<IExtension> ext) {
+    public Redirection(final URL redirectedURL, final X509Certificate signingCert, final List<IExtension> ext) {
         super(signingCert, ext);
         this.newTargetURL = redirectedURL;
     }
@@ -84,7 +84,7 @@ public class Redirection extends ServiceMetadataResult {
      * 
      * @return	The URL to use for a new query
      */
-    public URI getNewSMPURL() {
+    public URL getNewSMPURL() {
     	return newTargetURL;
     }
     
@@ -93,7 +93,7 @@ public class Redirection extends ServiceMetadataResult {
      * 
      * @param redirectedURL		The URL to use for a new query
      */
-    public void setNewSMPURL(final URI redirectedURL) {
+    public void setNewSMPURL(final URL redirectedURL) {
     	this.newTargetURL = redirectedURL;
     }
 

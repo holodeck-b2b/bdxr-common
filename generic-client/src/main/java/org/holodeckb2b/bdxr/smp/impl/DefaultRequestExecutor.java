@@ -3,7 +3,7 @@ package org.holodeckb2b.bdxr.smp.impl;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.URL;
 import java.net.URLConnection;
 
 import org.apache.logging.log4j.LogManager;
@@ -48,8 +48,8 @@ public class DefaultRequestExecutor implements IRequestExecutor {
 	}
 
 	@Override
-	public ISMPResponseConnection executeRequest(URI requestURL) throws SMPQueryException, UnsupportedOperationException {
-		if ("https".equalsIgnoreCase(requestURL.getScheme())) {
+	public ISMPResponseConnection executeRequest(URL requestURL) throws SMPQueryException, UnsupportedOperationException {
+		if ("https".equalsIgnoreCase(requestURL.getProtocol())) {
 			log.fatal("SMP requests using https are not supported!");
 			throw new UnsupportedOperationException("https is not supported");		
 		}
@@ -57,10 +57,10 @@ public class DefaultRequestExecutor implements IRequestExecutor {
 		try {
 			log.trace("Opening connecting to SMP server.\n\tSMP server  : {}\n\tTime out (s): {}", smpServer,
 					  timeout / 1000);
-	    	URLConnection urlConnection = requestURL.toURL().openConnection();
+	    	URLConnection urlConnection = requestURL.openConnection();
 	        urlConnection.setConnectTimeout(timeout);
 	        urlConnection.setReadTimeout(timeout);
-	        log.trace("Starting query");
+	        log.trace("Starting query: {}", requestURL.getPath());
         	return new SMPResponseConnection(urlConnection.getInputStream());
 		} catch (FileNotFoundException notFound) {
 			log.warn("The requested meta-data could not be found! Request URL: {}", requestURL.toString());

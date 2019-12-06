@@ -1,6 +1,7 @@
 package org.holodeckb2b.bdxr.smp.api;
 
 import java.net.URI;
+import java.net.URL;
 
 /**
  * Defines the interface for the component responsible for executing the HTTP(S) request to the SMP server. 
@@ -25,6 +26,6 @@ public interface IRequestExecutor {
 	 * 										 protocol, e.g. if only http is supported but the requestURL is requesting
 	 * 										 https
 	 */
-	ISMPResponseConnection executeRequest(final URI requestURL) 
+	ISMPResponseConnection executeRequest(final URL requestURL) 
 			 												 throws SMPQueryException,  UnsupportedOperationException;
 }
