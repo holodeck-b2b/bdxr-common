@@ -19,6 +19,7 @@ package org.holodeckb2b.bdxr.smp.api;
 import java.net.URL;
 
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.impl.SMPClient;
 
 /**
  * Defines the interface for the component responsible for locating the <i>service metadata provider</i> where a
@@ -31,6 +32,10 @@ public interface ISMPLocator {
     /**
      * Gets the base URL of the SMP that serves the meta-data for the given participant and which the SMP Client will 
      * extend to execute the query.
+     * <p>NOTE: The {@link SMPClient} expects the result of the locator to be a <b>complete base URL</b> to which it
+     * can simply add the correct context path to execute the query, e.g. just add <i>/{part. id}/services/{svc ID}</i>.
+     * This implies that for OASIS SMP V2 lookups the locator must ensure that the <i>bdxr-smp-2</i> is included in the
+     * response.
      *
      * @param participant   The identifier of the participant
      * @return              Base URL of the SMP serving the participant
