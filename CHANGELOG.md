@@ -6,10 +6,18 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ##### Unreleased
 ### Added
 * Support for the OASIS SMP v2 meta-data and formats
+* Test cases for the SMP Client
 
 ### Changed
 * Refactored package structure to have a better separation between data model, API
-  and implementations. Moved reference implementations of locators to sub projects. 
+  and implementations. Moved reference implementations of locators to sub projects
+* Consistent typing of URL informarion elements.
+* Generalised `org.holodeckb2b.bdxr.smp.impl.BDXLLocator` by parameterising the 
+  NAPTR service name to use for finding the record holding the SMP URL. 
+
+### Foxed
+* Incorrect handling of redirect URL in the SMP Client.
+* Only verify the first signature on the SMP response document itself.
 
 ## 1.1.0
 ##### 2019-03-06
