@@ -14,9 +14,10 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.impl.oasis_smp1;
+package org.holodeckb2b.bdxr.smp.impl;
 
-import java.net.URI;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,8 +37,8 @@ import org.xbill.DNS.Type;
  * Implements the {@link ISMPLocator} interface for locating the SMP for the participant using the OASIS BDXL
  * specification, i.e. using NAPTR DNS records from the DNS entry for the generated host name based on the participant's
  * identifier.
- * <p>When creating an instance of this locator the {@link IHostNameGenerator} to use for generating host names must be
- * provided.
+ * <p>When creating an instance of this locator the {@link IHostNameGenerator} to use for generating host names and the
+ * NAPTR service name for the record containing the SMP URL must be provided.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
@@ -48,15 +49,21 @@ public class BDXLLocator implements ISMPLocator {
      * The host name generator to create the domain name to use for executing the SML query
      */
     private final IHostNameGenerator    hostnameGenerator;
+    /**
+     * The NAPTR service name used to identify the record holding the SMP URL
+     */
+    private final String	naptrService;
 
     /**
      * Create a new <code>BDXLLocator</code> instance that will use the given generator to create the host names for
-     * participants.
+     * participants and NAPTR service name to get SMP location.
      *
      * @param hostnameGenerator     The host name to use for generation of host names
+     * @param svcName				NAPTR service name of record holding SMP URL
      */
-    public BDXLLocator(IHostNameGenerator hostnameGenerator) {
+    public BDXLLocator(IHostNameGenerator hostnameGenerator, String svcName) {
         this.hostnameGenerator = hostnameGenerator;
+        this.naptrService = svcName;
     }
 
     /**
@@ -65,7 +72,7 @@ public class BDXLLocator implements ISMPLocator {
      * {@inheritDoc}
      */
     @Override
-    public URI locateSMP(Identifier participant) throws SMPLocatorException {
+    public URL locateSMP(Identifier participant) throws SMPLocatorException {
         try {
             log.debug("Generate host name for participant identifier {}::{}", participant.getScheme(),
                       participant.getValue());
@@ -82,15 +89,21 @@ public class BDXLLocator implements ISMPLocator {
                 // Simple cast possible because we only retrieved NAPTR records
                 NAPTRRecord naptrRecord = (NAPTRRecord) record;
                 // Handle only those having "Meta:SMP" as service.
-                if ("Meta:SMP".equals(naptrRecord.getService()) && "U".equalsIgnoreCase(naptrRecord.getFlags())) {
+                if (naptrService.equals(naptrRecord.getService()) && "U".equalsIgnoreCase(naptrRecord.getFlags())) {
                     log.debug("Found \"Meta:SMP\" NAPTR record for participant, constructing URL");
                     // Get the regexp from NAPTR record and create URI and return.
                     final String regexp = naptrRecord.getRegexp();
                     final String result = handleRegex(regexp, hostname);
                     if (result != null) {
-                        log.debug("Found SMP location [{}] for participant {}::{}", result, participant.getScheme(),
-                           participant.getValue());
-                        return URI.create(result);
+                        try {
+                        	URL url = new URL(result); 
+                        	log.debug("Found SMP location [{}] for participant {}", result.toString(), 
+                        				participant.toString());
+							return url;
+						} catch (MalformedURLException e) {
+							log.error("Invalid URL registered in DNS: {}", result);
+							throw new SMPLocatorException("Participant not correctly registered in BDXL");
+						}
                     } else {
                         log.error("Could not process regexp [{}] from NAPTR record for participant {}::{}.", regexp,
                                   participant.getScheme(), participant.getValue());
