@@ -17,7 +17,7 @@
 package org.holodeckb2b.bdxr.smp.impl;
 
 import java.io.IOException;
-import java.net.URI;
+import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -171,7 +171,7 @@ public class SMPClient implements ISMPClient {
         
     	log.debug("Lookup requested; (participant, service, process) = ({},{},{},{})",
                     participantId, role, serviceId, processId);
-        URI smpURL = null;
+        URL smpURL = null;
         try {
             log.debug("Getting URI of SMP handling participant");
             smpURL = configuration.getSMPLocator().locateSMP(participantId);
@@ -182,18 +182,19 @@ public class SMPClient implements ISMPClient {
             throw new SMPQueryException("Could not locate the SMP server for participant", ex);
         }
 
-        log.debug("Query the SMP at {}", smpURL.toString());
-        // Build the query string for getting the service meta-data directly
-        URI queryURL = smpURL.resolve(String.format("/%s/services/%s", participantId.getURLEncoded(),
-                                                                       serviceId.getURLEncoded()));               
         try {
             int redirectCount = 0;
             do {
-            	ISMPQueryResult response = null;            	
-            	log.debug("Executing SMP query using executor: {}", 
-            			  configuration.getRequestExecutor().getClass().getName());	            
-            	ISMPResponseConnection connection = configuration.getRequestExecutor().executeRequest(queryURL);
-                response = new SMPResultReader(configuration).handleResponse(connection.getInputStream());
+            	// Build the query string for getting the service meta-data directly
+            	String baseURL = smpURL.toString();
+            	if (!baseURL.endsWith("/"))
+            		baseURL += "/";
+            	final URL queryURL = new URL(String.format("%s%s/services/%s", baseURL, participantId.getURLEncoded(),
+            																		serviceId.getURLEncoded()));                           	            	
+            	log.debug("Query the SMP: {}", queryURL.toString());
+            	final ISMPResponseConnection connection = configuration.getRequestExecutor().executeRequest(queryURL);
+            	final ISMPQueryResult response = new SMPResultReader(configuration)
+            														.handleResponse(connection.getInputStream());
                 connection.close();
                 Redirection redirect = null;
 	            if (response instanceof Redirection) {
@@ -236,7 +237,7 @@ public class SMPClient implements ISMPClient {
 	            }	
 	            if (redirect != null) {
 	                log.warn("Received redirection response");	                
-	                queryURL = ((Redirection) response).getNewSMPURL();
+	                smpURL = ((Redirection) response).getNewSMPURL();
 	                redirectCount++;
 	            }
             } while (redirectCount <= 1);
