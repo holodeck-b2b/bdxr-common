@@ -16,7 +16,8 @@
  */
 package org.holodeckb2b.bdxr.impl.peppol;
 
-import java.net.URI;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -59,19 +60,24 @@ public class SMLLocator implements ISMPLocator {
      * {@inheritDoc}
      */
     @Override
-    public URI locateSMP(Identifier participant) throws SMPLocatorException {
+    public URL locateSMP(Identifier participant) throws SMPLocatorException {
         try {
             log.debug("Generate host name for participant identifier {}::{}", participant.getScheme(),
                       participant.getValue());
             final String hostname = hostnameGenerator.getHostNameForParticipant(participant);
             if (new Lookup(hostname).run() == null) {
-                log.warn("Participant with identifier {}::{} not registered in SML.", participant.getScheme(),
-                         participant.getValue());
+            	log.warn("Participant with identifier {}::{} not registered in SML (lookup hostname={})", 
+             				participant.getScheme(), participant.getValue(), hostname);
                 throw new SMPLocatorException("Participant not registered in SML");
             } else {
                 log.debug("Found SMP location [http://{}] for participant {}::{}", hostname, participant.getScheme(),
                            participant.getValue());
-                return URI.create(String.format("http://%s", hostname));
+                try {
+                	return new URL(String.format("http://%s", hostname)); 					
+				} catch (MalformedURLException e) {
+					log.error("Invalid host name registered in DNS: {}", hostname);
+					throw new SMPLocatorException("Participant not correctly registered in SML");
+				}                
             }
         } catch (TextParseException dnsQueryError) {
             log.error("Error in DNS query execution: {}", dnsQueryError.getMessage());

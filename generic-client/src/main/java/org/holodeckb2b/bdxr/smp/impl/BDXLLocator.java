@@ -112,8 +112,8 @@ public class BDXLLocator implements ISMPLocator {
                 }
             }
             // No "Meta:SMP" NAPTR record found
-            log.warn("No \"Meta:SMP\" NAPTR record for participant with identifier {}::{}", participant.getScheme(),
-                     participant.getValue());
+            log.warn("No \"Meta:SMP\" NAPTR record for participant with identifier {}::{} (lookup hostname={})", 
+            			participant.getScheme(), participant.getValue(), hostname);
             throw new SMPLocatorException("Participant not registered in BDXL");
         } catch (TextParseException dnsQueryError) {
             log.error("Error in DNS query execution: {}", dnsQueryError.getMessage());
