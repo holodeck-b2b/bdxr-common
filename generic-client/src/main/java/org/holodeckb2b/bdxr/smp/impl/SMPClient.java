@@ -190,7 +190,7 @@ public class SMPClient implements ISMPClient {
             	if (!baseURL.endsWith("/"))
             		baseURL += "/";
             	final URL queryURL = new URL(String.format("%s%s/services/%s", baseURL, participantId.getURLEncoded(),
-            																		serviceId.getURLEncoded()));                           	            	
+            																			serviceId.getURLEncoded()));                           	            	
             	log.debug("Query the SMP: {}", queryURL.toString());
             	final ISMPResponseConnection connection = configuration.getRequestExecutor().executeRequest(queryURL);
             	final ISMPQueryResult response = new SMPResultReader(configuration)
