@@ -23,16 +23,21 @@ import java.util.Objects;
 import org.holodeckb2b.bdxr.utils.Utils;
 
 /**
- * Represent the generic definition of the identifiers used in the SMP data, i.e. the <i>Participant</i>,
- * <i>Process</i> and <i>Service</i>/<i>Document</i> identifiers. Each identifier can have an <i>identifier scheme</i>
- * assigned. Although the specifications require the scheme identifier to be an URI this class does not validate this.
+ * Represent the generic definition of the identifiers used in the SMP data, i.e. the <i>Participant</i>, <i>Process</i>
+ * and <i>Service</i>/<i>Document</i> identifiers. Identifiers can have an <i>identifier scheme</i> assigned. Although 
+ * the specifications require the scheme identifier to be an URI this class uses a simple string and does not validate 
+ * its value to be an URI. 
+ * <p>By default the identifier values are case insensitive and are converted to lower case as mandated by version 2 of
+ * the OASIS specification. However some domains may want to handle certain identifiers case sensitively. Therefore an
+ * additional attribute is available to indicate that case sensitive handling of the identifier value. 
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class Identifier {
 
-    protected String scheme = null;
-    protected String value = null;
+    protected String  scheme = null;
+    protected String  value = null;
+    protected boolean caseSensitive = false;
 
     /**
      * Default constructor that can be used by sub classes if they want to allow <code>null</code> values.
@@ -45,7 +50,7 @@ public class Identifier {
      * @param id    The identifier value
      */
     public Identifier(final String id) {
-        this(id, null);
+        this(id, null, false);
     }
 
     /**
@@ -55,9 +60,23 @@ public class Identifier {
      * @param scheme    The scheme in which the id is defined
      */
     public Identifier(final String id, final String scheme) {
+    	this(id, scheme, false);
+    }
+    
+    /**
+     * Creates a new identifier that is defined in the given scheme and for which the case sensitivity is explicitly
+     * set.
+     *
+     * @param id        	The identifier value
+     * @param scheme    	The scheme in which the id is defined
+     * @param caseSensitive	Indicates whether the identifier value must be handled case sensitively (<code>true</code>)
+     * 						or not (<code>false</code>)
+     */
+    public Identifier(final String id, final String scheme, final boolean caseSensitive)  {
         if (Utils.isNullOrEmpty(id))
             throw new IllegalArgumentException("Identifier value must not be null or empty!");
-        this.value = id;
+        this.caseSensitive = caseSensitive;
+        this.value =  id;
         this.scheme = scheme;
     }
 
@@ -85,7 +104,7 @@ public class Identifier {
      * @return  The identifier value.
      */
     public String getValue() {
-        return value;
+        return caseSensitive ? value : value.toLowerCase();
     }
 
     /**
@@ -123,7 +142,7 @@ public class Identifier {
      */
     public String getURLEncoded() {
         try {
-            return URLEncoder.encode((Utils.isNullOrEmpty(scheme) ? "" : scheme + "::") + value, "UTF-8");
+            return URLEncoder.encode(toString(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new IllegalStateException("UTF-8 not supported.");
         }
@@ -138,7 +157,7 @@ public class Identifier {
      */
     @Override
     public String toString() {
-		return (Utils.isNullOrEmpty(scheme) ? "" : scheme + "::") + value;
+		return (Utils.isNullOrEmpty(scheme) ? "" : scheme + "::") + getValue();
     }
     
     /**
@@ -158,12 +177,14 @@ public class Identifier {
         else {
             Identifier o1 = (Identifier) o;
             return (this.scheme == null ? o1.scheme == null : this.scheme.equals(o1.scheme))
-                && (this.value == null ? o1.value == null : this.value.equalsIgnoreCase(o1.value));
+                && (this.value == null ? o1.value == null : (this.caseSensitive ? this.value.equals(o1.value) 
+                															  : this.value.equalsIgnoreCase(o1.value)));
         }
     }
 
     /**
-     * Generates a hashCode for this identifier. Takes into account that the value should be treated case insensitive.
+     * Generates a hashCode for this identifier. Takes into account how the value should be treated with regards to 
+     * case sensitivity.
      * 
      * @return hash code of this instance
      */
@@ -171,7 +192,7 @@ public class Identifier {
     public int hashCode() {
         int hash = 3;
         hash = 47 * hash + Objects.hashCode(this.scheme);
-        hash = 47 * hash + Objects.hashCode(this.value.toLowerCase());
+        hash = 47 * hash + Objects.hashCode(getValue());
         return hash;
     }
 }

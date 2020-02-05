@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ##### Unreleased
 ### Added
 * Support for the OASIS SMP v2 meta-data and formats
+* Support for case sensitive identifiers
+* Specific classes to represent PEPPOL identifiers due to different case sensitivity handling
 * Test cases for the SMP Client
 
 ### Changed
@@ -15,7 +17,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Generalised `org.holodeckb2b.bdxr.smp.impl.BDXLLocator` by parameterising the 
   NAPTR service name to use for finding the record holding the SMP URL. 
 
-### Foxed
+### Fixed
 * Incorrect handling of redirect URL in the SMP Client.
 * Only verify the first signature on the SMP response document itself.
 

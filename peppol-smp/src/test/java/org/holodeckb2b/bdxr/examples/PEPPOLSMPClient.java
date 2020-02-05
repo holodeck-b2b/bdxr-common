@@ -18,8 +18,11 @@ package org.holodeckb2b.bdxr.examples;
 
 import java.security.cert.X509Certificate;
 
+import org.holodeckb2b.bdxr.impl.peppol.DocumentID;
 import org.holodeckb2b.bdxr.impl.peppol.PEPPOLHostNameGenerator;
 import org.holodeckb2b.bdxr.impl.peppol.PEPPOLResultProcessor;
+import org.holodeckb2b.bdxr.impl.peppol.ParticipantID;
+import org.holodeckb2b.bdxr.impl.peppol.ProcessID;
 import org.holodeckb2b.bdxr.impl.peppol.SMLLocator;
 import org.holodeckb2b.bdxr.smp.api.ISMPClient;
 import org.holodeckb2b.bdxr.smp.api.SMPClientBuilder;
@@ -60,9 +63,9 @@ public class PEPPOLSMPClient {
 			System.exit(-1);
 		}
 		
-		final Identifier participantId = new Identifier(args[0], "iso6523-actorid-upis");
-		final Identifier serviceId = new Identifier(args[1], "busdox-docid-qns");
-		final Identifier processId = new Identifier(args[2], "cenbii-procid-ubl");
+		final Identifier participantId = new ParticipantID(args[0], "iso6523-actorid-upis");
+		final Identifier serviceId = new DocumentID(args[1], "busdox-docid-qns");
+		final Identifier processId = new ProcessID(args[2], "cenbii-procid-ubl");
 		String transportId = null;
 		if ("as2".equalsIgnoreCase(args[3]))
 			transportId = OPENPEPPOL_AS2_TRANSPORT_ID;
