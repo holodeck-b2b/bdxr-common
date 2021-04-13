@@ -1,36 +1,7 @@
 # BDXR Common
-This library contains a set of classes for developing 4-corner model solutions based on specifications from the OASIS BDXR Technical Committee, like BDXL and SMP. This library focuses on the development of client software that uses existing _Service Metadata Locators_ and _Publishers_ in the network to retrieve meta-data on participants in the network. It uses a generic data model for the participant meta-data maintained by the <i>Service Metadata Publishers</i> that abstracts from the actual specification. It includes implementations for both the OASIS specifications and the ones in use in the PEPPOL eDelivery Network. A configurable component to query a SMP is included.
+This project contains a set of classes that represent the concepts from the 4-Corner Model as used in the BDXL and SMP specifications developed by the OASIS BDXR Technical Committee and its predecessors developed within PEPPOL.
 
 __________________
 Lead developer: Sander Fieten  
 Code hosted at https://github.com/holodeck-b2b/bdxr-common  
 Issue tracker https://github.com/holodeck-b2b/bdxr-common/issues
-
-##  Using
-A basic SMP client, suitable for use in the PEPPOL network, can be found in `/generic/src/test/java/org/holodeckb2b/bdxr/smp/example/`  
-The example is a simple application that can query for meta-data in the PEPPOL acceptance environment. As shown in the example you need
-to configure the client so it fits to your specific setup.  
-
-## Contributing
-We are using the simplified Github workflow to accept modifications which means you should:
-* create an issue related to the problem you want to fix or the function you want to add (good for traceability and cross-reference)
-* fork the repository
-* create a branch (optionally with the reference to the issue in the name)
-* write your code
-* commit incrementally with readable and detailed commit messages
-* submit a pull-request against the master branch of this repository
-
-If your contribution is more than a patch, please contact us beforehand to discuss which branch you can best submit the pull request to.
-
-### Submitting bugs
-You can report issues directly on the [project Issue Tracker](https://github.com/holodeck-b2b/bdxr-common/issues).
-Please document the steps to reproduce your problem in as much detail as you can (if needed and possible include screenshots).
-
-## Versioning
-Version numbering follows the [Semantic versioning](http://semver.org/) approach.
-
-## Licence
-This software is licensed under the Lesser General Public License V3 (LGPLv3) which is included in the [LICENSE](LICENSE) file in the root of the project.
-
-## Support
-Commercial support is provided by Chasquis Consulting. Visit [Chasquis-Consulting.com](http://chasquis-consulting.com/holodeck-b2b-support/) for more information.

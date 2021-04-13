@@ -4,22 +4,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 2.0.0
 ##### Unreleased
-### Added
-* Support for the OASIS SMP v2 meta-data and formats
-* Support for case sensitive identifiers
-* Specific classes to represent PEPPOL identifiers due to different case sensitivity handling
-* Test cases for the SMP Client
+### Changed 
+To create a better separation between the generic 4-Corner datamodel classes and the SMP client related code the project was split into two projects.
+This projects now only contains generic code not related to specific functionality. The SMP client code has been moved to a new project:
 
-### Changed
-* Refactored package structure to have a better separation between data model, API
-  and implementations. Moved reference implementations of locators to sub projects
-* Consistent typing of URL informarion elements.
-* Generalised `org.holodeckb2b.bdxr.smp.impl.BDXLLocator` by parameterising the 
-  NAPTR service name to use for finding the record holding the SMP URL. 
-
-### Fixed
-* Incorrect handling of redirect URL in the SMP Client.
-* Only verify the first signature on the SMP response document itself.
+### Removed
+* The possibility to include multiple process identifiers in `org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo` as this is not
+  possible in the SMP data model
 
 ## 1.1.0
 ##### 2019-03-06
