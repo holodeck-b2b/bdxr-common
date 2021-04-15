@@ -4,6 +4,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 2.0.0
 ##### Unreleased
+###
+* "Copy" constructors to all data model classes that use another instance to initialise
+
 ### Changed 
 To create a better separation between the generic 4-Corner datamodel classes and the SMP client related code the project was split into two projects.
 This projects now only contains generic code not related to specific functionality. The SMP client code has been moved to a new project:
