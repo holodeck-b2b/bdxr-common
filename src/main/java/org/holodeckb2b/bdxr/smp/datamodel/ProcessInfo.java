@@ -60,15 +60,28 @@ public class ProcessInfo {
      * @param procId        The process identifier
      * @param roles			The list of roles the participant acts in
      * @param extendedInfo  Extended information available about this process
-     * @since NEXT_VERSION
+     * @since 2.0.0
      */
     public ProcessInfo(final ProcessIdentifier procId, final List<Identifier> roles, 
     				   final List<IExtension> extendedInfo)
     {
         this.processId = procId;
-        this.setRoles(roles);
-        this.extensions = extendedInfo;
+        setRoles(roles);
+        setExtensions(extendedInfo);
     }
+    
+	/** 
+	 * Creates a new <code>ProcessInfo</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+    public ProcessInfo(final ProcessInfo src) {
+    	this.processId = src.processId;
+    	this.roles = new ArrayList<>(src.roles);
+    	this.extensions = new ArrayList<>(src.extensions);
+    }
+
 
     /**
      * Gets the process identifier
@@ -98,10 +111,10 @@ public class ProcessInfo {
     /**
      * Sets the additional, non standard, information related to this endpoint
      *
-     * @param extension The extended meta-data
+     * @param extensions The extended meta-data
      */
-    public void setExtensions(List<IExtension> extension) {
-        this.extensions = extension;
+    public void setExtensions(List<IExtension> extensions) {
+    	this.extensions = extensions != null ? extensions : new ArrayList<>();
     }
 
     /**
@@ -112,8 +125,6 @@ public class ProcessInfo {
     public void addExtension(final IExtension ext) {
         if (ext == null)
             throw new IllegalArgumentException("A extention must be specified");
-        if (this.extensions == null)
-            this.extensions = new ArrayList<>();
         this.extensions.add(ext);
     }
 
@@ -134,10 +145,7 @@ public class ProcessInfo {
 	 * @since 2.0.0
 	 */
 	public void setRoles(List<Identifier> roles) {
-		if (roles == null)
-			this.roles = new ArrayList<>();
-		else
-			this.roles = roles;
+		this.roles = roles == null ? new ArrayList<>() : roles;
 	}
 	
 	/**
@@ -149,8 +157,6 @@ public class ProcessInfo {
 	public void addRole(Identifier role) {
         if (role == null)
             throw new IllegalArgumentException("A role identifier object must be provided");
-        if (this.roles == null)
-            this.roles = new ArrayList<>();
         this.roles.add(role);		
 	}
 }

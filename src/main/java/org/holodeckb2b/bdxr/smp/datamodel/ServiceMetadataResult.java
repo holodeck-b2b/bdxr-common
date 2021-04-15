@@ -41,7 +41,9 @@ public abstract class ServiceMetadataResult implements ISMPQueryResult {
     /**
      * Default constructor initializes "empty" instance
      */
-    public ServiceMetadataResult() {}
+    public ServiceMetadataResult() {
+    	this(null, null);
+    }
 
     /**
      * Initializes a new instance with the given signing certificate and no extensions.
@@ -49,7 +51,7 @@ public abstract class ServiceMetadataResult implements ISMPQueryResult {
      * @param cert The X509.v3 certificate that was used to signed the service meta-data
      */
     public ServiceMetadataResult(final X509Certificate cert) {
-        this.signerCertificate = cert;
+        this(cert, null);
     }
     
     /**
@@ -60,9 +62,20 @@ public abstract class ServiceMetadataResult implements ISMPQueryResult {
      */
     public ServiceMetadataResult(final X509Certificate cert, final List<IExtension> extensions) {
         this.signerCertificate = cert;
-        this.extensions = extensions;
+        this.extensions = extensions != null ? extensions : new ArrayList<>();
     }    
 
+	/** 
+	 * Creates a new <code>ServiceMetadataResult</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+    public ServiceMetadataResult(final ServiceMetadataResult src) {
+    	this.signerCertificate = src.signerCertificate;
+    	this.extensions = new ArrayList<>(src.extensions);
+    }
+    
     /**
      * Indicates whether the service meta-data were signed.
      *
@@ -107,10 +120,10 @@ public abstract class ServiceMetadataResult implements ISMPQueryResult {
     /**
      * Sets the additional, non standard, information related to this service
      *
-     * @param extension The extended meta-data
+     * @param extensions The extended meta-data
      */
-    public void setExtensions(List<IExtension> extension) {
-        this.extensions = extension;
+    public void setExtensions(List<IExtension> extensions) {
+        this.extensions = extensions != null ? extensions : new ArrayList<>();
     }
 
     /**
@@ -121,8 +134,6 @@ public abstract class ServiceMetadataResult implements ISMPQueryResult {
     public void addExtension(final IExtension ext) {
         if (ext == null)
             throw new IllegalArgumentException("A extension must be specified");
-        if (this.extensions == null)
-            this.extensions = new ArrayList<>();
         this.extensions.add(ext);
     }    
 }

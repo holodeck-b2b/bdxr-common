@@ -32,7 +32,7 @@ import org.holodeckb2b.commons.util.Utils;
  * processes use the same endpoint multiple <code>ProcessList</code> instances will occur.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
- * @since NEXT_VERSION To support OASIS SMP V2 the redirect and role meta-data have been added 
+ * @since 2.0.0  Support for OASIS SMP V2 redirect and role meta-data have been added 
  */
 public class ProcessList {
 
@@ -46,6 +46,8 @@ public class ProcessList {
      */
     public ProcessList() {
     	this.processes = new ArrayList<>();
+    	this.endpoints = new ArrayList<>();
+    	this.extensions = new ArrayList<>();
     }
 
     /**
@@ -59,9 +61,9 @@ public class ProcessList {
     public ProcessList(final List<ProcessInfo> procInfo, final List<EndpointInfo> endpoints, 
     				   final List<IExtension> extendedInfo)
     {
-        this.processes = procInfo;
-        this.endpoints  = endpoints;
-        this.extensions = extendedInfo;
+        this.processes = procInfo != null ? procInfo : new ArrayList<>();
+        this.endpoints  = endpoints != null ? endpoints : new ArrayList<>();
+        this.extensions = extendedInfo != null ? extendedInfo : new ArrayList<>();
     }
 
     /**
@@ -74,11 +76,23 @@ public class ProcessList {
      */
     public ProcessList(final List<ProcessInfo> procInfo, final Redirection redirect, 
     				   final List<IExtension> extendedInfo) {
-    	this.processes = procInfo;
-    	this.redirect   = redirect;
-    	this.extensions = extendedInfo;
+        this.processes = procInfo != null ? procInfo : new ArrayList<>();
+        this.redirect   = redirect;
+        this.extensions = extendedInfo != null ? extendedInfo : new ArrayList<>();
     }
-        
+
+	/** 
+	 * Creates a new <code>ProcessList</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+    public ProcessList(final ProcessList src) {
+        this.processes = new ArrayList<>(src.processes);
+        this.redirect   = redirect;
+        this.extensions = new ArrayList<>(src.extensions);
+    }
+    
     /**
      * Gets the list of process meta-data on the processes in which the endpoints are / redirection is used. 
      *
@@ -128,8 +142,6 @@ public class ProcessList {
     public void addProcessInfo(final ProcessInfo processInfo) {
         if (processInfo == null)
             throw new IllegalArgumentException("A process info object must be provided");
-        if (this.processes == null)
-            this.processes = new ArrayList<>();
         this.processes.add(processInfo);
     }
 
@@ -148,7 +160,7 @@ public class ProcessList {
      * @param endpoints     The list of endpoints available for this process
      */
     public void setEndpoints(List<EndpointInfo> endpoints) {
-        this.endpoints = endpoints;
+        this.endpoints = endpoints != null ? endpoints : new ArrayList<>();
     }
 
     /**
@@ -159,8 +171,6 @@ public class ProcessList {
     public void addEndpoint(final EndpointInfo endpoint) {
         if (endpoint == null)
             throw new IllegalArgumentException("A EndpointInfo object must be provided");
-        if (this.endpoints == null)
-            this.endpoints = new ArrayList<>();
         this.endpoints.add(endpoint);
     }
 
@@ -177,10 +187,10 @@ public class ProcessList {
     /**
      * Sets the additional, non standard, information related to this endpoint
      *
-     * @param extension The extended meta-data
+     * @param extensions The extended meta-data
      */
-    public void setExtensions(List<IExtension> extension) {
-        this.extensions = extension;
+    public void setExtensions(List<IExtension> extensions) {
+        this.extensions = extensions != null ? extensions : new ArrayList<>();
     }
 
     /**
@@ -191,8 +201,6 @@ public class ProcessList {
     public void addExtension(final IExtension ext) {
         if (ext == null)
             throw new IllegalArgumentException("A extention must be specified");
-        if (this.extensions == null)
-            this.extensions = new ArrayList<>();
         this.extensions.add(ext);
     }
 

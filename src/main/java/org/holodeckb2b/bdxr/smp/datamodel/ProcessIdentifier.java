@@ -32,6 +32,14 @@ public class ProcessIdentifier extends Identifier {
 	private boolean isNoProcess = false;
 	
 	/**
+	 * Creates a new "no-process" Process Identifier
+	 */
+	public ProcessIdentifier() {
+		super();
+		this.isNoProcess = true;
+	}
+
+	/**
 	 * Creates a new, non "no-process", Process identifier 
 	 * 
 	 * @param id	the identifier value 
@@ -50,14 +58,17 @@ public class ProcessIdentifier extends Identifier {
 		super(id, scheme);		
 	}
 	
-	/**
-	 * Creates a new "no-process" Process Identifier
+	/** 
+	 * Creates a new <code>ProcessIdentifier</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
 	 */
-	public ProcessIdentifier() {
-		super();
-		this.isNoProcess = true;
-	}
-	
+    public ProcessIdentifier(final ProcessIdentifier src) {
+    	super(src);
+    	this.isNoProcess = src.isNoProcess;
+    }
+    
 	/**
 	 * Indicates whether this identifier is the special "no-process" identifier as defined in the specifications.
 	 * 

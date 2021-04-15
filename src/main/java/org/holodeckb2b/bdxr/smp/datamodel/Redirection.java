@@ -56,7 +56,7 @@ public class Redirection extends ServiceMetadataResult {
      *
      * @param redirectedURL   URL to use for a new query
      * @param smpCertificate  Certificate of the new SMP server
-     * @since NEXT_VERSION
+     * @since 2.0.0
      */
     public Redirection(final URL redirectedURL, final X509Certificate smpCert) {
     	super();
@@ -64,6 +64,16 @@ public class Redirection extends ServiceMetadataResult {
     	this.setSMPCertitificate(smpCert);
     }
 
+	/** 
+	 * Creates a new <code>Redirection</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+    public Redirection(final Redirection src) {
+    	this.newTargetURL = src.newTargetURL;
+    	this.cert = src.cert;
+    }
     
     /**
      * Creates a new object representing the SMP redirection. 
@@ -99,7 +109,7 @@ public class Redirection extends ServiceMetadataResult {
      * Gets the X509 certificate that the SMP server this redirection is to should use.
      * 
      * @return	The certificate of the "redirected" SMP server
-     * @since   NEXT_VERSION 
+     * @since   2.0.0 
      */
 	public X509Certificate getSMPCertificate() {
 		return cert;
@@ -109,7 +119,7 @@ public class Redirection extends ServiceMetadataResult {
      * Sets the X509 certificate that the SMP server this redirection is to should use.
      * 
      * @param cert	The certificate of the "redirected" SMP server
-     * @since   NEXT_VERSION 
+     * @since   2.0.0 
      */
 	public void setSMPCertitificate(X509Certificate cert) {
 		this.cert = cert;

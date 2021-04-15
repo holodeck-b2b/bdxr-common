@@ -52,6 +52,20 @@ public class Certificate {
 			this.usage.add(u);
 	}
 	
+	/** 
+	 * Creates a new <code>Certificate</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+	public Certificate(final Certificate src) {
+		this.certificate = src.certificate;
+		this.usage = new HashSet<>(src.getUsage());
+		this.description = src.description;
+		this.activation = src.activation;
+		this.expiration = src.expiration;
+	}
+	
 	/**
 	 * Gets the X509Certificate.
 	 * 
@@ -85,11 +99,9 @@ public class Certificate {
 	 * @param usages		variable array of usage indicators, must include at least one
 	 */
 	public void setUsage(final String... usages) {
-		if (usages == null || usages.length == 0) 
-			throw new IllegalArgumentException("At least on usage indication should be given");	
-		this.usage = new HashSet<>();		
+		this.usage = new HashSet<>(usages.length);
 		for (String u : usages)
-			this.usage.add(u);		
+			this.usage.add(u);	
 	}
 	
 	/**
@@ -127,7 +139,7 @@ public class Certificate {
 	 * 
 	 * @param expiration	the expiration date of the certificate.  
 	 */
-	public void setEpirationDate(final ZonedDateTime expiration) {
+	public void setExpirationDate(final ZonedDateTime expiration) {
 		this.expiration = expiration;
 	}
 	

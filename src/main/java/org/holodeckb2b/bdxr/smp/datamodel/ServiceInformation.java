@@ -37,7 +37,9 @@ public class ServiceInformation extends ServiceMetadataResult {
     /**
      * Default constructor creates "empty" instance
      */
-    public ServiceInformation() {}
+    public ServiceInformation() {
+    	this.processInformation = new ArrayList<>();
+    }
 
     /**
      * Creates a new object representing the SMP meta-data for a specific participant and service type.
@@ -53,9 +55,22 @@ public class ServiceInformation extends ServiceMetadataResult {
         super(signingCert, ext);
         this.participantId = participant;
         this.serviceId = service;
-        this.processInformation = processes;
+        this.processInformation = processes != null ? processes : new ArrayList<>();
     }
 
+	/** 
+	 * Creates a new <code>ServiceInformation</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+    public ServiceInformation(final ServiceInformation src) {
+    	super(src);
+    	this.participantId = src.participantId;
+    	this.serviceId = src.serviceId;
+    	this.processInformation = new ArrayList<>(src.processInformation);
+    }
+    
     /**
      * Gets the identifier of the participant the service meta-data applies to
      *
@@ -107,7 +122,7 @@ public class ServiceInformation extends ServiceMetadataResult {
      * @param processInformation The list of process meta-data
      */
     public void setProcessInformation(List<ProcessList> processInformation) {
-        this.processInformation = processInformation;
+        this.processInformation = processInformation != null ? processInformation : new ArrayList<>();
     }
 
     /**
@@ -118,8 +133,6 @@ public class ServiceInformation extends ServiceMetadataResult {
     public void addProcessInformation(final ProcessList processInfo) {
         if (processInfo == null)
             throw new IllegalArgumentException("A process list meta-data object must be provided");
-        if (this.processInformation == null)
-            this.processInformation = new ArrayList<>();
         this.processInformation.add(processInfo);
     }
 }

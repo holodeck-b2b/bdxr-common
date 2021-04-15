@@ -80,6 +80,18 @@ public class Identifier {
         this.scheme = scheme;
     }
 
+	/** 
+	 * Creates a new <code>Identifier</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+    public Identifier(final Identifier src) {
+        this.caseSensitive = src.caseSensitive;
+        this.value =  src.value;
+        this.scheme = src.scheme;    	
+    }
+    
     /**
      * Gets the identifier scheme to which this identifier belongs.
      *

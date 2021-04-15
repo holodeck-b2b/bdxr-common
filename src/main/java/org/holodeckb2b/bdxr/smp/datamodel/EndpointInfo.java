@@ -95,12 +95,31 @@ public class EndpointInfo {
         this.minimumAuthenticationLevel = minAuthenticationLvl;
         this.serviceActivationDate = activationDate;
         this.serviceExpirationDate = expirationDate;
-        this.certificates = certs;
+        this.certificates = certs != null ? certs : new ArrayList<>();
         this.description = description;
         this.contactInfo = contact;
-        this.extensions = ext;
+        this.extensions = ext != null ? ext : new ArrayList<>();
     }
 
+	/** 
+	 * Creates a new <code>EndpointInfo</code> instance copying the data from the given instance.
+	 *  
+	 * @param src the instance to copy the data from
+	 * @since 2.0.0
+	 */
+    public EndpointInfo(final EndpointInfo src) {
+        this.transportProfile = src.transportProfile;
+        this.endpointURL = src.endpointURL;
+        this.businessLevelSignatureRequired = src.businessLevelSignatureRequired;
+        this.minimumAuthenticationLevel = src.minimumAuthenticationLevel;
+        this.serviceActivationDate = src.serviceActivationDate;
+        this.serviceExpirationDate = src.serviceExpirationDate;
+        this.certificates = new ArrayList<>(src.certificates);
+        this.description = src.description;
+        this.contactInfo = src.contactInfo;
+        this.extensions = new ArrayList<>(src.extensions);    	
+    }
+    
     /**
      * Gets the transport profile the endpoint supports
      *
@@ -253,7 +272,7 @@ public class EndpointInfo {
      * @param certificates The meta-data on the certificates 
      */
     public void setCertificates(List<Certificate> certs) {
-        this.certificates = certs;
+        this.certificates = certs != null ? certs : new ArrayList<>();
     }
 
     /**
@@ -264,8 +283,6 @@ public class EndpointInfo {
     public void addCertificate(final Certificate cert) {
         if (cert == null)
             throw new IllegalArgumentException("Certificate data must be specified");
-        if (this.certificates == null)
-            this.certificates = new ArrayList<>();
         this.certificates.add(cert);
     }
     
@@ -317,10 +334,10 @@ public class EndpointInfo {
     /**
      * Sets the additional, non standard, information related to this endpoint
      *
-     * @param extension The extended meta-data
+     * @param extensions The extended meta-data
      */
-    public void setExtensions(List<IExtension> extension) {
-        this.extensions = extension;
+    public void setExtensions(List<IExtension> extensions) {
+        this.extensions = extensions != null ? extensions : new ArrayList<>();
     }
 
     /**
@@ -331,8 +348,6 @@ public class EndpointInfo {
     public void addExtension(final IExtension ext) {
         if (ext == null)
             throw new IllegalArgumentException("A extention must be specified");
-        if (this.extensions == null)
-            this.extensions = new ArrayList<>();
         this.extensions.add(ext);
     }
 }
