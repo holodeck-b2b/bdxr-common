@@ -54,7 +54,7 @@ public class ProcessIdentifier extends Identifier {
 	 * @param id		the identifier value
 	 * @param scheme 	scheme in which the identifier is defined
 	 */
-	public ProcessIdentifier(String id, String scheme) {
+	public ProcessIdentifier(String id, IdScheme scheme) {
 		super(id, scheme);		
 	}
 	

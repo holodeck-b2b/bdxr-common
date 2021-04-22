@@ -24,20 +24,14 @@ import org.holodeckb2b.commons.util.Utils;
 
 /**
  * Represent the generic definition of the identifiers used in the SMP data, i.e. the <i>Participant</i>, <i>Process</i>
- * and <i>Service</i>/<i>Document</i> identifiers. Identifiers can have an <i>identifier scheme</i> assigned. Although 
- * the specifications require the scheme identifier to be an URI this class uses a simple string and does not validate 
- * its value to be an URI. 
- * <p>By default the identifier values are case insensitive and are converted to lower case as mandated by version 2 of
- * the OASIS specification. However some domains may want to handle certain identifiers case sensitively. Therefore an
- * additional attribute is available to indicate that case sensitive handling of the identifier value. 
- *
+ * and <i>Service</i>/<i>Document</i> identifiers. Identifiers can have an <i>identifier scheme</i> assigned. 
+ * 
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class Identifier {
 
-    protected String  scheme = null;
-    protected String  value = null;
-    protected boolean caseSensitive = false;
+    protected IdScheme  scheme = null;
+    protected String  	value = null;
 
     /**
      * Default constructor that can be used by sub classes if they want to allow <code>null</code> values.
@@ -50,7 +44,7 @@ public class Identifier {
      * @param id    The identifier value
      */
     public Identifier(final String id) {
-        this(id, null, false);
+        this(id, null);
     }
 
     /**
@@ -59,23 +53,9 @@ public class Identifier {
      * @param id        The identifier value
      * @param scheme    The scheme in which the id is defined
      */
-    public Identifier(final String id, final String scheme) {
-    	this(id, scheme, false);
-    }
-    
-    /**
-     * Creates a new identifier that is defined in the given scheme and for which the case sensitivity is explicitly
-     * set.
-     *
-     * @param id        	The identifier value
-     * @param scheme    	The scheme in which the id is defined
-     * @param caseSensitive	Indicates whether the identifier value must be handled case sensitively (<code>true</code>)
-     * 						or not (<code>false</code>)
-     */
-    public Identifier(final String id, final String scheme, final boolean caseSensitive)  {
+    public Identifier(final String id, final IdScheme scheme) {
         if (Utils.isNullOrEmpty(id))
             throw new IllegalArgumentException("Identifier value must not be null or empty!");
-        this.caseSensitive = caseSensitive;
         this.value =  id;
         this.scheme = scheme;
     }
@@ -87,7 +67,6 @@ public class Identifier {
 	 * @since 2.0.0
 	 */
     public Identifier(final Identifier src) {
-        this.caseSensitive = src.caseSensitive;
         this.value =  src.value;
         this.scheme = src.scheme;    	
     }
@@ -97,7 +76,7 @@ public class Identifier {
      *
      * @return  The identifier scheme
      */
-    public String getScheme() {
+    public IdScheme getScheme() {
         return scheme;
     }
 
@@ -106,7 +85,7 @@ public class Identifier {
      *
      * @param scheme The new identifier scheme
      */
-    public void setScheme(final String scheme) {
+    public void setScheme(final IdScheme scheme) {
         this.scheme = scheme;
     }
 
@@ -116,7 +95,7 @@ public class Identifier {
      * @return  The identifier value.
      */
     public String getValue() {
-        return caseSensitive ? value : value.toLowerCase();
+        return scheme != null && scheme.isCaseSensitive() ? value : value.toLowerCase();
     }
 
     /**
@@ -136,7 +115,7 @@ public class Identifier {
      * @param id        The new identifier value
      * @param scheme    The identifier scheme the id is defined in
      */
-    public void setValue(final String id, final String scheme) {
+    public void setValue(final String id, final IdScheme scheme) {
         if (Utils.isNullOrEmpty(id))
             throw new IllegalArgumentException("Identifier value must not be null or empty!");
         this.value = id;
@@ -169,14 +148,12 @@ public class Identifier {
      */
     @Override
     public String toString() {
-		return (Utils.isNullOrEmpty(scheme) ? "" : scheme + "::") + getValue();
+		return (scheme == null ? "" : scheme.getSchemeId() + "::") + getValue();
     }
     
     /**
      * Checks if the given object is also an <code>Identifier</code> and if it is represent the same identifier, i.e.
-     * has the same scheme and value where the scheme is compared case sensitive and the value case insensitive.
-     * <p>NOTE: The difference in case sensitivity between the scheme and value is because the scheme is defined in the
-     * SMP specifications as a generic URI while the identifier is explicitly defined to be case insensitive.
+     * has the same scheme and value.
      *
      * @param o     The other object
      * @return      <code>true</code> if the given object represents the same identifier,<br>
@@ -189,7 +166,7 @@ public class Identifier {
         else {
             Identifier o1 = (Identifier) o;
             return (this.scheme == null ? o1.scheme == null : this.scheme.equals(o1.scheme))
-                && (this.value == null ? o1.value == null : (this.caseSensitive ? this.value.equals(o1.value) 
+                && (this.value == null ? o1.value == null : (this.scheme.isCaseSensitive() ? this.value.equals(o1.value) 
                 															  : this.value.equalsIgnoreCase(o1.value)));
         }
     }
@@ -203,7 +180,7 @@ public class Identifier {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 47 * hash + Objects.hashCode(this.scheme);
+        hash = 47 * hash + this.scheme.hashCode();
         hash = 47 * hash + Objects.hashCode(getValue());
         return hash;
     }
