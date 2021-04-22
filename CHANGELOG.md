@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 2.0.0
-##### Unreleased
+##### 2021-04-15
 ###
 * "Copy" constructors to all data model classes that use another instance to initialise
 
