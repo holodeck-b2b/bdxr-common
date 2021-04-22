@@ -2,9 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 3.0.0
+##### Unreleased
+### Added
+* Meta-data class for _identifier schemes_
+
+### Changed
+* The identifier classes `Identifier` and `ProcessIdentifier` now use the new `IdScheme` class
+
 ## 2.0.0
 ##### 2021-04-15
-###
+### Added
 * "Copy" constructors to all data model classes that use another instance to initialise
 
 ### Changed 
