@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.holodeckb2b.bdxr</groupId>
 	<artifactId>bdxr-common</artifactId>
-	<version>3.0.0-SNAPSHOT</version>
+	<version>3.0.0</version>
 	<packaging>jar</packaging>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,7 +13,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 	<name>BDXR Common</name>
-	<description>This project contains a set of classes that represent the concepts from the 4-Corner Model as used in the BDXL and SMP specifications 
+	<description>This project contains a set of classes that represent the concepts from the 4-Corner Model as used in the BDXL and SMP specifications
     developed by the OASIS BDXR Technical Committee and its predecessors developed within PEPPOL.</description>
 	<scm>
 		<url>https://github.com/holodeck-b2b/bdxr-common</url>
@@ -53,7 +53,13 @@
 		<dependency>
 			<groupId>org.holodeckb2b.commons</groupId>
 			<artifactId>generic-utils</artifactId>
-			<version>1.0.0</version>
-		</dependency>	
+			<version>1.1.0</version>
+		 <exclusions>
+		  <exclusion>
+		   <groupId>org.apache.tika</groupId>
+		   <artifactId>tika-core</artifactId>
+		  </exclusion>
+		 </exclusions>
+		</dependency>
 	</dependencies>
 </project>
