@@ -16,22 +16,20 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
+import java.io.Serializable;
+
 /**
- * Represent the definition of the Process identifiers used in the SMP data. It is based on the generic {@link
- * Identifier} but adds a function to indicate that the identifier does identify the "no process" which is used in the
- * SMP specifications for service meta-data that does not relate to any process. Because this represented in the
- * specifications by a specific, but different, string we use a indicator which should be set when the actual data is
- * processed.
+ * Indicates that the given data are the result of an SMP query, i.e. contain the meta-data about a Participant. The
+ * SMP server may sign the response, in which case the certificate used for signing is also included with the result.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-public interface ProcessIdentifier extends Identifier {
+public interface QueryResult extends Serializable {
 
 	/**
-	 * Indicates whether this identifier is the special "no-process" identifier as defined in the specifications.
-	 *
-	 * @return	<code>true</code> if it is the special "no-process" identifier,<br>
-	 * 			<code>false</code> if not
-	 */
-	boolean isNoProcess();
+     * Gets the identifier of the participant the meta-data included in the apply to
+     *
+     * @return The participant id
+     */
+    Identifier getParticipantId();
 }

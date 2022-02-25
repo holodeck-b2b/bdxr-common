@@ -16,22 +16,22 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
+import java.io.Serializable;
+import java.util.List;
+
 /**
- * Represent the definition of the Process identifiers used in the SMP data. It is based on the generic {@link
- * Identifier} but adds a function to indicate that the identifier does identify the "no process" which is used in the
- * SMP specifications for service meta-data that does not relate to any process. Because this represented in the
- * specifications by a specific, but different, string we use a indicator which should be set when the actual data is
- * processed.
+ * Represents a meta-data element included in a SMP response that can be extended with non-standard, context specific
+ * meta-data. This interface is not intended to be implemented directly but only serves as a "base interface" for the
+ * specific meta-data elements defined in this package.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-public interface ProcessIdentifier extends Identifier {
+interface ExtensibleMetadata extends Serializable {
 
 	/**
-	 * Indicates whether this identifier is the special "no-process" identifier as defined in the specifications.
+	 * Gets the additional, non standard, information related to the meta-data object.
 	 *
-	 * @return	<code>true</code> if it is the special "no-process" identifier,<br>
-	 * 			<code>false</code> if not
+	 * @return The extended meta-data
 	 */
-	boolean isNoProcess();
+	List<Extension> getExtensions();
 }

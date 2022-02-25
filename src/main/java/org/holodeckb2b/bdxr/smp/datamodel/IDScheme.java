@@ -16,22 +16,28 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
+import java.io.Serializable;
+
 /**
- * Represent the definition of the Process identifiers used in the SMP data. It is based on the generic {@link
- * Identifier} but adds a function to indicate that the identifier does identify the "no process" which is used in the
- * SMP specifications for service meta-data that does not relate to any process. Because this represented in the
- * specifications by a specific, but different, string we use a indicator which should be set when the actual data is
- * processed.
+ * Represents the meta-data of an <i>Identifier Scheme</i> which defines the policies for identifiers used in the
+ * SMP data, e.g. the <i>Participant</i> ID. As only the policy on whether identifiers from the scheme should be
+ * treated case sensitively is relevant for general processing of SMP data the interface is limited
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-public interface ProcessIdentifier extends Identifier {
+public interface IDScheme extends Serializable {
+	/**
+	 * Gets the unique identification of the scheme.
+	 *
+	 * @return the scheme id
+	 */
+	String getSchemeId();
 
 	/**
-	 * Indicates whether this identifier is the special "no-process" identifier as defined in the specifications.
+	 * Indicates whether identifiers from this identifier scheme should be treated case sensitively or not.
 	 *
-	 * @return	<code>true</code> if it is the special "no-process" identifier,<br>
-	 * 			<code>false</code> if not
+	 * @return	<code>true</code> when the identifiers should be treated case sensitively,<br/>
+	 * 			<code>false</code> when the identifiers should be treated case insensitively
 	 */
-	boolean isNoProcess();
+	boolean isCaseSensitive();
 }

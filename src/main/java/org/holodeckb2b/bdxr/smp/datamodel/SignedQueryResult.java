@@ -16,22 +16,20 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
+import java.security.cert.X509Certificate;
+
 /**
- * Represent the definition of the Process identifiers used in the SMP data. It is based on the generic {@link
- * Identifier} but adds a function to indicate that the identifier does identify the "no process" which is used in the
- * SMP specifications for service meta-data that does not relate to any process. Because this represented in the
- * specifications by a specific, but different, string we use a indicator which should be set when the actual data is
- * processed.
+ * Indicates that the given data are the result of an SMP query, i.e. contain the meta-data about a Participant, and
+ * that the SMP server signed the result.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-public interface ProcessIdentifier extends Identifier {
+public interface SignedQueryResult extends QueryResult {
 
 	/**
-	 * Indicates whether this identifier is the special "no-process" identifier as defined in the specifications.
+	 * Gets the certificate that was used to sign the result.
 	 *
-	 * @return	<code>true</code> if it is the special "no-process" identifier,<br>
-	 * 			<code>false</code> if not
+	 * @return the signing certificate if the result was signed
 	 */
-	boolean isNoProcess();
+	X509Certificate getSigningCertificate();
 }
