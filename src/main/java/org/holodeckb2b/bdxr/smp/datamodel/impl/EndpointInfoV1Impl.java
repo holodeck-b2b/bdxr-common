@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.List;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfoV1;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -159,4 +160,26 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
 	public void setTechnicalInformationURL(URL techInfoUrl) {
 		this.techInfoURL = techInfoUrl;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof EndpointInfoV1))
+			return false;
+
+		EndpointInfoV1 e = (EndpointInfoV1) o;
+		return super.equals(o)
+			&& Utils.nullSafeEqual(businessLevelSignatureRequired, e.getBusinessLevelSignatureRequired())
+			&& Utils.nullSafeEqual(minimumAuthenticationLevel, e.getMinimumAuthenticationLevel())
+			&& Utils.nullSafeEqual(techInfoURL, e.getTechnicalInformationURL());
+	}
+
+//	@Override
+//	public int hashCode() {
+//		final int prime = 31;
+//		int result = super.hashCode();
+//		result = prime * result + Objects.hash(businessLevelSignatureRequired, minimumAuthenticationLevel,
+//												techInfoURL);
+//		return result;
+//	}
+
 }

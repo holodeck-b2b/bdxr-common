@@ -40,4 +40,24 @@ public interface IDScheme extends Serializable {
 	 * 			<code>false</code> when the identifiers should be treated case insensitively
 	 */
 	boolean isCaseSensitive();
+
+	/**
+	 * Determines if the given object represents the same Identifier Scheme meta-data.
+	 *
+	 * @param o		the object the compare
+	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>IDScheme</code> and represent the
+	 * 				same meta-data.
+	 */
+	@Override
+	boolean equals(Object o);
+
+	/**
+	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
+	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
+	 * <code>i1.equals(i2) == true</code>.
+	 *
+	 * @return hash value for this instance
+	 */
+	@Override
+	int hashCode();
 }

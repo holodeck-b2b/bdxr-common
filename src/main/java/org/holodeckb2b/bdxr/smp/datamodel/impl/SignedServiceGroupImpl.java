@@ -18,12 +18,14 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceGroupV2;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
 import org.holodeckb2b.bdxr.smp.datamodel.SignedQueryResult;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -54,7 +56,7 @@ public class SignedServiceGroupImpl extends ServiceGroupV2Impl implements Signed
     }
 
 	/**
-	 * Creates a new <code>ServiceGroupV2</code> instance copying the data from the given instance.
+	 * Creates a new instance copying the data from the given instance.
 	 *
 	 * @param src the instance to copy the data from
 	 */
@@ -73,7 +75,7 @@ public class SignedServiceGroupImpl extends ServiceGroupV2Impl implements Signed
     public SignedServiceGroupImpl(final ServiceGroupV2 src, final X509Certificate cert) {
     	super(src);
 		this.signingCert = cert;
-    }	
+    }
 
 	/**
 	 * Gets the certificate that was used to sign the result.
@@ -92,5 +94,21 @@ public class SignedServiceGroupImpl extends ServiceGroupV2Impl implements Signed
 	 */
 	public void setSigningCertificate(X509Certificate cert) {
 		this.signingCert = cert;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof SignedQueryResult) || !(o instanceof ServiceGroupV2))
+			return false;
+
+		return super.equals(o) && Utils.nullSafeEqual(signingCert, ((SignedQueryResult) o).getSigningCertificate());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(signingCert);
+		return result;
 	}
 }

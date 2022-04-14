@@ -19,6 +19,7 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
+
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceGroupV1;
@@ -53,5 +54,5 @@ public class ServiceGroupV1Impl extends AbstractServiceGroupImpl<URL> implements
 	 */
     public ServiceGroupV1Impl(final ServiceGroupV1 src) {
     	super(src);
-    }
+    }    
 }

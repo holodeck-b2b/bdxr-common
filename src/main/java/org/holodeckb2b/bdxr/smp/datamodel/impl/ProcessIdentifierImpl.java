@@ -16,7 +16,9 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
+import java.util.Objects;
 import org.holodeckb2b.bdxr.smp.datamodel.IDScheme;
+import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessIdentifier;
 
 /**
@@ -128,4 +130,21 @@ public class ProcessIdentifierImpl extends IdentifierImpl implements ProcessIden
     public String toString() {
 		return isNoProcess ? "{{No-Process}}" : super.toString();
     }
+
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof ProcessIdentifier))
+			return false;
+		else
+			return (this.isNoProcess && ((ProcessIdentifier) o).isNoProcess()) || super.equals((Identifier) o);
+	}
+
+	@Override
+	public int hashCode() {
+		int result = Objects.hash(isNoProcess);
+		if (!isNoProcess) {
+			final int prime = 31;
+			result += prime * super.hashCode();
+		}
+		return result;
+	}
 }

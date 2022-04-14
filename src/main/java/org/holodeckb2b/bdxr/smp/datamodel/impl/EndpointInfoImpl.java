@@ -20,11 +20,12 @@ import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
-
 import org.holodeckb2b.bdxr.smp.datamodel.Certificate;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -224,32 +225,6 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
     }
 
     /**
-     * Returns the first endpoint certificate that is registered for the requested usage. If no certificate is included
-     * for the requested usage, the first certificate that has no explicit usage defined is returned.
-     *
-     * @param usage	The intended use of the certificate
-     * @return		The first endpoint certificate for the requested usage,<br>
-     * 				or if that does not exist the first certificate without explicit usage indicator, or <br>
-     * 			    <code>null</code> if no such certificate exists either
-     */
-//	@Override
-//    public Certificate getCertificateFor(final String usage) {
-//		if (Utils.isNullOrEmpty(certificates))
-//			return null;
-//		else {
-//			Certificate cert = null;
-//			if (!Utils.isNullOrEmpty(usage))
-//				cert = certificates.parallelStream().filter(c -> usage.equals(c.getUsage())).findFirst().orElse(null);
-//			if (cert == null)
-//				// Search for certificate without usage indication
-//				cert = certificates.parallelStream().filter(c -> Utils.isNullOrEmpty(c.getUsage())).findFirst()
-//																									.orElse(null);
-//
-//			return cert;
-//		}
-//    }
-
-    /**
      * Sets the meta-data on the certificates used by the endpoint
      *
      * @param certs		The meta-data on the certificates
@@ -270,4 +245,31 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
 			this.certificates = new HashSet<>(1);
         this.certificates.add(cert);
     }
+
+    public boolean equals(Object o) {
+    	if (o == null || !(o instanceof EndpointInfo))
+    		return false;
+    	else {
+    		EndpointInfo e = (EndpointInfo) o;
+    		return super.equals(o)
+    			&& Utils.areEqual(certificates, e.getCertificates())
+    			&& Utils.nullSafeEqual(contactInfo, e.getContactInfo())
+    			&& Utils.nullSafeEqual(description, e.getDescription())
+    			&& Utils.nullSafeEqual(serviceActivationDate, e.getServiceActivationDate())
+    			&& Utils.nullSafeEqual(serviceExpirationDate, e.getServiceExpirationDate())
+    			&& Utils.nullSafeEqual(transportProfile, e.getTransportProfile());
+    	}
+    }
+
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(Utils.isNullOrEmpty(certificates) ? null : certificates , contactInfo,
+											   description, endpointURL,
+											   serviceActivationDate != null ? serviceActivationDate.toInstant() : null,
+											   serviceExpirationDate != null ? serviceExpirationDate.toInstant() : null,
+											   transportProfile);
+		return result;
+	}
 }

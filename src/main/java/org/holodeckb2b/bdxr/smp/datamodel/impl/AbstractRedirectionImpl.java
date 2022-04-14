@@ -18,6 +18,7 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Objects;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Redirection;
 
@@ -85,4 +86,17 @@ abstract class AbstractRedirectionImpl extends ExtensibleMetadataClass implement
     public void setNewSMPURL(final URL redirectedURL) {
     	this.newTargetURL = redirectedURL;
     }
+
+    @Override
+    public boolean equals(Object r) {
+		return this.newTargetURL.equals(((Redirection) r).getNewSMPURL()) && super.equals(r);
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(newTargetURL);
+		return result;
+	}
 }

@@ -18,11 +18,13 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessIdentifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -121,5 +123,24 @@ public class ProcessInfoImpl extends ExtensibleMetadataClass implements ProcessI
         if (this.roles == null)
 			this.roles = new HashSet<>(1);
 		this.roles.add(role);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof ProcessInfo))
+			return false;
+
+		ProcessInfo p = (ProcessInfo) o;
+		return super.equals(o)
+			&& Utils.nullSafeEqual(processId, p.getProcessId())
+			&& Utils.areEqual(roles, p.getRoles());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(processId, Utils.isNullOrEmpty(roles) ? null : roles);
+		return result;
 	}
 }

@@ -18,12 +18,14 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessGroup;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceMetadata;
 import org.holodeckb2b.bdxr.smp.datamodel.SignedQueryResult;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -94,5 +96,21 @@ public class SignedServiceMetadataImpl extends ServiceMetadataImpl implements Si
 	 */
 	public void setSigningCertificate(X509Certificate cert) {
 		this.signingCert = cert;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof SignedQueryResult) || !(o instanceof ServiceMetadata))
+			return false;
+
+		return super.equals(o) && Utils.nullSafeEqual(signingCert, ((SignedQueryResult) o).getSigningCertificate());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(signingCert);
+		return result;
 	}
 }

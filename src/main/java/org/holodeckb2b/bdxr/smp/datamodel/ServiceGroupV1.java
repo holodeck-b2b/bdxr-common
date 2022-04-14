@@ -27,11 +27,4 @@ import java.net.URL;
  */
 public interface ServiceGroupV1 extends ServiceGroup<URL> {
 
-//	/**
-//	 * Gets the set of URLs that can be used to retrieve the meta-data on individual services supported by the
-//	 * participant.
-//	 *
-//	 * @return	collection of URLs to retrieve the service meta-data
-//	 */
-//	Collection<URL>	getServiceMetaReferences();
 }

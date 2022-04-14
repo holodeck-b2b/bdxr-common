@@ -19,11 +19,13 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceGroup;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -58,7 +60,8 @@ public abstract class AbstractServiceGroupImpl<T> extends ExtensibleMetadataClas
 	 *
 	 * @param src the instance to copy the data from
 	 */
-    public AbstractServiceGroupImpl(final ServiceGroup<T> src) {
+    @SuppressWarnings("unchecked")
+	public AbstractServiceGroupImpl(final ServiceGroup<T> src) {
     	super(src.getExtensions());
 		this.participantId = src.getParticipantId();
         this.serviceRefs = (Set<T>) src.getServiceReferences();
@@ -112,4 +115,24 @@ public abstract class AbstractServiceGroupImpl<T> extends ExtensibleMetadataClas
 			this.serviceRefs = new HashSet<>(1);
         this.serviceRefs.add(svcRef);
     }
+
+    @Override
+    public boolean equals(Object o) {
+    	if (o == null || !(o instanceof ServiceGroup))
+    		return false;
+
+    	@SuppressWarnings("rawtypes")
+ 		ServiceGroup oth = (ServiceGroup) o;
+    	return super.equals(o)
+    		&& Utils.nullSafeEqual(this.participantId, oth.getParticipantId())
+    		&& Utils.areEqual(this.serviceRefs, oth.getServiceReferences());
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(participantId, !Utils.isNullOrEmpty(serviceRefs) ? serviceRefs : null);
+		return result;
+	}
 }

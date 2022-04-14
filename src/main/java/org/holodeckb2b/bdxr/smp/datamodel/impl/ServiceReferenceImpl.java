@@ -19,11 +19,13 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -112,4 +114,23 @@ public class ServiceReferenceImpl extends ExtensibleMetadataClass implements Ser
 			this.processInfo = new HashSet<>(1);
         this.processInfo.add(process);
     }
+
+    @Override
+    public boolean equals(Object o) {
+	    if (o == null || !(o instanceof ServiceReference))
+	    	return false;
+
+	    ServiceReference r = (ServiceReference) o;
+	    return super.equals(o)
+    		&& Utils.areEqual(processInfo, r.getProcessInfo())
+    		&& Utils.nullSafeEqual(serviceId, r.getServiceId());
+    }
+
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(processInfo, serviceId);
+		return result;
+	}
 }

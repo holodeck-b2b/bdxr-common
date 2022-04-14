@@ -19,8 +19,10 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.Objects;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.RedirectionV2;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -96,5 +98,21 @@ public class RedirectionV2Impl extends AbstractRedirectionImpl implements Redire
      */
 	public void setSMPCertitificate(X509Certificate cert) {
 		this.cert = cert;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof RedirectionV2))
+			return false;
+
+		return super.equals(o) && Utils.nullSafeEqual(cert, ((RedirectionV2) o).getSMPCertificate());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(cert);
+		return result;
 	}
 }

@@ -38,7 +38,28 @@ public interface ServiceReference extends ExtensibleMetadata {
 	/**
 	 * Gets the set of identifiers for the processes, and participant roles, in which the service is supported.
 	 *
-	 * @return	collection of process information
+	 * @return	collection of process information, empty or <code>null</code> to indicate the service is used in all
+	 *			processes
 	 */
 	Collection<? extends ProcessInfo>	getProcessInfo();
+
+	/**
+	 * Determines if the given object represents the same Service Reference.
+	 *
+	 * @param o		the object the compare
+	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>ServiceReference</code> and represent
+	 * 				the same meta-data.
+	 */
+	@Override
+	boolean equals(Object o);
+
+	/**
+	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
+	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
+	 * <code>i1.equals(i2) == true</code>.
+	 *
+	 * @return hash value for this instance
+	 */
+	@Override
+	int hashCode();
 }

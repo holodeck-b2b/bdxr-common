@@ -18,6 +18,8 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import org.holodeckb2b.bdxr.smp.datamodel.ExtensibleMetadata;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.commons.util.Utils;
 
@@ -95,4 +97,15 @@ public abstract class ExtensibleMetadataClass {
 	public void removeAll() {
 		extensions.clear();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		return Utils.areEqual(this.extensions, ((ExtensibleMetadata) o).getExtensions());
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(Utils.isNullOrEmpty(extensions) ? null : extensions);
+	}
+
 }

@@ -36,14 +36,15 @@ public interface ProcessGroup extends ExtensibleMetadata {
 	/**
 	 * Gets the group of process meta-data on the processes in which the endpoints are / redirection is used.
 	 *
-	 * @return Collection of process meta-data
+	 * @return Collection of process meta-data, may be <code>null</code> which is considered equal to an empty
+	 *			collection.
 	 */
 	Collection<? extends ProcessInfo> getProcessInfo();
 
 	/**
 	 * Gets the list of available endpoints for this process group.
 	 *
-	 * @return The collection of endpoints
+	 * @return The collection of endpoints, may be <code>null</code> which is considered equal to an empty collection.
 	 */
 	Collection<? extends EndpointInfo> getEndpoints();
 
@@ -53,4 +54,24 @@ public interface ProcessGroup extends ExtensibleMetadata {
 	 * @return Meta-data about the redirection
 	 */
 	Redirection getRedirection();
+
+	/**
+	 * Determines if the given object represents the same Process Group meta-data.
+	 *
+	 * @param o		the object the compare
+	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>ProcessGroup</code> and represent the
+	 * 				same meta-data.
+	 */
+	@Override
+	boolean equals(Object o);
+
+	/**
+	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
+	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
+	 * <code>i1.equals(i2) == true</code>.
+	 *
+	 * @return hash value for this instance
+	 */
+	@Override
+	int hashCode();
 }

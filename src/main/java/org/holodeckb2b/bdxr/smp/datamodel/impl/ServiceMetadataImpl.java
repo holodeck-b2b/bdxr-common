@@ -18,11 +18,13 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessGroup;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceMetadata;
+import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
@@ -135,4 +137,25 @@ public class ServiceMetadataImpl extends ExtensibleMetadataClass implements Serv
 			this.processGroups = new HashSet<>(1);
         this.processGroups.add(processGroup);
     }
+
+    @Override
+    public boolean equals(Object o) {
+    	if (o == null || !(o instanceof ServiceMetadata))
+    		return false;
+
+    	ServiceMetadata s = (ServiceMetadata) o;
+    	return super.equals(o)
+			&& Utils.nullSafeEqual(participantId, s.getParticipantId())
+			&& Utils.areEqual(processGroups, s.getProcessMetadata())
+			&& Utils.nullSafeEqual(serviceId, s.getServiceId());
+    }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(participantId, Utils.isNullOrEmpty(processGroups) ? null : processGroups,
+												serviceId);
+		return result;
+	}
 }

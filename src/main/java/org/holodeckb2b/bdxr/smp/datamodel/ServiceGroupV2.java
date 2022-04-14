@@ -26,10 +26,4 @@ package org.holodeckb2b.bdxr.smp.datamodel;
  */
 public interface ServiceGroupV2 extends ServiceGroup<ServiceReference>, ExtensibleMetadata {
 
-//	/**
-//	 * Gets the set of service and process identifier combinations which are supported by the participant.
-//	 *
-//	 * @return collection of {@link ServiceReference}s
-//	 */
-//	Collection<? extends ServiceReference> getServiceReferences();
 }

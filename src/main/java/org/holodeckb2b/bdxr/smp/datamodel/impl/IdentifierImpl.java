@@ -156,28 +156,16 @@ public class IdentifierImpl implements Identifier {
 		return (scheme == null ? "" : scheme.getSchemeId() + "::") + getValue();
     }
 
-//	public boolean equals(Object o) {
-//		if (o == null || !(o instanceof Identifier))
-//			return false;
-//
-//		Identifier i = (Identifier) o;
-//
-//		IDScheme ts = this.getScheme();
-//		String	 tv = this.getValue();
-//		IDScheme is = i.getScheme();
-//		String	 iv = i.getValue();
-//
-//		return (ts == null ? is == null : ts.equals(is))
-//                && (tv == null ? iv == null : (ts != null && ts.isCaseSensitive() ? tv.equals(iv)
-//																				  : tv.equalsIgnoreCase(iv)));
-//	}
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof Identifier))
+			return false;
 
-    /**
-     * Generates a hashCode for this identifier. Takes into account how the value should be treated with regards to
-     * case sensitivity.
-     *
-     * @return hash code of this instance
-     */
+		final Identifier i = (Identifier) o;
+		return Utils.nullSafeEqual(scheme, i.getScheme())
+                && (scheme != null && scheme.isCaseSensitive()) ? Utils.nullSafeEqual(value, i.getValue())
+															    : Utils.nullSafeEqualIgnoreCase(value, i.getValue());
+	}
+
     @Override
     public int hashCode() {
         int hash = 3;

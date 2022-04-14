@@ -18,6 +18,7 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
@@ -203,4 +204,26 @@ public class ProcessGroupImpl extends ExtensibleMetadataClass implements Process
 			throw new IllegalStateException("Endpoints have already been set");
 		this.redirect = redirect;
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof ProcessGroup))
+			return false;
+
+		ProcessGroup pg = (ProcessGroup) o;
+		return super.equals(o)
+			&& Utils.areEqual(endpoints, pg.getEndpoints())
+			&& Utils.areEqual(processes, pg.getProcessInfo())
+			&& Utils.nullSafeEqual(redirect, pg.getRedirection());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(Utils.isNullOrEmpty(endpoints) ? null : endpoints,
+											   Utils.isNullOrEmpty(processes) ? null : processes, redirect);
+		return result;
+	}
+
 }

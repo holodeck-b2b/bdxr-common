@@ -17,6 +17,7 @@
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.RedirectionV1;
@@ -96,5 +97,21 @@ public class RedirectionV1Impl extends AbstractRedirectionImpl implements Redire
 	 */
 	public void setSMPSubjectUniqueID(boolean[] subjectUID) {
 		this.subjectUniqueID = subjectUID;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null || !(o instanceof RedirectionV1))
+			return false;
+
+		return super.equals(o) && Arrays.equals(this.subjectUniqueID, ((RedirectionV1) o).getSMPSubjectUniqueID());
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Arrays.hashCode(subjectUniqueID);
+		return result;
 	}
 }

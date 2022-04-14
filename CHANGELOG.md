@@ -8,8 +8,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Interface for _identifier schemes_
 * Interfaces for _service groups_ (supporting both the old PEPPOL and OASIS SMP version 1.0 as well as OASIS SMP
   version 2.0 specifications)
-* Utility class `org.holodeckb2b.bdxr.smp.datamodel.util.Comparator` to check if two meta-data objects represent the
-  meta-data
 
 ### Changed
 * Split meta-data classes into interfaces and implementation classes.

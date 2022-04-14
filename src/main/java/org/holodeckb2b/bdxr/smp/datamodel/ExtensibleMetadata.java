@@ -26,12 +26,12 @@ import java.util.List;
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
-interface ExtensibleMetadata extends Serializable {
+public interface ExtensibleMetadata extends Serializable {
 
 	/**
 	 * Gets the additional, non standard, information related to the meta-data object.
 	 *
-	 * @return The extended meta-data
+	 * @return The extended meta-data, may be <code>null</code> which is considered equal to an empty collection.
 	 */
 	List<Extension> getExtensions();
 }

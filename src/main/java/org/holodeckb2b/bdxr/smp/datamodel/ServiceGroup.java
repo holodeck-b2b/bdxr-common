@@ -31,5 +31,30 @@ import java.util.Collection;
  */
 public interface ServiceGroup<T> extends ExtensibleMetadata, QueryResult {
 
+	/**
+	 * Gets the set of references to the individual services supported by the participant.
+	 *
+	 * @return	collection of references to service meta-data, empty or <code>null</code> when there are none.
+	 */
 	Collection<? extends T> getServiceReferences();
+
+	/**
+	 * Determines if the given object represents the same Certificate meta-data.
+	 *
+	 * @param o		the object the compare
+	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>Certificate</code> and represent the
+	 * 				same meta-data.
+	 */
+	@Override
+	boolean equals(Object o);
+
+	/**
+	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
+	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
+	 * <code>i1.equals(i2) == true</code>.
+	 *
+	 * @return hash value for this instance
+	 */
+	@Override
+	int hashCode();
 }

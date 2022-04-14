@@ -49,19 +49,18 @@ public interface Certificate extends ExtensibleMetadata {
 	String getUsage();
 
 	/**
-	 * Gets the date from which on the certificate can be used.
-	 * <p>NOTE: This activation date can be different from the date the certificate itself is valid.
+	 * Gets the time stamp from which on the certificate can be used.
+	 * <p>NOTE: The activation time stamp can be different from the date the certificate itself is valid.
 	 *
-	 * @return	the activation date of the certificate. Although
+	 * @return	the activation time stamp of the certificate.
 	 */
 	ZonedDateTime getActivationDate();
 
 	/**
-	 * Gets the date until which the certificate can be used.
-	 * <p>NOTE: This date can be before the date the certificate itself expires to indicate it just should not be used
-	 * anymore.
+	 * Gets the time stamp until which the certificate can be used.
+	 * <p>NOTE: This can be before the date the certificate itself expires.
 	 *
-	 * @return	the date from which on the certificate should not be used
+	 * @return	the time stamp from which on the certificate should not be used anymore
 	 */
 	ZonedDateTime getExpirationDate();
 
@@ -71,4 +70,27 @@ public interface Certificate extends ExtensibleMetadata {
 	 * @return the description of the certificate
 	 */
 	String getDescription();
+
+	/**
+	 * Determines if the given object represents the same Certificate meta-data.
+	 * <p>NOTE: The activation and expiration time stamps should be compared as instants on the time line to prevent
+	 * issues with the time zone indicator which could be different on two {@link ZonedDateTime} objects that represent
+	 * the same time stamp.
+	 *
+	 * @param o		the object the compare
+	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>Certificate</code> and represent the
+	 * 				same meta-data.
+	 */
+	@Override
+	boolean equals(Object o);
+
+	/**
+	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
+	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
+	 * <code>i1.equals(i2) == true</code>.
+	 *
+	 * @return hash value for this instance
+	 */
+	@Override
+	int hashCode();
 }
