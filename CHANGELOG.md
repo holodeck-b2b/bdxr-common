@@ -8,6 +8,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Interface for _identifier schemes_
 * Interfaces for _service groups_ (supporting both the old PEPPOL and OASIS SMP version 1.0 as well as OASIS SMP
   version 2.0 specifications)
+* _equal()_ and _hashCode()_ methods to the both the interfaces (to stress these must be implemented) and implementation 
+  classes
 
 ### Changed
 * Split meta-data classes into interfaces and implementation classes.
