@@ -3,7 +3,7 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## 3.0.0
-##### Unreleased
+##### 2022-05-03
 ### Added
 * Interface for _identifier schemes_
 * Interfaces for _service groups_ (supporting both the old PEPPOL and OASIS SMP version 1.0 as well as OASIS SMP
