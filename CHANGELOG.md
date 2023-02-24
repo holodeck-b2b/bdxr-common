@@ -2,13 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.0
+##### 2022-02-24
+### Changed
+* The `org.holodeckb2b.bdxr.smp.datamodel.impl.IdentifierImpl(final String id)` constructor now tries to parse the
+  given string into a scheme ID and identifier value using the format «schemeID»::«id value»
+
 ## 3.0.0
 ##### 2022-05-03
 ### Added
 * Interface for _identifier schemes_
 * Interfaces for _service groups_ (supporting both the old PEPPOL and OASIS SMP version 1.0 as well as OASIS SMP
   version 2.0 specifications)
-* _equal()_ and _hashCode()_ methods to the both the interfaces (to stress these must be implemented) and implementation 
+* _equal()_ and _hashCode()_ methods to the both the interfaces (to stress these must be implemented) and implementation
   classes
 
 ### Changed

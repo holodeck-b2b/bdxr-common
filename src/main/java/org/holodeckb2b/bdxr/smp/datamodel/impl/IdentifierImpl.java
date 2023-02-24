@@ -37,12 +37,23 @@ public class IdentifierImpl implements Identifier {
     protected IdentifierImpl() {}
 
     /**
-     * Creates a new identifier without indicating a scheme
+     * Creates a new identifier based on the given string. It will try to parse the string into both the scheme ID and
+	 * identifier value by looking for a double colon ("::") separator and use the left part as scheme ID and the right
+	 * part as identifier value.
      *
      * @param id    The identifier value
      */
     public IdentifierImpl(final String id) {
-        this(id, (IDScheme) null);
+		if (!Utils.isNullOrEmpty(id)) {
+			final int s = id.indexOf("::");
+			if (s > 0) {
+				this.scheme = new IDSchemeImpl(id.substring(0, s));
+				this.value = id.substring(s + 2);
+			} else {
+				this.scheme = null;
+				this.value = id;
+			}
+		}
     }
 
     /**
