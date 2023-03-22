@@ -101,7 +101,7 @@ public class CertificateImpl extends ExtensibleMetadataClass implements org.holo
 	/**
 	 * Sets the X509Certificate.
 	 *
-	 * @return	the certificate
+	 * @param cert	the certificate
 	 */
 	public void setX509Cert(final X509Certificate cert) {
 		this.certificate = cert;
