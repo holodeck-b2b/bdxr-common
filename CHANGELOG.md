@@ -17,6 +17,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 * Moved `Identifier`, `ProcessIdentifier` and `Extension` to `org.holodeckb2b.bdxr.common.datamodel` and their implementations 
   to `org.holodeckb2b.bdxr.common.datamodel.impl`.
 * Parameterised `Extension` interface to indicate the type of the extension's content
+* The return value of `org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo.getRoles()` is now a `Set` instead of a `Collection` as
+  role identifiers should be unique.
 
 ### Removed
 * Constructors in the SMP data model classes that used an instance of the interface representing the data model class as

@@ -16,7 +16,7 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
-import java.util.Collection;
+import java.util.Set;
 
 import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
 import org.holodeckb2b.bdxr.common.datamodel.Identifier;
@@ -42,8 +42,7 @@ public interface ProcessInfo extends ExtensibleMetadata {
 	/**
 	 * Gets the roles the participant acts in for this process
 	 *
-	 * @return	collection of Role identifiers, empty or <code>null</code> when no specific Roles are defined
+	 * @return	set of Role identifiers. If the no roles are specified for this process, an empty set MUST be returned.
 	 */
-	Collection<? extends Identifier> getRoles();
-	 */
+	Set<? extends Identifier> getRoles();
 }
