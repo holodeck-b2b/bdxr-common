@@ -9,6 +9,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   BDXR specifications.
 * Added `org.holodeckb2b.bdxr.common.datamodel.Code` and `org.holodeckb2b.bdxr.common.datamodel.Text` interface to represent
   information elements containing a values specified by a code list or text with a language indicator. 
+* Interfaces representing business document envelopes as defined in the [OASIS XHE Standard](https://docs.oasis-open.org/bdxr/xhe/v1.0/xhe-v1.0-oasis.html)
+* Basic implementation of the XHE interfaces.
 
 ### Changed
 * The type to indicate the supported _transport profile_ by an _endpoint_ is now `Identifier` instead of a simple `String`
