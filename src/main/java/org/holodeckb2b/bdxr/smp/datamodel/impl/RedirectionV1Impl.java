@@ -19,13 +19,16 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.RedirectionV1;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class RedirectionV1Impl extends AbstractRedirectionImpl implements RedirectionV1 {
+	private static final long serialVersionUID = 9092884823165422025L;
+	
 	/**
 	 * The <i>Subject Unique Identifier</i> of the certificate of the SMP server to which the request should be
 	 * redirected. The value of this field is defined as a bit string, therefore the type is a boolean array.
@@ -65,22 +68,12 @@ public class RedirectionV1Impl extends AbstractRedirectionImpl implements Redire
      * @param subjectUID	<i>Subject Unique Identifier</i> of certificate of the new SMP server
      * @param ext           Any extended meta-data information included in the SMP record
      */
-    public RedirectionV1Impl(final URL redirectedURL, final boolean[] subjectUID, final List<Extension> ext) {
+    public RedirectionV1Impl(final URL redirectedURL, final boolean[] subjectUID, final List<Extension<?>> ext) {
         super(redirectedURL, ext);
     	this.subjectUniqueID = subjectUID;
     }
 
 	/**
-	 * Creates a new instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public RedirectionV1Impl(final RedirectionV1 src) {
-		super(src);
-    	this.subjectUniqueID = src.getSMPSubjectUniqueID();
-    }
-
-    /**
      * Gets the <i>Subject Unique Identifier</i> of certificate of the SMP server this redirection is to should use.
      *
      * @return	The <i>Subject Unique Identifier</i> of the "redirected" SMP server

@@ -20,6 +20,8 @@ import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
+import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
+
 /**
  * Represents the generic meta-data of an <i>Endpoint</i> that is common in all SMP specifications. This includes the
  * meta-data on the certificate(s) used by the endpoint. In the OASIS V1 and PEPPOL specifications there can be just
@@ -32,10 +34,10 @@ import java.util.Collection;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public interface EndpointInfo extends ExtensibleMetadata {
-
+	
 	/**
 	 * Gets the transport profile the endpoint supports
-	 *
+	 *  
 	 * @return The transport profile
 	 */
 	String getTransportProfile();
@@ -78,31 +80,8 @@ public interface EndpointInfo extends ExtensibleMetadata {
 	/**
 	 * Gets the certificate information of the endpoint.
 	 *
-	 * @return The certificates used by the endpoint, may be <code>null</code> which is considered equal to an empty
-	 *			collection.
+	 * @return collection with the meta-data of the certificates used by the endpoint. If no certificates are used by 
+	 * 		   the endpoint an empty collection MUST be returned.
 	 */
 	Collection<? extends Certificate> getCertificates();
-
-	/**
-	 * Determines if the given object represents the same Endpoint meta-data.
-	 * <p>NOTE: The activation and expiration time stamps should be compared as instants on the time line to prevent
-	 * issues with the time zone indicator which could be different on two {@link ZonedDateTime} objects that represent
-	 * the same time stamp.
-	 *
-	 * @param o		the object the compare
-	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>EndpointInfo</code> and represent the
-	 * 				same meta-data.
-	 */
-	@Override
-	boolean equals(Object o);
-
-	/**
-	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
-	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
-	 * <code>i1.equals(i2) == true</code>.
-	 *
-	 * @return hash value for this instance
-	 */
-	@Override
-	int hashCode();
 }

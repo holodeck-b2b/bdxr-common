@@ -14,15 +14,18 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.datamodel;
+package org.holodeckb2b.bdxr.common.datamodel;
 
 import java.io.Serializable;
 
+import org.holodeckb2b.bdxr.smp.datamodel.IDScheme;
+
 /**
- * Represent the generic definition of identifiers used in the SMP data, i.e. the <i>Participant</i>, <i>Process</i>
+ * Represent the generic definition of identifiers used within BDXR models, like the <i>Participant</i>, <i>Process</i>
  * and <i>Service</i>/<i>Document</i> identifiers.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
+ * @since 5.0.0 In package <code>org.holodeckb2b.bdxr.common.datamodel</code>
  */
 public interface Identifier extends Serializable {
 
@@ -59,25 +62,5 @@ public interface Identifier extends Serializable {
 	 * @see #getURLEncoded()
 	 */
 	@Override
-	String toString();
-
-	/**
-	 * Determines if the given object represents the same Identifier meta-data.
-	 *
-	 * @param o		the object the compare
-	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>Identifier</code> and represent the
-	 * 				same meta-data.
-	 */
-	@Override
-	boolean equals(Object o);
-
-	/**
-	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
-	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
-	 * <code>i1.equals(i2) == true</code>.
-	 *
-	 * @return hash value for this instance
-	 */
-	@Override
-	int hashCode();
+	String toString();	
 }

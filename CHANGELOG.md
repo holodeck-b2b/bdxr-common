@@ -2,6 +2,25 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 5.0.0
+##### 
+### Added
+* Package `org.holodeckb2b.bdxr.common.datamodel` to hold interfaces representing data model classes common to multiple 
+  BDXR specifications.
+* Added `org.holodeckb2b.bdxr.common.datamodel.Code` and `org.holodeckb2b.bdxr.common.datamodel.Text` interface to represent
+  information elements containing a values specified by a code list or text with a language indicator. 
+
+### Changed
+* Moved `Identifier`, `ProcessIdentifier` and `Extension` to `org.holodeckb2b.bdxr.common.datamodel` and their implementations 
+  to `org.holodeckb2b.bdxr.common.datamodel.impl`.
+* Parameterised `Extension` interface to indicate the type of the extension's content
+
+### Removed
+* Constructors in the SMP data model classes that used an instance of the interface representing the data model class as
+  a parameter
+* Automatic parsing of the ID scheme identifier from a string argument passed to the
+  `IdentifierImpl(final String id)` and `ProcessIdentifierImpl(final String id)` constructors
+
 ## 4.0.0
 ##### 2022-02-24
 ### Changed

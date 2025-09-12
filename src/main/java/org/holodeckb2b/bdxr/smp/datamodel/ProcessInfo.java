@@ -18,6 +18,10 @@ package org.holodeckb2b.bdxr.smp.datamodel;
 
 import java.util.Collection;
 
+import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.ProcessIdentifier;
+
 /**
  * Represents the meta-data on the Process in which a Participant is involved and the Role(s) it plays within that
  * Process.
@@ -41,24 +45,5 @@ public interface ProcessInfo extends ExtensibleMetadata {
 	 * @return	collection of Role identifiers, empty or <code>null</code> when no specific Roles are defined
 	 */
 	Collection<? extends Identifier> getRoles();
-
-	/**
-	 * Determines if the given object represents the same Process usage meta-data.
-	 *
-	 * @param o		the object the compare
-	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>ProcessInfo</code> and represent the
-	 * 				same meta-data.
 	 */
-	@Override
-	boolean equals(Object o);
-
-	/**
-	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
-	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
-	 * <code>i1.equals(i2) == true</code>.
-	 *
-	 * @return hash value for this instance
-	 */
-	@Override
-	int hashCode();
 }

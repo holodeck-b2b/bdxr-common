@@ -16,7 +16,6 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
-import java.net.URL;
 import java.security.cert.X509Certificate;
 
 /**
@@ -30,13 +29,6 @@ import java.security.cert.X509Certificate;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public interface RedirectionV2 extends Redirection {
-
-	/**
-	 * Gets the URL to which the query should be redirected
-	 *
-	 * @return	The URL to use for a new query
-	 */
-	URL getNewSMPURL();
 
 	/**
 	 * Gets the X509 certificate that the SMP server this redirection is to should use.

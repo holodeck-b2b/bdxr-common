@@ -16,13 +16,15 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
 import org.holodeckb2b.commons.util.Utils;
@@ -31,9 +33,10 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class ServiceReferenceImpl extends ExtensibleMetadataClass implements ServiceReference {
-
+	private static final long serialVersionUID = -125965889098620891L;
+	
 	private Identifier	serviceId;
-	private Set<ProcessInfo>	processInfo;
+	private Collection<ProcessInfo>	processInfo;
 
 	/**
      * Default constructor creates "empty" instance
@@ -49,21 +52,11 @@ public class ServiceReferenceImpl extends ExtensibleMetadataClass implements Ser
      * @param processes     Set of process meta-data in which the service is supported
      * @param exts          Any extended meta-data information included in the SMP record
      */
-    public ServiceReferenceImpl(final Identifier service, Set<ProcessInfo> processes, final List<Extension> exts){
+    public ServiceReferenceImpl(Identifier service, Collection<? extends ProcessInfo> processes, 
+    							List<Extension<?>> exts){
 		super(exts);
         this.serviceId = service;
-        this.processInfo = processes;
-    }
-
-	/**
-	 * Creates a new <code>ServiceReference</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public ServiceReferenceImpl(final ServiceReference src) {
-    	super(src.getExtensions());
-		this.serviceId = src.getServiceId();
-        this.processInfo = (Set<ProcessInfo>) src.getProcessInfo();
+        setProcesses(processes);
     }
 
 	/**
@@ -100,8 +93,10 @@ public class ServiceReferenceImpl extends ExtensibleMetadataClass implements Ser
      *
      * @param processes set of process meta-data
      */
-    public void setProcesses(Set<ProcessInfo> processes) {
-        this.processInfo = processes;
+    public void setProcesses(Collection<? extends ProcessInfo> processes) {
+        this.processInfo = new ArrayList<>(processes != null ? processes.size() : 0);
+		if (processes != null)
+			this.processInfo.addAll(processes);
     }
 
     /**

@@ -20,9 +20,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
-import org.holodeckb2b.bdxr.smp.datamodel.ProcessIdentifier;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.ProcessIdentifier;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
 import org.holodeckb2b.commons.util.Utils;
 
@@ -30,8 +32,9 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class ProcessInfoImpl extends ExtensibleMetadataClass implements ProcessInfo {
-
-    private ProcessIdentifier	processId;
+    private static final long serialVersionUID = 4873041878958165465L;
+    
+	private ProcessIdentifier	processId;
     private Set<Identifier>		roles;
 
     /**
@@ -47,7 +50,7 @@ public class ProcessInfoImpl extends ExtensibleMetadataClass implements ProcessI
      * @param procId    The process identifier
      * @param exts		Extended information available about this process
      */
-    public ProcessInfoImpl(final ProcessIdentifier procId,  final List<Extension> exts) {
+    public ProcessInfoImpl(ProcessIdentifier procId, List<Extension<?>> exts) {
     	this(procId, null, exts);
     }
 
@@ -58,25 +61,13 @@ public class ProcessInfoImpl extends ExtensibleMetadataClass implements ProcessI
      * @param roles		The list of roles the participant acts in
      * @param exts		Extended information available about this process
      */
-    public ProcessInfoImpl(final ProcessIdentifier procId, final Set<Identifier> roles,
-    				   final List<Extension> exts) {
+    public ProcessInfoImpl(ProcessIdentifier procId, final Set<? extends Identifier> roles, List<Extension<?>> exts) {
 		super(exts);
         this.processId = procId;
-        this.roles = roles;
+        setRoles(roles);
     }
 
 	/**
-	 * Creates a new <code>ProcessInfo</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public ProcessInfoImpl(final ProcessInfo src) {
-		super(src.getExtensions());
-    	this.processId = src.getProcessId();
-    	this.roles = (Set<Identifier>) src.getRoles();
-    }
-
-    /**
      * Gets the process identifier
      */
 	@Override
@@ -99,7 +90,7 @@ public class ProcessInfoImpl extends ExtensibleMetadataClass implements ProcessI
 	 * @return	List of Role identifiers
 	 */
 	@Override
-	public Set<Identifier> getRoles() {
+	public Set<? extends Identifier> getRoles() {
 		return roles;
 	}
 
@@ -108,8 +99,10 @@ public class ProcessInfoImpl extends ExtensibleMetadataClass implements ProcessI
 	 *
 	 * @param roles	List of Role identifiers
 	 */
-	public void setRoles(Set<Identifier> roles) {
-		this.roles = roles;
+	public void setRoles(Set<? extends Identifier> roles) {
+		this.roles = new HashSet<>(roles != null ? roles.size() : 0);
+		if (roles != null)
+			this.roles.addAll(roles);
 	}
 
 	/**

@@ -22,9 +22,7 @@
  * PEPPOL specification</a>.
  * <p>The structure of the interfaces follows the class model as defined in the OASIS SMP V2 standard and adds specific
  * interfaces if the OASIS V1 and PEPPOL specification deviate (these share the data model).
- * <p>Note that the interfaces define the <code>boolean equals(Object o)</code> and <code>int hashCode()</code> methods.
- * Although both methods are already implemented by <code>Object</code> these are added to make explicit that
- * implementations MUST implement these methods to compare the actual meta-data. This implies that these implementations
- * must not only compare objects of the same class but also of other classes implementing the same interface!
+ * <p>When implementing the interfaces, also a custom implementation of the <code>boolean equals(Object o)</code> 
+ * SHOULD be provided which SHOULD compare objects of the <b>same interface</b> and not only of the same class.
  */
 package org.holodeckb2b.bdxr.smp.datamodel;

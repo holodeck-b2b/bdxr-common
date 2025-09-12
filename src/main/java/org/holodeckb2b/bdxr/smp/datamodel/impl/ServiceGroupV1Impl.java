@@ -20,14 +20,15 @@ import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceGroupV1;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class ServiceGroupV1Impl extends AbstractServiceGroupImpl<URL> implements ServiceGroupV1 {
+	private static final long serialVersionUID = -5666277271607181930L;
 
 	/**
      * Default constructor creates "empty" instance
@@ -43,16 +44,7 @@ public class ServiceGroupV1Impl extends AbstractServiceGroupImpl<URL> implements
      * @param svcRefs     Set of references to services which the participant supports
      * @param exts          Any extended meta-data information included in the SMP record
      */
-    public ServiceGroupV1Impl(final Identifier participant, Set<URL> svcRefs, final List<Extension> exts) {
+    public ServiceGroupV1Impl(final Identifier participant, Set<URL> svcRefs, final List<Extension<?>> exts) {
 		super(participant, svcRefs, exts);
-    }
-
-	/**
-	 * Creates a new <code>ServiceGroupV2</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public ServiceGroupV1Impl(final ServiceGroupV1 src) {
-    	super(src);
     }    
 }

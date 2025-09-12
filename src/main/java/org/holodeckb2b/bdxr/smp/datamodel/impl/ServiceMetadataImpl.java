@@ -16,12 +16,15 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessGroup;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceMetadata;
 import org.holodeckb2b.commons.util.Utils;
@@ -30,10 +33,11 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class ServiceMetadataImpl extends ExtensibleMetadataClass implements ServiceMetadata {
-
-    private Identifier  		participantId;
-    private Identifier  		serviceId;
-    private Set<ProcessGroup>   processGroups;
+    private static final long serialVersionUID = -8974713439248291503L;
+    
+	private Identifier  				participantId;
+    private Identifier  				serviceId;
+    private Collection<ProcessGroup>	processGroups;
 
     /**
      * Default constructor creates "empty" instance
@@ -50,12 +54,12 @@ public class ServiceMetadataImpl extends ExtensibleMetadataClass implements Serv
      * @param processes     Set of process groups in which the service is supported
      * @param exts          Any extended meta-data information included in the SMP record
      */
-    public ServiceMetadataImpl(final Identifier participant, final Identifier service, Set<ProcessGroup> processes,
-                           	  final List<Extension> exts) {
+    public ServiceMetadataImpl(Identifier participant, Identifier service, Collection<? extends ProcessGroup> processes,
+                           	  List<Extension<?>> exts) {
 		super(exts);
         this.participantId = participant;
         this.serviceId = service;
-        this.processGroups = processes;
+        setProcessInformation(processes);
     }
 
 	/**
@@ -63,11 +67,11 @@ public class ServiceMetadataImpl extends ExtensibleMetadataClass implements Serv
 	 *
 	 * @param src the instance to copy the data from
 	 */
-    public ServiceMetadataImpl(final ServiceMetadata src) {
+    protected ServiceMetadataImpl(final ServiceMetadata src) {
     	super(src.getExtensions());
     	this.participantId = src.getParticipantId();
 		this.serviceId = src.getServiceId();
-        this.processGroups = (Set<ProcessGroup>) src.getProcessMetadata();
+        setProcessInformation(src.getProcessMetadata());
     }
 
     /**
@@ -112,7 +116,7 @@ public class ServiceMetadataImpl extends ExtensibleMetadataClass implements Serv
      * @return Set of process groups in which this service is used by the participant
 	 */
 	@Override
-	public Set<ProcessGroup> getProcessMetadata() {
+	public Collection<? extends ProcessGroup> getProcessMetadata() {
 		return processGroups;
 	}
 
@@ -121,8 +125,10 @@ public class ServiceMetadataImpl extends ExtensibleMetadataClass implements Serv
      *
      * @param processGroups set of process groups in which the service is supported
      */
-    public void setProcessInformation(Set<ProcessGroup> processGroups) {
-        this.processGroups = processGroups;
+    public void setProcessInformation(Collection<? extends ProcessGroup> processGroups) {
+        this.processGroups = new ArrayList<>(processGroups != null ? processGroups.size() : 0);
+		if (processGroups != null)
+			this.processGroups.addAll(processGroups);
     }
 
     /**
@@ -130,7 +136,7 @@ public class ServiceMetadataImpl extends ExtensibleMetadataClass implements Serv
      *
      * @param processGroup   process group in which the service is supported
      */
-    public void addProcessGroup(final ProcessGroup processGroup) {
+    public void addProcessGroup(ProcessGroup processGroup) {
         if (processGroup == null)
             throw new IllegalArgumentException("A process group meta-data object must be provided");
 		if (this.processGroups == null)

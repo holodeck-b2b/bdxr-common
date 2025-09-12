@@ -27,8 +27,9 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class IDSchemeImpl implements IDScheme {
-
-    protected String  schemeId = null;
+    private static final long serialVersionUID = 2675745264216042119L;
+    
+	protected String  schemeId = null;
     protected boolean caseSensitive = false;
 
     /**
@@ -53,19 +54,6 @@ public class IDSchemeImpl implements IDScheme {
     }
 
 	/**
-	 * Creates a new instance copying the data from the given identifier scheme.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public IDSchemeImpl(final IDScheme src) {
-		if (src == null)
-			throw new IllegalArgumentException();
-		Utils.requireNotNullOrEmpty(src.getSchemeId());
-        this.schemeId =  src.getSchemeId();
-        this.caseSensitive = src.isCaseSensitive();
-    }
-
-    /**
      * Gets the scheme identifier.
      *
      * @return the scheme id

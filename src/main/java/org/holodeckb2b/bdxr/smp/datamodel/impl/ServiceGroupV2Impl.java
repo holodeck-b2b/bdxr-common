@@ -16,10 +16,11 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceGroupV2;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
 
@@ -27,6 +28,7 @@ import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class ServiceGroupV2Impl extends AbstractServiceGroupImpl<ServiceReference> implements ServiceGroupV2 {
+	private static final long serialVersionUID = 1078779562903287275L;
 
 	/**
      * Default constructor creates "empty" instance
@@ -42,16 +44,8 @@ public class ServiceGroupV2Impl extends AbstractServiceGroupImpl<ServiceReferenc
      * @param svcRefs     Set of references to services which the participant supports
      * @param exts          Any extended meta-data information included in the SMP record
      */
-    public ServiceGroupV2Impl(final Identifier participant, Set<ServiceReference> svcRefs, final List<Extension> exts) {
+    public ServiceGroupV2Impl(Identifier participant, Collection<? extends ServiceReference> svcRefs, 
+    						  List<Extension<?>> exts) {
 		super(participant, svcRefs, exts);
-    }
-
-	/**
-	 * Creates a new <code>ServiceGroupV2</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public ServiceGroupV2Impl(final ServiceGroupV2 src) {
-    	super(src);
     }    
 }

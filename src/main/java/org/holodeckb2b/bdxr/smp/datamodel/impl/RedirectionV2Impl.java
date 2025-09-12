@@ -20,7 +20,8 @@ import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Objects;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.RedirectionV2;
 import org.holodeckb2b.commons.util.Utils;
 
@@ -28,6 +29,8 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class RedirectionV2Impl extends AbstractRedirectionImpl implements RedirectionV2 {
+	private static final long serialVersionUID = 2452450773009742230L;
+	
 	/**
 	 * The certificate of the SMP server to which the request should be redirected
 	 */
@@ -66,22 +69,12 @@ public class RedirectionV2Impl extends AbstractRedirectionImpl implements Redire
      * @param smpCert		Certificate of the new SMP server
      * @param ext           Any extended meta-data information included in the SMP record
      */
-    public RedirectionV2Impl(final URL redirectedURL, final X509Certificate smpCert, final List<Extension> ext) {
+    public RedirectionV2Impl(final URL redirectedURL, final X509Certificate smpCert, final List<Extension<?>> ext) {
         super(redirectedURL, ext);
     	this.cert = smpCert;
     }
 
 	/**
-	 * Creates a new instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public RedirectionV2Impl(final RedirectionV2 src) {
-		super(src);
-    	this.cert = src.getSMPCertificate();
-    }
-
-    /**
      * Gets the X509 certificate that the SMP server this redirection is to should use.
      *
      * @return	The certificate of the "redirected" SMP server

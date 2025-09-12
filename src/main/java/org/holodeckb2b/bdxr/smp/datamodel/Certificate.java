@@ -19,6 +19,8 @@ package org.holodeckb2b.bdxr.smp.datamodel;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 
+import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
+
 /**
  * Represents the certificate data included in a SMP response consisting of the X509 certificate itself and associated
  * meta-data. Part of the meta-data is an indication of how the certificate should be or is used, for example for
@@ -70,27 +72,4 @@ public interface Certificate extends ExtensibleMetadata {
 	 * @return the description of the certificate
 	 */
 	String getDescription();
-
-	/**
-	 * Determines if the given object represents the same Certificate meta-data.
-	 * <p>NOTE: The activation and expiration time stamps should be compared as instants on the time line to prevent
-	 * issues with the time zone indicator which could be different on two {@link ZonedDateTime} objects that represent
-	 * the same time stamp.
-	 *
-	 * @param o		the object the compare
-	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>Certificate</code> and represent the
-	 * 				same meta-data.
-	 */
-	@Override
-	boolean equals(Object o);
-
-	/**
-	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
-	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
-	 * <code>i1.equals(i2) == true</code>.
-	 *
-	 * @return hash value for this instance
-	 */
-	@Override
-	int hashCode();
 }

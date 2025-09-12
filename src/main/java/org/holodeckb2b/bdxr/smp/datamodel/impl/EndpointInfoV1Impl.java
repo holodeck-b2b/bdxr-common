@@ -21,16 +21,20 @@ import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.impl.IdentifierImpl;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfoV1;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfoV1 {
-
-    private Boolean             businessLevelSignatureRequired;
+    private static final long serialVersionUID = -6543654365901499641L;
+    
+	private Boolean             businessLevelSignatureRequired;
     private String              minimumAuthenticationLevel;
     private URL					techInfoURL;
 
@@ -89,17 +93,10 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
     }
 
 	/**
-	 * Creates a new instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public EndpointInfoV1Impl(final EndpointInfoV1 src) {
-		super(src);
-        this.businessLevelSignatureRequired = src.getBusinessLevelSignatureRequired();
-        this.minimumAuthenticationLevel = src.getMinimumAuthenticationLevel();
-		this.techInfoURL = src.getTechnicalInformationURL();
+     *  
+     */
     }
-
+    
     /**
      * Indicates whether a business level signature is required.
      *
@@ -173,13 +170,13 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
 			&& Utils.nullSafeEqual(techInfoURL, e.getTechnicalInformationURL());
 	}
 
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = super.hashCode();
-//		result = prime * result + Objects.hash(businessLevelSignatureRequired, minimumAuthenticationLevel,
-//												techInfoURL);
-//		return result;
-//	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + Objects.hash(businessLevelSignatureRequired, minimumAuthenticationLevel,
+												techInfoURL);
+		return result;
+	}
 
 }

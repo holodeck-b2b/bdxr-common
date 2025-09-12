@@ -20,9 +20,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceGroup;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
 import org.holodeckb2b.commons.util.Utils;
@@ -31,14 +32,15 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public abstract class AbstractServiceGroupImpl<T> extends ExtensibleMetadataClass implements ServiceGroup<T> {
+	private static final long serialVersionUID = -2119262523421530565L;
+	
+	private Identifier  	participantId;
+    private Collection<T>	serviceRefs;
 
-	private Identifier  participantId;
-    private Set<T>		serviceRefs;
-
-/**
+    /**
      * Default constructor creates "empty" instance
      */
-    public AbstractServiceGroupImpl() {
+    AbstractServiceGroupImpl() {
     	this(null, null, null);
     }
 
@@ -49,25 +51,13 @@ public abstract class AbstractServiceGroupImpl<T> extends ExtensibleMetadataClas
      * @param svcRefs       Set of references to services which the participant supports
      * @param exts          Any extended meta-data information included in the SMP record
      */
-    public AbstractServiceGroupImpl(final Identifier participant, Set<T> svcRefs, final List<Extension> exts) {
+    AbstractServiceGroupImpl(final Identifier participant, Collection<? extends T> svcRefs, List<Extension<?>> exts) {
 		super(exts);
         this.participantId = participant;
-        this.serviceRefs = svcRefs;
+        setServiceReferences(svcRefs);
     }
 
 	/**
-	 * Creates a new <code>ServiceGroup</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    @SuppressWarnings("unchecked")
-	public AbstractServiceGroupImpl(final ServiceGroup<T> src) {
-    	super(src.getExtensions());
-		this.participantId = src.getParticipantId();
-        this.serviceRefs = (Set<T>) src.getServiceReferences();
-    }
-
-    /**
      * Gets the identifier of the participant the service meta-data applies to
      *
      * @return The participant id
@@ -101,8 +91,10 @@ public abstract class AbstractServiceGroupImpl<T> extends ExtensibleMetadataClas
      *
      * @param svcRefs set of service references
      */
-    public void setServiceReferences(Set<T> svcRefs) {
-        this.serviceRefs = svcRefs;
+    public void setServiceReferences(Collection<? extends T> svcRefs) {
+        this.serviceRefs = new HashSet<>(svcRefs != null ? svcRefs.size() : 0);
+		if (svcRefs != null)
+			this.serviceRefs.addAll(svcRefs);
     }
 
     /**

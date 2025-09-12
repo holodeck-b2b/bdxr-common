@@ -18,26 +18,31 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.Certificate;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class EndpointInfoImpl extends ExtensibleMetadataClass implements EndpointInfo {
-
+    private static final long serialVersionUID = 3037401198222832913L;
+    
     private String              transportProfile;
-    private URL                 endpointURL;
-    private ZonedDateTime       serviceActivationDate;
-    private ZonedDateTime       serviceExpirationDate;
-    private String				description;
-    private String				contactInfo;
+	private URL             		endpointURL;
+	private ZonedDateTime   		serviceActivationDate;
+	private ZonedDateTime   		serviceExpirationDate;
+	private String					description;
+	private String					contactInfo;
     private Set<Certificate>	certificates;
 
     /**
@@ -51,7 +56,7 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
      * Creates a new instance that only contains the transport profile and URL
      *
      * @param profile                   The transport profile
-     * @param url                       The endpoint's URL
+     * @param url		The endpoint's URL
      */
     public EndpointInfoImpl(final String profile, final URL url) {
         this(profile, url, null, null, null, null, null, null);
@@ -73,7 +78,7 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
 								  final ZonedDateTime activationDate, final ZonedDateTime expirationDate,
 								  final String description, final String contact,
 								  final Set<Certificate> certs,
-								  final List<Extension> exts) {
+								  final List<Extension<?>> exts) {
 		super(exts);
         this.transportProfile = profile;
         this.endpointURL = url;
@@ -85,22 +90,9 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
     }
 
 	/**
-	 * Creates a new instance copying the data from the given endpoint object.
 	 *
-	 * @param src the instance to copy the data from
-	 */
-    public EndpointInfoImpl(final EndpointInfo src) {
-		super(src.getExtensions());
-        this.transportProfile = src.getTransportProfile();
-        this.endpointURL = src.getEndpointURL();
-        this.serviceActivationDate = src.getServiceActivationDate();
-        this.serviceExpirationDate = src.getServiceExpirationDate();
-        this.description = src.getDescription();
-        this.contactInfo = src.getContactInfo();
-		this.certificates = (Set<Certificate>) src.getCertificates();
-    }
 
-    /**
+	/**
      * Gets the transport profile the endpoint supports
      *
      * @return The transport profile

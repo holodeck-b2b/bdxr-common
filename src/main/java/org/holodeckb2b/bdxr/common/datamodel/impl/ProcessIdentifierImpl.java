@@ -14,18 +14,20 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.datamodel.impl;
+package org.holodeckb2b.bdxr.common.datamodel.impl;
 
 import java.util.Objects;
+
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.ProcessIdentifier;
 import org.holodeckb2b.bdxr.smp.datamodel.IDScheme;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
-import org.holodeckb2b.bdxr.smp.datamodel.ProcessIdentifier;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class ProcessIdentifierImpl extends IdentifierImpl implements ProcessIdentifier {
-
+	private static final long serialVersionUID = -6557837338220321468L;
+	
 	private boolean isNoProcess = false;
 
 	/**
@@ -65,16 +67,6 @@ public class ProcessIdentifierImpl extends IdentifierImpl implements ProcessIden
      */
     public ProcessIdentifierImpl(final String id, final String schemeId) {
         super(id, schemeId);
-    }
-
-	/**
-	 * Creates a new <code>ProcessIdentifier</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public ProcessIdentifierImpl(final org.holodeckb2b.bdxr.smp.datamodel.ProcessIdentifier src) {
-    	super(src);
-    	this.isNoProcess = src.isNoProcess();
     }
 
 	/**

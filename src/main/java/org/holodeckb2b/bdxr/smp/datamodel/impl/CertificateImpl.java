@@ -20,15 +20,18 @@ import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.Certificate;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class CertificateImpl extends ExtensibleMetadataClass implements org.holodeckb2b.bdxr.smp.datamodel.Certificate {
-
+	private static final long serialVersionUID = 5820023304318472824L;
+	
 	private X509Certificate	certificate;
 	private String			usage;
 	private String			description;
@@ -66,26 +69,13 @@ public class CertificateImpl extends ExtensibleMetadataClass implements org.holo
 	 * @param exts			additional meta-data to be added as extensions
 	 */
 	public CertificateImpl(final X509Certificate cert, final String usage, final ZonedDateTime activation,
-						final ZonedDateTime expiration, final String description, List<Extension> exts) {
+						final ZonedDateTime expiration, final String description, List<Extension<?>> exts) {
 		super(exts);
 		this.certificate = cert;
 		this.usage = usage;
 		this.activation = activation;
 		this.expiration = expiration;
 		this.description = description;
-	}
-
-	/**
-	 * Creates a new <code>Certificate</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-	public CertificateImpl(final org.holodeckb2b.bdxr.smp.datamodel.Certificate src) {
-		this.certificate = src.getX509Cert();
-		this.usage = src.getUsage();
-		this.description = src.getDescription();
-		this.activation = src.getActivationDate();
-		this.expiration = src.getExpirationDate();
 	}
 
 	/**
