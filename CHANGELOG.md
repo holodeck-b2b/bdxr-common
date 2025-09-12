@@ -11,6 +11,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
   information elements containing a values specified by a code list or text with a language indicator. 
 
 ### Changed
+* The type to indicate the supported _transport profile_ by an _endpoint_ is now `Identifier` instead of a simple `String`
+  to match the definition as used in the OASIS SMP V2 specification. A new method `getTransportProfileId()` has been 
+  introduced in `EndpointInfo` and the old `getTransportProfile()` method has been removed.
 * Moved `Identifier`, `ProcessIdentifier` and `Extension` to `org.holodeckb2b.bdxr.common.datamodel` and their implementations 
   to `org.holodeckb2b.bdxr.common.datamodel.impl`.
 * Parameterised `Extension` interface to indicate the type of the extension's content

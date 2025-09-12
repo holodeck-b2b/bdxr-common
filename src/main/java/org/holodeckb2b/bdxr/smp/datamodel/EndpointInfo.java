@@ -21,6 +21,7 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 
 import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
 
 /**
  * Represents the generic meta-data of an <i>Endpoint</i> that is common in all SMP specifications. This includes the
@@ -36,11 +37,12 @@ import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
 public interface EndpointInfo extends ExtensibleMetadata {
 	
 	/**
-	 * Gets the transport profile the endpoint supports
+	 * Gets the identifier of the transport profile the Endpoint supports
 	 *  
-	 * @return The transport profile
+	 * @return	the identifier of the transport profile
+	 * @since 5.0.0
 	 */
-	String getTransportProfile();
+	Identifier getTransportProfileId();
 
 	/**
 	 * Gets the URL where the endpoint receives messages.

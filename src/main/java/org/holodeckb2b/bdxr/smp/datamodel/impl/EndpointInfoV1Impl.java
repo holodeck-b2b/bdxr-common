@@ -84,8 +84,8 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
     public EndpointInfoV1Impl(final String profile, final URL url, final X509Certificate cert, final Boolean blsRequired,
 						  final String minAuthenticationLvl, final ZonedDateTime activationDate,
 						  final ZonedDateTime expirationDate, final String description, final String contact,
-						  final URL techInfoUrl, final List<Extension> exts) {
-        super(profile, url, activationDate, expirationDate, description, contact,
+						  final URL techInfoUrl, final List<Extension<?>> exts) {
+        super(new IdentifierImpl(profile), url, activationDate, expirationDate, description, contact,
 			  cert == null ? null : Collections.singleton(new CertificateImpl(cert)), exts);
         this.businessLevelSignatureRequired = blsRequired;
         this.minimumAuthenticationLevel = minAuthenticationLvl;
@@ -93,8 +93,12 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
     }
 
 	/**
+     * Sets the identifier of the transport profile the Endpoint supports.
      *  
+     * @param profileId	string representation of the identifier
      */
+    public void setTransportProfile(String profileId) {
+    	super.setTransportProfileId(new IdentifierImpl(profileId));
     }
     
     /**
