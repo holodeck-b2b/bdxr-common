@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.0.1
+##### 2025-09-15
+### Fixed
+* Return value of EndpointInfoV1.getTechnicalInformationURL() should be a URI instead of URL [#3](https://github.com/holodeck-b2b/bdxr-common/issues/3)
+
 ## 4.0.0
 ##### 2022-02-24
 ### Changed

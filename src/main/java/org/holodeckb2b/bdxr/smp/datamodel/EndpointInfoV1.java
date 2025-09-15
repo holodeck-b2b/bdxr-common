@@ -16,7 +16,7 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
-import java.net.URL;
+import java.net.URI;
 
 /**
  * Represents the meta-data of an <i>Endpoint</i> as specified in the OASIS SMP V1 and PEPPOL specifications. In
@@ -45,9 +45,12 @@ public interface EndpointInfoV1 extends EndpointInfo {
 	String getMinimumAuthenticationLevel();
 
 	/**
-	 * Gets the URL to a human readable documentation of the service format.
+	 * Gets the URL to a human readable documentation of the service format. As both the Peppol and OASIS specifications
+	 * are not clear about whether this information element must be a URL or a URI (which can be relative and allows 
+	 * values without a scheme), this method now returns a URI.
 	 *
 	 * @return URL to technical documentation
+	 * @since 4.0.1 returns a URI
 	 */
-	URL getTechnicalInformationURL();
+	URI getTechnicalInformationURL();
 }

@@ -16,6 +16,7 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
+import java.net.URI;
 import java.net.URL;
 import java.security.cert.X509Certificate;
 import java.time.ZonedDateTime;
@@ -32,7 +33,7 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
 
     private Boolean             businessLevelSignatureRequired;
     private String              minimumAuthenticationLevel;
-    private URL					techInfoURL;
+    private URI					techInfoURL;
 
     /**
      * Default constructor creates "empty" instance
@@ -80,7 +81,7 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
     public EndpointInfoV1Impl(final String profile, final URL url, final X509Certificate cert, final Boolean blsRequired,
 						  final String minAuthenticationLvl, final ZonedDateTime activationDate,
 						  final ZonedDateTime expirationDate, final String description, final String contact,
-						  final URL techInfoUrl, final List<Extension> exts) {
+						  final URI techInfoUrl, final List<Extension> exts) {
         super(profile, url, activationDate, expirationDate, description, contact,
 			  cert == null ? null : Collections.singleton(new CertificateImpl(cert)), exts);
         this.businessLevelSignatureRequired = blsRequired;
@@ -148,7 +149,7 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
 	 * @return URL to technical documentation
 	 */
 	@Override
-	public URL getTechnicalInformationURL() {
+	public URI getTechnicalInformationURL() {
 		return techInfoURL;
 	}
 
@@ -157,7 +158,7 @@ public class EndpointInfoV1Impl extends EndpointInfoImpl implements EndpointInfo
 	 *
 	 * @param techInfoUrl URL to technical documentation
 	 */
-	public void setTechnicalInformationURL(URL techInfoUrl) {
+	public void setTechnicalInformationURL(URI techInfoUrl) {
 		this.techInfoURL = techInfoUrl;
 	}
 
