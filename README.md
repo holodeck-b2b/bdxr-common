@@ -12,10 +12,10 @@ The BDXR Common library is available on Maven Central and can be included using 
 <dependency>
 	<groupId>org.holodeckb2b.bdxr</groupId>
 	<artifactId>bdxr-common</artifactId>
-	<version>4.0.0</version>
+	<version>4.0.1</version>
 </dependency>
 ```
-Or you can download the JAR file from the [release page](releases/tag/v4.0.0/)
+Or you can download the JAR file from the [release page](releases/tag/v4.0.1/)
 
 ## Contributing
 We are using the simplified Github workflow to accept modifications which means you should:
