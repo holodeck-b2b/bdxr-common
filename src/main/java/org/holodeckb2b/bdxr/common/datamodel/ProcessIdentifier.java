@@ -14,16 +14,17 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.datamodel;
+package org.holodeckb2b.bdxr.common.datamodel;
 
 /**
- * Represent the definition of the Process identifiers used in the SMP data. It is based on the generic {@link
+ * Represent the definition of the Process identifiers used in the BDXR data models. It is based on the generic {@link
  * Identifier} but adds a function to indicate that the identifier does identify the "no process" which is used in the
  * SMP specifications for service meta-data that does not relate to any process. Because this represented in the
  * specifications by a specific, but different, string we use a indicator which should be set when the actual data is
  * processed.
  *
  * @author Sander Fieten (sander at holodeck-b2b.org)
+ * @since 5.0.0 In package <code>org.holodeckb2b.bdxr.common.datamodel</code>
  */
 public interface ProcessIdentifier extends Identifier {
 
@@ -34,24 +35,4 @@ public interface ProcessIdentifier extends Identifier {
 	 * 			<code>false</code> if not
 	 */
 	boolean isNoProcess();
-
-	/**
-	 * Determines if the given object represents the same Process Identifier.
-	 *
-	 * @param o		the object the compare
-	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>ProcessIdentifier</code> and represents
-	 * 				the same identifier.
-	 */
-	@Override
-	boolean equals(Object o);
-
-	/**
-	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
-	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
-	 * <code>i1.equals(i2) == true</code>.
-	 *
-	 * @return hash value for this instance
-	 */
-	@Override
-	int hashCode();
 }

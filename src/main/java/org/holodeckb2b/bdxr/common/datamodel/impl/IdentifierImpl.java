@@ -14,22 +14,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.datamodel.impl;
+package org.holodeckb2b.bdxr.common.datamodel.impl;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Objects;
+
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.IDScheme;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+import org.holodeckb2b.bdxr.smp.datamodel.impl.IDSchemeImpl;
 import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class IdentifierImpl implements Identifier {
-
-    protected IDSchemeImpl  scheme = null;
-    protected String		value = null;
+    private static final long serialVersionUID = -7632487089926722863L;
+    
+	protected IDScheme	scheme = null;
+    protected String	value = null;
 
     /**
      * Default constructor that can be used by sub classes if they want to allow <code>null</code> values.
@@ -37,24 +41,34 @@ public class IdentifierImpl implements Identifier {
     protected IdentifierImpl() {}
 
     /**
-     * Creates a new identifier based on the given string. It will try to parse the string into both the scheme ID and
-	 * identifier value by looking for a double colon ("::") separator and use the left part as scheme ID and the right
-	 * part as identifier value.
+     * Creates a new identifier based with the given string as identifier value. 
      *
      * @param id    The identifier value
      */
     public IdentifierImpl(final String id) {
-		if (!Utils.isNullOrEmpty(id)) {
-			final int s = id.indexOf("::");
-			if (s > 0) {
-				this.scheme = new IDSchemeImpl(id.substring(0, s));
-				this.value = id.substring(s + 2);
-			} else {
-				this.scheme = null;
-				this.value = id;
-			}
-		}
+		this.value = id;
     }
+    
+    /**
+     * Creates a new instance by parsing the given URL encoded string representation of the Identifier.  
+     * 
+     * @param encodedId the URL encoded representation of the Identifier
+     * @return new instance representing the Identifier
+     */
+    public static IdentifierImpl from(String encodedId) {
+    	if (Utils.isNullOrEmpty(encodedId))
+    		return null;
+    	
+    	String decoded;
+		try {
+			decoded = URLDecoder.decode(encodedId, "UTF-8");
+			final int s = decoded.indexOf("::");
+			return s > 0 ? new IdentifierImpl(decoded.substring(s + 2), decoded.substring(0, s)) 
+					: new IdentifierImpl(decoded);
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException("UTF-8 not supported.");
+		}
+	}
 
     /**
      * Creates a new identifier that is defined in the scheme with the given scheme id. It is assumed that the scheme
@@ -79,22 +93,10 @@ public class IdentifierImpl implements Identifier {
     public IdentifierImpl(final String id, final IDScheme scheme) {
         Utils.requireNotNullOrEmpty(id);
         this.value =  id;
-        this.scheme = scheme != null ? new IDSchemeImpl(scheme) : null;
+        this.scheme = scheme;
     }
 
 	/**
-	 * Creates a new <code>Identifier</code> instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public IdentifierImpl(final org.holodeckb2b.bdxr.smp.datamodel.Identifier src) {
-		if (src == null)
-			throw new IllegalArgumentException();
-        this.value =  src.getValue();
-        this.scheme = src.getScheme() != null ? new IDSchemeImpl(src.getScheme()) : null;
-    }
-
-    /**
      * Gets the identifier scheme to which this identifier belongs.
      *
      * @return  The identifier scheme
@@ -111,7 +113,7 @@ public class IdentifierImpl implements Identifier {
      */
 	@Override
     public String getValue() {
-        return scheme != null && scheme.isCaseSensitive() ? value : value.toLowerCase();
+        return value;
     }
 
     /**
@@ -134,7 +136,7 @@ public class IdentifierImpl implements Identifier {
     public void setValue(final String id, final IDScheme scheme) {
         Utils.requireNotNullOrEmpty(id);
         this.value = id;
-        this.scheme = scheme != null ? new IDSchemeImpl(scheme) : null;
+        this.scheme = scheme;
     }
 
     /**
@@ -151,7 +153,7 @@ public class IdentifierImpl implements Identifier {
         try {
             return URLEncoder.encode(toString(), "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new IllegalStateException("UTF-8 not supported.");
+            throw new RuntimeException("UTF-8 not supported.");
         }
     }
 
@@ -160,11 +162,17 @@ public class IdentifierImpl implements Identifier {
      * separated by a "::".
      *
      * @return String representation of the identifier
-     * @see #getURLEncoded()
      */
     @Override
     public String toString() {
-		return (scheme == null ? "" : scheme.getSchemeId() + "::") + getValue();
+    	StringBuilder sb = new StringBuilder();
+    	boolean caseSensitive = false;
+    	if (scheme != null) {
+    		sb.append(scheme.getSchemeId()).append("::");
+    		caseSensitive = scheme.isCaseSensitive();
+    	}
+    	sb.append(caseSensitive ? value : value.toLowerCase());	
+		return sb.toString(); 
     }
 
 	public boolean equals(Object o) {
@@ -181,8 +189,8 @@ public class IdentifierImpl implements Identifier {
     public int hashCode() {
         int hash = 3;
         if (this.scheme != null)
-			hash = 47 * hash + this.scheme.hashCode();
-        hash = 47 * hash + Objects.hashCode(getValue());
+			hash = 47 * hash + Objects.hashCode(this.scheme.getSchemeId());
+        hash = 47 * hash + Objects.hashCode(scheme != null && scheme.isCaseSensitive() ? value : value.toLowerCase());
         return hash;
     }
 }

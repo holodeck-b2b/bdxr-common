@@ -14,13 +14,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.datamodel.impl;
+package org.holodeckb2b.bdxr.common.datamodel.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.holodeckb2b.bdxr.smp.datamodel.ExtensibleMetadata;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
+
+import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
 import org.holodeckb2b.commons.util.Utils;
 
 /**
@@ -30,7 +30,7 @@ import org.holodeckb2b.commons.util.Utils;
  */
 public abstract class ExtensibleMetadataClass {
 
-	protected List<Extension>	extensions;
+	protected List<Extension<?>>	extensions;
 
 	/**
 	 * Constructs a new instance without extensions.
@@ -44,10 +44,8 @@ public abstract class ExtensibleMetadataClass {
 	 *
 	 * @param exts	the extensions to add to the new instance
 	 */
-	protected ExtensibleMetadataClass(List<Extension> exts) {
-		extensions = new ArrayList<>();
-		if (!Utils.isNullOrEmpty(exts))
-			extensions.addAll(exts);
+	protected ExtensibleMetadataClass(List<Extension<?>> exts) {
+		extensions = exts;
 	}
 
 	/**
@@ -55,7 +53,7 @@ public abstract class ExtensibleMetadataClass {
 	 *
 	 * @return The extended meta-data
 	 */
-	public List<Extension> getExtensions() {
+	public List<Extension<?>> getExtensions() {
 		return extensions;
 	}
 
@@ -64,7 +62,7 @@ public abstract class ExtensibleMetadataClass {
 	 *
 	 * @param ext	the extension to add
 	 */
-	public void addExtension(Extension ext) {
+	public void addExtension(Extension<?> ext) {
 		if (ext == null)
 			throw new IllegalArgumentException();
 
@@ -76,7 +74,7 @@ public abstract class ExtensibleMetadataClass {
 	 *
 	 * @param exts	the extensions to add
 	 */
-	public void setExtensions(List<Extension> exts) {
+	public void setExtensions(List<Extension<?>> exts) {
 		extensions = exts;
 	}
 
@@ -87,7 +85,7 @@ public abstract class ExtensibleMetadataClass {
 	 *
 	 * @param ext the extension to remove
 	 */
-	public boolean removeExtension(Extension ext) {
+	public boolean removeExtension(Extension<?> ext) {
 		return extensions.remove(ext);
 	}
 
@@ -97,9 +95,9 @@ public abstract class ExtensibleMetadataClass {
 	public void removeAll() {
 		extensions.clear();
 	}
-
+	
 	@Override
-	public boolean equals(Object o) {
+	public boolean equals(Object o) {		
 		return Utils.areEqual(this.extensions, ((ExtensibleMetadata) o).getExtensions());
 	}
 

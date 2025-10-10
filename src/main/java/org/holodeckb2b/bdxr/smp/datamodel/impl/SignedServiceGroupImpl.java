@@ -17,11 +17,12 @@
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.security.cert.X509Certificate;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceGroupV2;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceReference;
 import org.holodeckb2b.bdxr.smp.datamodel.SignedQueryResult;
@@ -31,7 +32,8 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class SignedServiceGroupImpl extends ServiceGroupV2Impl implements SignedQueryResult {
-
+	private static final long serialVersionUID = 8176068786266042600L;
+	
 	private X509Certificate		signingCert;
 
 	/**
@@ -49,34 +51,23 @@ public class SignedServiceGroupImpl extends ServiceGroupV2Impl implements Signed
 	 * @param cert			Certificate used to sign the service meta-data
      * @param exts          Any extended meta-data information included in the SMP record
      */
-    public SignedServiceGroupImpl(final Identifier participant, Set<ServiceReference> svcRefs,
-								final X509Certificate cert,	final List<Extension> exts) {
+    public SignedServiceGroupImpl(Identifier participant, Collection<? extends ServiceReference> svcRefs,
+								 X509Certificate cert, List<Extension<?>> exts) {
 		super(participant, svcRefs, exts);
 		this.signingCert = cert;
     }
 
 	/**
-	 * Creates a new instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public SignedServiceGroupImpl(final ServiceGroupV2 src) {
-    	super(src);
-		if (src instanceof SignedServiceGroupImpl)
-			this.signingCert = ((SignedServiceGroupImpl) src).signingCert;
-    }
-
-	/**
-	 * Creates a new instance copying the data from the given instance and signing certificate.
+	 * Creates a new instance copying the data from the given [unsigned] Service Group instance and set the signing 
+	 * certificate used to sign the Service Group.
 	 *
 	 * @param src	the instance to copy the data from, should not be a signed version
 	 * @param cert	certificate used by the SMP server to sign the result
 	 */
     public SignedServiceGroupImpl(final ServiceGroupV2 src, final X509Certificate cert) {
-    	super(src);
-		this.signingCert = cert;
+    	this(src.getParticipantId(), src.getServiceReferences(), cert, src.getExtensions());
     }
-
+    
 	/**
 	 * Gets the certificate that was used to sign the result.
 	 *

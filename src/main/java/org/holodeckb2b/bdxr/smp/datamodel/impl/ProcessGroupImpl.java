@@ -16,12 +16,17 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
+import org.holodeckb2b.bdxr.common.datamodel.impl.IdentifierImpl;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessGroup;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessInfo;
 import org.holodeckb2b.bdxr.smp.datamodel.Redirection;
@@ -31,17 +36,18 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class ProcessGroupImpl extends ExtensibleMetadataClass implements ProcessGroup {
-
-    private Set<ProcessInfo>		processes;
-    private Redirection			 	redirect;
-    private Set<EndpointInfo>   	endpoints;
+    private static final long serialVersionUID = 3331734042907859447L;
+    
+	private Collection<ProcessInfo>		processes;
+    private Redirection			 		redirect;
+    private Collection<EndpointInfo>   	endpoints;
 
     /**
      * Default constructor creates "empty" instance
      */
     public ProcessGroupImpl() {
     	this(null, null);
-		this.endpoints = new HashSet<>();
+		this.endpoints = new ArrayList<>();
     }
 
 	/**
@@ -50,9 +56,9 @@ public class ProcessGroupImpl extends ExtensibleMetadataClass implements Process
 	 * @param processes	set of process meta-data
 	 * @param exts		list of extension to be included
 	 */
-	protected ProcessGroupImpl(final Set<ProcessInfo> processes, final List<Extension> exts) {
+	protected ProcessGroupImpl(Collection<? extends ProcessInfo> processes, List<Extension<?>> exts) {
 		super(exts);
-        this.processes = processes;
+        setProcessInfo(processes);
 	}
 
     /**
@@ -62,10 +68,10 @@ public class ProcessGroupImpl extends ExtensibleMetadataClass implements Process
      * @param endpoints     The list of available endpoints for this process
      * @param extendedInfo  Extended information available about this process
      */
-    public ProcessGroupImpl(final Set<ProcessInfo> processes, final Set<EndpointInfo> endpoints,
-							final List<Extension> extendedInfo) {
+    public ProcessGroupImpl(Collection<? extends ProcessInfo> processes, Collection<? extends EndpointInfo> endpoints, 
+    						List<Extension<?>> extendedInfo) {
 		this(processes, extendedInfo);
-        this.endpoints  = endpoints;
+        setEndpoints(endpoints);
     }
 
     /**
@@ -76,28 +82,18 @@ public class ProcessGroupImpl extends ExtensibleMetadataClass implements Process
      * @param extendedInfo	Extended information available about this process
      */
     public ProcessGroupImpl(final Set<ProcessInfo> processes, final Redirection redirect,
-    				   final List<Extension> extendedInfo) {
+    				   final List<Extension<?>> extendedInfo) {
 		this(processes, extendedInfo);
         this.redirect   = redirect;
     }
 
 	/**
-	 * Creates a new process group copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public ProcessGroupImpl(final ProcessGroup src) {
-        this((Set<ProcessInfo>) src.getProcessInfo(), (Set<EndpointInfo>) src.getEndpoints(), src.getExtensions());
-        this.redirect = src.getRedirection();
-    }
-
-    /**
      * Gets the list of process meta-data on the processes in which the endpoints are / redirection is used.
      *
      * @return List of process meta-data
      */
 	@Override
-    public Set<ProcessInfo> getProcessInfo() {
+    public Collection<? extends ProcessInfo> getProcessInfo() {
         return processes;
     }
 
@@ -122,10 +118,12 @@ public class ProcessGroupImpl extends ExtensibleMetadataClass implements Process
     /**
      * Sets the process info
      *
-     * @param processInfo The list of process information to set
+     * @param processInfo The collection of process information to set
      */
-    public void setProcessInfo(Set<ProcessInfo> processInfo) {
-        this.processes = processInfo;
+    public void setProcessInfo(Collection<? extends ProcessInfo> processInfo) {
+        this.processes = new ArrayList<>(processInfo != null ? processInfo.size() : 0);
+		if (processInfo != null) 
+			this.processes.addAll(processInfo);
     }
 
     /**
@@ -148,7 +146,7 @@ public class ProcessGroupImpl extends ExtensibleMetadataClass implements Process
      * @return The list of endpoints
      */
 	@Override
-    public Set<EndpointInfo> getEndpoints() {
+    public Collection<? extends EndpointInfo> getEndpoints() {
         return endpoints;
     }
 
@@ -156,14 +154,16 @@ public class ProcessGroupImpl extends ExtensibleMetadataClass implements Process
      * Set the endpoints available for this process. Note that endpoints can only be set if there is no
 	 * redirection specified.
      *
-     * @param endpoints     The set of endpoints available for this process
+     * @param endpoints     The collection of endpoints available for this process
 	 * @throws IllegalStateException when a redirection is already defined
      */
-    public void setEndpoints(Set<EndpointInfo> endpoints) {
+    public void setEndpoints(Collection<? extends EndpointInfo> endpoints) {
 		if (this.redirect != null && !Utils.isNullOrEmpty(endpoints))
 			throw new IllegalStateException("Redirection is already set");
 
-        this.endpoints  = endpoints;
+        this.endpoints = new ArrayList<>(endpoints != null ? endpoints.size() : 0);
+		if (endpoints != null) 
+			this.endpoints.addAll(endpoints);
     }
 
     /**

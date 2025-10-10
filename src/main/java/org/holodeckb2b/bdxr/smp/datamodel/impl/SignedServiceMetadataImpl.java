@@ -20,8 +20,9 @@ import java.security.cert.X509Certificate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
-import org.holodeckb2b.bdxr.smp.datamodel.Identifier;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
 import org.holodeckb2b.bdxr.smp.datamodel.ProcessGroup;
 import org.holodeckb2b.bdxr.smp.datamodel.ServiceMetadata;
 import org.holodeckb2b.bdxr.smp.datamodel.SignedQueryResult;
@@ -31,8 +32,9 @@ import org.holodeckb2b.commons.util.Utils;
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class SignedServiceMetadataImpl extends ServiceMetadataImpl implements SignedQueryResult {
-
-    private X509Certificate		signingCert;
+    private static final long serialVersionUID = -1161286057483243945L;
+    
+	private X509Certificate		signingCert;
 
     /**
      * Default constructor creates "empty" instance
@@ -50,22 +52,10 @@ public class SignedServiceMetadataImpl extends ServiceMetadataImpl implements Si
 	 * @param cert			Certificate used to sign the service meta-data
      * @param exts          Any extended meta-data information included in the SMP record
      */
-    public SignedServiceMetadataImpl(final Identifier participant, final Identifier service,
-									 final Set<ProcessGroup> processes, final X509Certificate cert,
-									 final List<Extension> exts) {
+    public SignedServiceMetadataImpl(Identifier participant, Identifier service, Set<ProcessGroup> processes, 
+    								 X509Certificate cert, List<Extension<?>> exts) {
 		super(participant, service, processes, exts);
         this.signingCert = cert;
-    }
-
-	/**
-	 * Creates a new instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public SignedServiceMetadataImpl(final ServiceMetadata src) {
-    	super(src);
-		if (src instanceof SignedQueryResult)
-			this.signingCert = ((SignedQueryResult) src).getSigningCertificate();
     }
 
 	/**

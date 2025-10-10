@@ -16,6 +16,8 @@
  */
 package org.holodeckb2b.bdxr.smp.datamodel;
 
+import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
+
 /**
  * Represents the <i>Service Group</i> meta-data as defined in the OASIS V2 specification. The Service Group consists of
  * the participant identifier and a list of service and processes combinations which are supported by the participant.

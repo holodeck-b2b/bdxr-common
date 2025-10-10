@@ -19,13 +19,17 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 import java.net.URL;
 import java.util.List;
 import java.util.Objects;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.Redirection;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 abstract class AbstractRedirectionImpl extends ExtensibleMetadataClass implements Redirection {
+	private static final long serialVersionUID = 585788898810834206L;
+	
 	/**
 	 * The new URL to use for the SMP query
 	 */
@@ -53,22 +57,12 @@ abstract class AbstractRedirectionImpl extends ExtensibleMetadataClass implement
      * @param redirectedURL The URL to use for a new query
      * @param ext           Any extended meta-data information included in the SMP record
      */
-    AbstractRedirectionImpl(final URL redirectedURL, final List<Extension> ext) {
+    AbstractRedirectionImpl(final URL redirectedURL, final List<Extension<?>> ext) {
 		super(ext);
     	this.newTargetURL = redirectedURL;
     }
 
 	/**
-	 * Creates a new instance copying the data from the given instance.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    AbstractRedirectionImpl(final Redirection src) {
-		super(src.getExtensions());
-    	this.newTargetURL = src.getNewSMPURL();
-    }
-
-    /**
      * Gets the URL to which the queried SMP redirected
      *
      * @return	The URL to use for a new query
@@ -87,7 +81,7 @@ abstract class AbstractRedirectionImpl extends ExtensibleMetadataClass implement
     	this.newTargetURL = redirectedURL;
     }
 
-    @Override
+    @Override 
     public boolean equals(Object r) {
 		return this.newTargetURL.equals(((Redirection) r).getNewSMPURL()) && super.equals(r);
     }

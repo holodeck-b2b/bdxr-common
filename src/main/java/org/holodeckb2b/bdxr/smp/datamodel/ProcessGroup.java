@@ -18,6 +18,8 @@ package org.holodeckb2b.bdxr.smp.datamodel;
 
 import java.util.Collection;
 
+import org.holodeckb2b.bdxr.common.datamodel.ExtensibleMetadata;
+
 /**
  * Represents a group of processes which share the same <i>messaging endpoints</i> or <i>redirection</i> to another SMP.
  * Either a list of endpoints or a redirection must be provided, but never both as it would be impossible to tell what
@@ -36,42 +38,26 @@ public interface ProcessGroup extends ExtensibleMetadata {
 	/**
 	 * Gets the group of process meta-data on the processes in which the endpoints are / redirection is used.
 	 *
-	 * @return Collection of process meta-data, may be <code>null</code> which is considered equal to an empty
-	 *			collection.
+	 * @return the process meta-data. If the process group does not contain process meta-data, an empty collection MUST 
+	 * 			be returned.
 	 */
 	Collection<? extends ProcessInfo> getProcessInfo();
 
 	/**
-	 * Gets the list of available endpoints for this process group.
+	 * Gets the list of available endpoints for this process group. Note that either this method should return a 
+	 * non-empty collection of endpoints or a redirection should be returned by {@link #getRedirection()}.
 	 *
-	 * @return The collection of endpoints, may be <code>null</code> which is considered equal to an empty collection.
+	 * @return collection of endpoints. If the process group does not contain endpoints, an empty collection MUST be 
+	 * 			returned.
 	 */
 	Collection<? extends EndpointInfo> getEndpoints();
 
 	/**
-	 * Get the redirection information for this process group.
+	 * Get the redirection information for this process group. Note that either this method should return a redirection
+	 * to another SMP which provides the meta-data or a non-empty collection of endpoints should be returned by {@link 
+	 * #getEndpoints()}.
 	 *
-	 * @return Meta-data about the redirection
+	 * @return meta-data about the redirection
 	 */
 	Redirection getRedirection();
-
-	/**
-	 * Determines if the given object represents the same Process Group meta-data.
-	 *
-	 * @param o		the object the compare
-	 * @return		<code>true</code> iff <code>o</code> is an instance of <code>ProcessGroup</code> and represent the
-	 * 				same meta-data.
-	 */
-	@Override
-	boolean equals(Object o);
-
-	/**
-	 * Calculates the hash value for the meta-data represented by this object. The hash value of two instances, <code>i1
-	 * </code> and <code>i2</code> must be the same when they represent the same meta-data, i.e. when
-	 * <code>i1.equals(i2) == true</code>.
-	 *
-	 * @return hash value for this instance
-	 */
-	@Override
-	int hashCode();
 }

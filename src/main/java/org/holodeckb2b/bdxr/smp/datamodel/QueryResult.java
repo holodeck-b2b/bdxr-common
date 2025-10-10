@@ -18,6 +18,8 @@ package org.holodeckb2b.bdxr.smp.datamodel;
 
 import java.io.Serializable;
 
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+
 /**
  * Indicates that the given data are the result of an SMP query, i.e. contain the meta-data about a Participant. The
  * SMP server may sign the response, in which case the certificate used for signing is also included with the result.

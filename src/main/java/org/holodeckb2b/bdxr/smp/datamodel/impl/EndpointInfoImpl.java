@@ -18,27 +18,32 @@ package org.holodeckb2b.bdxr.smp.datamodel.impl;
 
 import java.net.URL;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
+
+import org.holodeckb2b.bdxr.common.datamodel.Extension;
+import org.holodeckb2b.bdxr.common.datamodel.Identifier;
+import org.holodeckb2b.bdxr.common.datamodel.impl.ExtensibleMetadataClass;
 import org.holodeckb2b.bdxr.smp.datamodel.Certificate;
 import org.holodeckb2b.bdxr.smp.datamodel.EndpointInfo;
-import org.holodeckb2b.bdxr.smp.datamodel.Extension;
 import org.holodeckb2b.commons.util.Utils;
 
 /**
  * @author Sander Fieten (sander at holodeck-b2b.org)
  */
 public class EndpointInfoImpl extends ExtensibleMetadataClass implements EndpointInfo {
-
-    private String              transportProfile;
-    private URL                 endpointURL;
-    private ZonedDateTime       serviceActivationDate;
-    private ZonedDateTime       serviceExpirationDate;
-    private String				description;
-    private String				contactInfo;
-    private Set<Certificate>	certificates;
+    private static final long serialVersionUID = 3037401198222832913L;
+    
+	private Identifier	    		transportProfileId;
+	private URL             		endpointURL;
+	private ZonedDateTime   		serviceActivationDate;
+	private ZonedDateTime   		serviceExpirationDate;
+	private String					description;
+	private String					contactInfo;
+    private Collection<Certificate>	certificates;
 
     /**
      * Default constructor creates "empty" instance
@@ -50,17 +55,17 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
     /**
      * Creates a new instance that only contains the transport profile and URL
      *
-     * @param profile                   The transport profile
-     * @param url                       The endpoint's URL
+     * @param profile	The identifier of the transport profile
+     * @param url		The endpoint's URL
      */
-    public EndpointInfoImpl(final String profile, final URL url) {
+    public EndpointInfoImpl(final Identifier profile, final URL url) {
         this(profile, url, null, null, null, null, null, null);
     }
 
     /**
      * Creates a new instance with the given meta-data
      *
-     * @param profile			The transport profile
+     * @param profileId			The identifier of the transport profile
      * @param url				The endpoint's URL
      * @param activationDate	The timestamp from which the endpoint is active
      * @param expirationDate	The timestamp until which the endpoint is active
@@ -69,54 +74,38 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
 	 * @param certs				The meta-data on the certificates used by the endpoint
      * @param exts              Any extra information related to the endpoint
      */
-    public EndpointInfoImpl(final String profile, final URL url,
+    public EndpointInfoImpl(final Identifier profileId, final URL url,
 								  final ZonedDateTime activationDate, final ZonedDateTime expirationDate,
 								  final String description, final String contact,
-								  final Set<Certificate> certs,
-								  final List<Extension> exts) {
+								  final Collection<? extends Certificate> certs,
+								  final List<Extension<?>> exts) {
 		super(exts);
-        this.transportProfile = profile;
+        this.transportProfileId = profileId;
         this.endpointURL = url;
         this.serviceActivationDate = activationDate;
         this.serviceExpirationDate = expirationDate;
         this.description = description;
         this.contactInfo = contact;
-        this.certificates = certs;
+        setCertificates(certs);
     }
 
 	/**
-	 * Creates a new instance copying the data from the given endpoint object.
-	 *
-	 * @param src the instance to copy the data from
-	 */
-    public EndpointInfoImpl(final EndpointInfo src) {
-		super(src.getExtensions());
-        this.transportProfile = src.getTransportProfile();
-        this.endpointURL = src.getEndpointURL();
-        this.serviceActivationDate = src.getServiceActivationDate();
-        this.serviceExpirationDate = src.getServiceExpirationDate();
-        this.description = src.getDescription();
-        this.contactInfo = src.getContactInfo();
-		this.certificates = (Set<Certificate>) src.getCertificates();
-    }
-
-    /**
-     * Gets the transport profile the endpoint supports
+     * Gets the identifier of the transport profile the Endpoint supports
      *
-     * @return The transport profile
+     * @return The identifier of the transport profile
      */
 	@Override
-    public String getTransportProfile() {
-        return transportProfile;
+    public Identifier getTransportProfileId() {
+        return transportProfileId;
     }
 
     /**
-     * Sets the transport profile the endpoint supports
+     * Sets the identifier of the transport profile the Endpoint supports
      *
-     * @param transportProfile  The transport profile
+     * @param transportProfileId  The identifier of the transport profile
      */
-    public void setTransportProfile(String transportProfile) {
-        this.transportProfile = transportProfile;
+    public void setTransportProfileId(Identifier transportProfileId) {
+        this.transportProfileId = transportProfileId;
     }
 
     /**
@@ -220,7 +209,7 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
      * @return The certificates used by the endpoint
      */
 	@Override
-    public Set<Certificate> getCertificates() {
+    public Collection<? extends Certificate> getCertificates() {
         return certificates;
     }
 
@@ -229,8 +218,10 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
      *
      * @param certs		The meta-data on the certificates
      */
-    public void setCertificates(Set<Certificate> certs) {
-        this.certificates = certs;
+    public void setCertificates(Collection<? extends Certificate> certs) {
+    	this.certificates = new ArrayList<>(certs != null ? certs.size() : 0);
+        if (certs != null)
+			this.certificates.addAll(certs);
     }
 
     /**
@@ -238,7 +229,7 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
      *
      * @param cert    The certificate meta-data
      */
-    public void addCertificate(final Certificate cert) {
+    public void addCertificate(Certificate cert) {
         if (cert == null)
             throw new IllegalArgumentException("Certificate data must be specified");
 		if (this.certificates == null)
@@ -257,7 +248,7 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
     			&& Utils.nullSafeEqual(description, e.getDescription())
     			&& Utils.nullSafeEqual(serviceActivationDate, e.getServiceActivationDate())
     			&& Utils.nullSafeEqual(serviceExpirationDate, e.getServiceExpirationDate())
-    			&& Utils.nullSafeEqual(transportProfile, e.getTransportProfile());
+    			&& Utils.nullSafeEqual(transportProfileId, e.getTransportProfileId());
     	}
     }
 
@@ -269,7 +260,7 @@ public class EndpointInfoImpl extends ExtensibleMetadataClass implements Endpoin
 											   description, endpointURL,
 											   serviceActivationDate != null ? serviceActivationDate.toInstant() : null,
 											   serviceExpirationDate != null ? serviceExpirationDate.toInstant() : null,
-											   transportProfile);
+											   transportProfileId);
 		return result;
 	}
 }

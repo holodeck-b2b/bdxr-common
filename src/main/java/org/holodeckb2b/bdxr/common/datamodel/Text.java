@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2018 The Holodeck B2B Team
+ * Copyright (C) 2025 The Holodeck B2B Team
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,24 +14,24 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.holodeckb2b.bdxr.smp.datamodel;
-
-import java.io.Serializable;
-import java.util.List;
+package org.holodeckb2b.bdxr.common.datamodel;
 
 /**
- * Represents a meta-data element included in a SMP response that can be extended with non-standard, context specific
- * meta-data. This interface is not intended to be implemented directly but only serves as a "base interface" for the
- * specific meta-data elements defined in this package.
- *
+ * Represents the generic definition of text elements used within BDXR models, like the <i>Description</i> of a 
+ * <i>Payload</i> contained in an XHE.
+ * 
  * @author Sander Fieten (sander at holodeck-b2b.org)
+ * @since 5.0.0
  */
-public interface ExtensibleMetadata extends Serializable {
+public interface Text {
 
 	/**
-	 * Gets the additional, non standard, information related to the meta-data object.
-	 *
-	 * @return The extended meta-data, may be <code>null</code> which is considered equal to an empty collection.
+	 * @return identification of the language the text is in 
 	 */
-	List<Extension> getExtensions();
+	String getLanguage();
+	
+	/**
+	 * @return	the text itself
+	 */
+	String getText();
 }
